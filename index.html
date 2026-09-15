@@ -44,7 +44,7 @@
 
     .form-group { margin-bottom: 15px; }
     label { display: block; font-weight: bold; margin-bottom: 5px; color: var(--primary); font-size: 0.9rem; }
-    select, input {
+    select, input, textarea {
       width: 100%;
       padding: 10px;
       border: 1px solid var(--border);
@@ -90,8 +90,33 @@
       line-height: 1.5;
     }
 
-    .preview-header { border-bottom: 2px solid var(--primary); padding-bottom: 10px; margin-bottom: 15px; }
-    .preview-title { font-size: 1.15rem; color: var(--primary); font-weight: bold; text-align: center; }
+    /* ESTILO DO CABEÇALHO OFICIAL */
+    .header-oficial {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+      padding-bottom: 15px;
+      border-bottom: 2px solid #000;
+      margin-bottom: 20px;
+    }
+    .header-oficial img {
+      width: 75px;
+      height: auto;
+    }
+    .header-text {
+      text-align: center;
+      font-family: 'Times New Roman', Times, serif;
+      color: #000;
+      line-height: 1.25;
+    }
+    .header-text .line1 { font-size: 1.05rem; text-transform: uppercase; }
+    .header-text .line2 { font-size: 1.05rem; text-transform: uppercase; }
+    .header-text .line3 { font-size: 1.15rem; font-weight: bold; text-transform: uppercase; }
+    .header-text .line4 { font-size: 0.9rem; text-decoration: underline; margin-top: 2px; }
+    .header-text .line5 { font-size: 0.9rem; text-decoration: underline; }
+
+    .preview-title { font-size: 1.1rem; color: #000; font-weight: bold; text-align: center; margin: 15px 0; text-transform: uppercase; }
 
     .btn-group { display: flex; gap: 10px; margin-top: 15px; }
     .btn {
@@ -140,7 +165,7 @@
 <div class="container">
   <header>
     <h1>EE MANOEL DOS SANTOS - COMPENSAÇÃO DE AUSÊNCIA</h1>
-    <p>3º Bimestre - Gerador Automático de Trabalhos e Roteiros de Recuperação</p>
+    <p>Gerador Automático de Trabalhos e Roteiros de Recuperação (BNCC / SEDUC-SP)</p>
   </header>
 
   <div class="grid">
@@ -189,26 +214,29 @@
       </div>
 
       <div class="form-group">
-        <label>Conteúdos do 3º Bimestre (Clique para Selecionar Vários):</label>
+        <label>Tópicos / Conteúdos (Mínimo 15 Opções - Selecione Vários):</label>
         <div id="lista-conteudos" class="topic-list">
           <p style="color: #a0aec0; text-align: center;">Selecione a disciplina acima.</p>
         </div>
       </div>
 
+      <!-- NOVA SELEÇÃO MÚLTIPLA DE TIPOS DE ATIVIDADES -->
+      <div class="form-group">
+        <label>Tipo(s) de Atividade (Selecione uma ou mais opções):</label>
+        <div id="lista-metodologias" class="topic-list">
+          <!-- Gerado dinamicamente via JS -->
+        </div>
+      </div>
+
+      <!-- CAMPO DE ORIENTAÇÕES CUSTOMIZADAS DO PROFESSOR -->
+      <div class="form-group">
+        <label for="orientacoes-extras">Instruções / Observações Específicas do Professor (Opcional):</label>
+        <textarea id="orientacoes-extras" rows="2" placeholder="Ex: Responder páginas 34 a 38 do Livro Didático. Entregar em folha de almaço..." oninput="gerarTrabalho()"></textarea>
+      </div>
+
       <div style="display: flex; gap: 10px;">
         <div class="form-group" style="flex: 1;">
-          <label for="select-metodologia">Tipo de Atividade:</label>
-          <select id="select-metodologia" onchange="gerarTrabalho()">
-            <option value="copia">Resumo / Cópia Direcionada</option>
-            <option value="questionario">Questionário Dirigido</option>
-            <option value="mapa">Mapa Mental / Conceitual</option>
-            <option value="pesquisa">Pesquisa Escrita</option>
-            <option value="glossario">Glossário Ilustrado</option>
-          </select>
-        </div>
-
-        <div class="form-group" style="flex: 1;">
-          <label for="qtd-extensao">Extensão / Folhas:</label>
+          <label for="qtd-extensao">Extensão Exigida:</label>
           <select id="qtd-extensao" onchange="gerarTrabalho()">
             <option value="1 folha (Frente e Verso)">1 Folha (Frente e Verso)</option>
             <option value="2 folhas manuscritas">2 Folhas Manuscritas</option>
@@ -217,11 +245,16 @@
             <option value="10 questões com respostas">10 Questões com respostas</option>
           </select>
         </div>
+
+        <div class="form-group" style="flex: 1;">
+          <label for="qtd-aulas">Aulas a Compensar:</label>
+          <input type="number" id="qtd-aulas" value="2" min="1" max="20" onchange="gerarTrabalho()">
+        </div>
       </div>
 
       <div class="form-group">
-        <label for="qtd-aulas">Quantidade de Aulas a Compensar:</label>
-        <input type="number" id="qtd-aulas" value="2" min="1" max="20" onchange="gerarTrabalho()">
+        <label for="data-limite">Data Limite de Entrega:</label>
+        <input type="date" id="data-limite" value="2026-09-22" onchange="gerarTrabalho()">
       </div>
     </div>
 
@@ -231,7 +264,7 @@
       
       <div id="preview-container">
         <p style="color: #a0aec0; text-align: center; margin-top: 150px;">
-          Selecione a turma, o estudante e ao menos um conteúdo para gerar o roteiro.
+          Selecione a turma, o estudante, o conteúdo e o tipo de atividade para gerar o roteiro.
         </p>
       </div>
 
@@ -244,34 +277,344 @@
 </div>
 
 <script>
-  // DADOS 100% EXATOS EXTRAÍDOS DA ABA TUTORES DA SUA PLANILHA (230 ALUNOS)
+  // DADOS EXATOS DA PLANILHA (230 ALUNOS)
   const turmasAlunos = {"6º ano A": [{"nome": "AGATHA DA SILVA POLICARPO", "faltas": 8.0, "presenca": 92.0}, {"nome": "AMANDA GOMES DA COSTA", "faltas": 0.0, "presenca": 100.0}, {"nome": "ANNA VICTORIA MARIANO DE OLIVEIRA", "faltas": 5.0, "presenca": 95.0}, {"nome": "ANTHONY DE SOUZA TONIM", "faltas": 1.0, "presenca": 99.0}, {"nome": "DIOGO TARDIOLI DA SILVA", "faltas": 3.0, "presenca": 97.0}, {"nome": "ENELIN FERREIRA DA SILVA SANTOS", "faltas": 17.0, "presenca": 83.0}, {"nome": "ESTER PALHARES RAMOS", "faltas": 0.0, "presenca": 100.0}, {"nome": "IGNEZ VITAL MARQUES", "faltas": 11.0, "presenca": 89.0}, {"nome": "JOÃO EDUARDO DA SILVA", "faltas": 6.0, "presenca": 94.0}, {"nome": "JOSE HENRIQUE SILVA DE JESUS", "faltas": 4.0, "presenca": 96.0}, {"nome": "LAVINIA MESCHIARI COLODINO", "faltas": 2.0, "presenca": 98.0}, {"nome": "LIVIA DE MELO MARQUES", "faltas": 3.0, "presenca": 97.0}, {"nome": "LORENA COSTA REYNALDO", "faltas": 6.0, "presenca": 94.0}, {"nome": "LORENA RAICCA BATISTA JUVÊNCIO", "faltas": 21.0, "presenca": 79.0}, {"nome": "MATHEUS DOS SANTOS VIANA", "faltas": 1.0, "presenca": 99.0}, {"nome": "PEDRO MORAIS TEIXEIRA", "faltas": 3.0, "presenca": 97.0}, {"nome": "RYAN SOUZA COLODINO", "faltas": 4.0, "presenca": 96.0}, {"nome": "THAUANY VITORIA CRUZ SIQUEIRA", "faltas": 8.0, "presenca": 92.0}, {"nome": "VINICIUS MARQUES ROQUE", "faltas": 4.0, "presenca": 96.0}], "9º ano A": [{"nome": "ALAN FERNANDO RIBEIRO DOURADO", "faltas": 1.0, "presenca": 99.0}, {"nome": "ANA CLARA BIATO DE SOUZA", "faltas": 1.0, "presenca": 99.0}, {"nome": "ANA JULIA MACIEL GOBBI", "faltas": 6.0, "presenca": 94.0}, {"nome": "ANA LIVIA SILVINO PAIVA", "faltas": 16.0, "presenca": 84.0}, {"nome": "APOLO MARQUES AGOSTINHO", "faltas": 0.0, "presenca": 100.0}, {"nome": "BÁRBARA DE ALMEIDA TEIXEIRA", "faltas": 0.0, "presenca": 100.0}, {"nome": "CHRISTIANO DE SIQUEIRA MOREIRA", "faltas": 1.0, "presenca": 99.0}, {"nome": "DERICK FERREIRA DA SILVA", "faltas": 1.0, "presenca": 99.0}, {"nome": "EZEQUIEL JUNIOR MARTINS DE SOUZA GONÇALVES", "faltas": 30.0, "presenca": 70.0}, {"nome": "GABRIEL BIUDES DE CASTRO", "faltas": 11.0, "presenca": 89.0}, {"nome": "GABRIELA MONTEIRO BISPO", "faltas": 5.0, "presenca": 95.0}, {"nome": "GUILHERME VICK DE SOUZA", "faltas": 7.0, "presenca": 93.0}, {"nome": "HELOA DE OLIVEIRA MARQUES", "faltas": 0.0, "presenca": 100.0}, {"nome": "HELOISA MARTINELI DE OLIVEIRA", "faltas": 3.0, "presenca": 97.0}, {"nome": "HUGO DOMICIANO FRACASSO", "faltas": 19.0, "presenca": 81.0}, {"nome": "ISABELLY GITE DA SILVA", "faltas": 1.0, "presenca": 99.0}, {"nome": "ISAC LUIS PAULO INACIO DOS SANTOS", "faltas": 3.0, "presenca": 97.0}, {"nome": "ISRAEL FELLIPE BERNARDINO REMOLLI CARDOSO", "faltas": 5.0, "presenca": 95.0}, {"nome": "JOSE MIGUEL MARTINS POSSETTI", "faltas": 0.0, "presenca": 100.0}, {"nome": "KAUAN FERNANDO RIBEIRO MARQUES", "faltas": 9.0, "presenca": 91.0}, {"nome": "KETLEN LUARA DA SILVA LEAL", "faltas": 12.0, "presenca": 88.0}, {"nome": "LUAN VITOR GONDEK DE OLIVEIRA", "faltas": 0.0, "presenca": 100.0}, {"nome": "LUIZ OTAVIO BEATO DA SILVA", "faltas": 5.0, "presenca": 95.0}, {"nome": "MARIA CLARA DAS NEVES ARAUJO", "faltas": 16.0, "presenca": 84.0}, {"nome": "MARIA EDUARDA DA SILVA", "faltas": 1.0, "presenca": 99.0}, {"nome": "MARIA FERNANDA RODRIGUES DO CARMO DOS SANTOS SILVA", "faltas": 16.0, "presenca": 84.0}, {"nome": "MARIA VALLENTINA AROSTI FERREIRA", "faltas": 7.0, "presenca": 93.0}, {"nome": "MATHEUS DE CASTRO HENRIQUE", "faltas": 7.0, "presenca": 93.0}, {"nome": "MAYNARA YNAIE OLIVEIRA SILVA", "faltas": 7.0, "presenca": 93.0}, {"nome": "MELLANY VICTORIA BARBOSA DE SOUZA", "faltas": 6.0, "presenca": 94.0}, {"nome": "RAYSSA SEVIERO DE SOUZA", "faltas": 11.0, "presenca": 89.0}, {"nome": "YASMIM KOLANO DE JESUS", "faltas": 3.0, "presenca": 97.0}], "3ª série A": [{"nome": "ALANA FERNANDA RIBEIRO DOURADO", "faltas": 1.0, "presenca": 99.0}, {"nome": "ALANA SANCHEZ GITTI", "faltas": 8.0, "presenca": 92.0}, {"nome": "ANA JULIA MENDES", "faltas": 8.0, "presenca": 92.0}, {"nome": "DANIEL MONTEIRO BISPO", "faltas": 14.0, "presenca": 86.0}, {"nome": "DAYVID VINICIUS DA SILVA PAIVA", "faltas": 11.0, "presenca": 89.0}, {"nome": "DIONE FERREIRA DIAS", "faltas": 45.0, "presenca": 55.0}, {"nome": "EMANUEL PEROLA SANTIAGO", "faltas": 4.0, "presenca": 96.0}, {"nome": "ESTHER LARA DE OLIVEIRA RODRIGUES", "faltas": 16.0, "presenca": 84.0}, {"nome": "FELIPE RIBEIRO DA SILVA", "faltas": 5.0, "presenca": 95.0}, {"nome": "FERNANDA BARBOSA VITORIANO", "faltas": 12.0, "presenca": 88.0}, {"nome": "HELOÍSA FERREIRA VITORIANO", "faltas": 12.0, "presenca": 88.0}, {"nome": "IURY VITORIANO DE SELES", "faltas": 10.0, "presenca": 90.0}, {"nome": "JENNIFER CRUZ SOUZA", "faltas": 8.0, "presenca": 92.0}, {"nome": "KAMILLY SEVIERO MÁXIMO", "faltas": 10.0, "presenca": 90.0}, {"nome": "LORENA FARIA TARDIOLI", "faltas": 12.0, "presenca": 88.0}, {"nome": "NATÁLIA APARECIDA VIARO", "faltas": 2.0, "presenca": 98.0}, {"nome": "NELSON LUAN ZONTA", "faltas": 23.0, "presenca": 77.0}, {"nome": "PETERSON FERREIRA TARDIOLI", "faltas": 12.0, "presenca": 88.0}, {"nome": "RODRIGO CASELLI SOUZA", "faltas": 8.0, "presenca": 92.0}, {"nome": "VICTOR JÚLIO RODRIGUES DA SILVA", "faltas": 18.0, "presenca": 82.0}, {"nome": "YAGO WILIAM DOMICIANO", "faltas": 15.0, "presenca": 85.0}], "6º ano B": [{"nome": "ALICE VITORIA MENDES DE OLIVEIRA", "faltas": 1.0, "presenca": 99.0}, {"nome": "ANGELICA CHRISTINE CARDOSO DO CARMO", "faltas": 10.0, "presenca": 90.0}, {"nome": "ARTHUR MOREIRA RODRIGUES", "faltas": 0.0, "presenca": 100.0}, {"nome": "BIANCA CALLEGARI PIRES", "faltas": 5.0, "presenca": 95.0}, {"nome": "ENZO GABRIEL DA SILVA MORENO", "faltas": 1.0, "presenca": 99.0}, {"nome": "ESTER RODRIGUES SOUZA", "faltas": 4.0, "presenca": 96.0}, {"nome": "KAROLINE MELO ESCOBAR", "faltas": 5.0, "presenca": 95.0}, {"nome": "LUIZ RICARDO SOUZA DE ALMEIDA", "faltas": 13.0, "presenca": 87.0}, {"nome": "LUIZA HELENA GONCALVES PIROTA", "faltas": 1.0, "presenca": 99.0}, {"nome": "MARIA CLARA HEINST DA SILVA", "faltas": 9.0, "presenca": 91.0}, {"nome": "MARIA FERNANDA FERREIRA SANTOS", "faltas": 1.0, "presenca": 99.0}, {"nome": "MARIANE MARQUES SANTANA BELASCO", "faltas": 3.0, "presenca": 97.0}, {"nome": "MATEUS CASTRO DE SOUZA", "faltas": 3.0, "presenca": 97.0}, {"nome": "OTAVIO FERNANDES DA SILVA", "faltas": 8.0, "presenca": 92.0}, {"nome": "TAUANE RIBEIRO BARDELLA", "faltas": 8.0, "presenca": 92.0}, {"nome": "YASMIN FERREIRA CARDOSO", "faltas": 14.0, "presenca": 86.0}], "3ª série B": [{"nome": "ANA BEATRIZ PAULANI PEREIRA", "faltas": 23.0, "presenca": 77.0}, {"nome": "ANA LARA CALLEGARI LOPES", "faltas": 10.0, "presenca": 90.0}, {"nome": "CAMILI DE ANGELI VIEIRA", "faltas": 7.0, "presenca": 93.0}, {"nome": "CARLOS EDUARDO SILVA CORRÊA", "faltas": 23.0, "presenca": 77.0}, {"nome": "CAROLLAYNE CALLEGARI GONDÉK DE OLIVEIRA", "faltas": 19.0, "presenca": 81.0}, {"nome": "DANIELA MARIA CARDOSO SILVA", "faltas": 8.0, "presenca": 92.0}, {"nome": "EDUARDA OLIVEIRA DOS SANTOS", "faltas": 10.0, "presenca": 90.0}, {"nome": "FELIPE GOMES DA COSTA", "faltas": 1.0, "presenca": 99.0}, {"nome": "JORGE RAFAEL SIQUEIRA DA SILVA", "faltas": 2.0, "presenca": 98.0}, {"nome": "KATARINA DOS ANJOS DRUMOND SILVA", "faltas": 17.0, "presenca": 83.0}, {"nome": "KAUÃ VINÍCIOS DE OLIVEIRA", "faltas": 6.0, "presenca": 94.0}, {"nome": "LUCAS HENRIQUE RIBEIRO DA SILVA", "faltas": 17.0, "presenca": 83.0}, {"nome": "PEDRO AUGUSTO RIBEIRO LOPES", "faltas": 15.0, "presenca": 85.0}, {"nome": "PEDRO LUCAS REZENDE DOS SANTOS", "faltas": 13.0, "presenca": 87.0}, {"nome": "TAFNES VITÓRIA ALVES BEATO", "faltas": 10.0, "presenca": 90.0}, {"nome": "VINÍCIUS FERREIRA BEATO", "faltas": 45.0, "presenca": 55.0}, {"nome": "YASMIM SUÉLI DOS SANTOS", "faltas": 5.0, "presenca": 95.0}], "8º ano A": [{"nome": "ANA CLARA DE SELES", "faltas": 0.0, "presenca": 100.0}, {"nome": "ARTUR VINICIOS DE OLIVEIRA", "faltas": 10.0, "presenca": 90.0}, {"nome": "CLARISSE VINHANSKI DINIZ", "faltas": 0.0, "presenca": 100.0}, {"nome": "DÉBORA FERNANDA PELEGRINO DE SOUZA", "faltas": 9.0, "presenca": 91.0}, {"nome": "ELISA NOSSA FREDRERICH", "faltas": 0.0, "presenca": 100.0}, {"nome": "FELIPE DOS SANTOS BUENO", "faltas": 6.0, "presenca": 94.0}, {"nome": "FELIPE DOURADO RUBIO", "faltas": 10.0, "presenca": 90.0}, {"nome": "FERNANDO HENRIQUE GARRIDO", "faltas": 3.0, "presenca": 97.0}, {"nome": "GUILHERME DE SOUZA BONFIM", "faltas": 7.0, "presenca": 93.0}, {"nome": "GUILHERME RIBEIRO ESCABORA", "faltas": 2.0, "presenca": 98.0}, {"nome": "IASMYN VITORIA SILVA DE FREITAS", "faltas": 4.0, "presenca": 96.0}, {"nome": "ISAAC OLIVEIRA LEITE", "faltas": 0.0, "presenca": 100.0}, {"nome": "IZADORA FERNANDES VITORIANO", "faltas": 11.0, "presenca": 89.0}, {"nome": "JOAO GUILHERME RIBEIRO GOMES", "faltas": 2.0, "presenca": 98.0}, {"nome": "JOAO LUCAS DA SILVA", "faltas": 29.0, "presenca": 71.0}, {"nome": "JULIA LOPES NOGUEIRA", "faltas": 0.0, "presenca": 100.0}, {"nome": "KARYNE DOTAS COLODINO", "faltas": 4.0, "presenca": 96.0}, {"nome": "KATHLEEN VITÓRIA FERREIRA SIMÕES", "faltas": 13.0, "presenca": 87.0}, {"nome": "MANUELLA DA SILVA RIBEIRO", "faltas": 15.0, "presenca": 85.0}, {"nome": "MANUELLA DOS SANTOS RIBEIRO", "faltas": 7.0, "presenca": 93.0}, {"nome": "MARIA EDUARDA BERGANTIN ZONTA", "faltas": 9.0, "presenca": 91.0}, {"nome": "MARIA EDUARDA PAZ MATIAS", "faltas": 0.0, "presenca": 100.0}, {"nome": "MARIA FERNANDA DE OLIVEIRA SILVA", "faltas": 0.0, "presenca": 100.0}, {"nome": "MELISSA MARIA SILVA", "faltas": 1.0, "presenca": 99.0}, {"nome": "MIGUEL PALHARES RAMOS", "faltas": 0.0, "presenca": 100.0}, {"nome": "PAULO CESAR SANTOS CARDOSO", "faltas": 5.0, "presenca": 95.0}, {"nome": "PAULO RYUKI SUZUKI NAGATA", "faltas": 10.0, "presenca": 90.0}, {"nome": "RUAN LUCAS DE AGUIAR", "faltas": 6.0, "presenca": 94.0}, {"nome": "SOPHIA LARA DE OLIVEIRA", "faltas": 3.0, "presenca": 97.0}, {"nome": "TAUA MATEUS CRUZ SIQUEIRA", "faltas": 14.0, "presenca": 86.0}, {"nome": "VALENTINA DOURADO MARINO", "faltas": 15.0, "presenca": 85.0}, {"nome": "WESLEY DIOGO BRANCALHONI VIEIRA", "faltas": 20.0, "presenca": 80.0}], "2ª série A": [{"nome": "ANA CLARA MOREIRA DE LIMA", "faltas": 9.0, "presenca": 91.0}, {"nome": "ANA JULIA DA SILVA", "faltas": 9.0, "presenca": 91.0}, {"nome": "ANTONIO PYETRO OLIVEIRA DA SILVA", "faltas": 14.0, "presenca": 86.0}, {"nome": "BIANCA DOS SANTOS CARDOSO BRAGA", "faltas": 6.0, "presenca": 94.0}, {"nome": "DAVI FERNANDO INÁCIO", "faltas": 5.0, "presenca": 95.0}, {"nome": "ELOÁ CONSTANTINO DE SOUZA", "faltas": 9.0, "presenca": 91.0}, {"nome": "ELOÍZA DOS SANTOS MALAVAZI", "faltas": 17.0, "presenca": 83.0}, {"nome": "EMANUELE DE OLIVEIRA VICK", "faltas": 8.0, "presenca": 92.0}, {"nome": "FELIPE DE OLIVEIRA DIAS", "faltas": 14.0, "presenca": 86.0}, {"nome": "FERNANDA MARIA DA SILVA", "faltas": 5.0, "presenca": 95.0}, {"nome": "GABRIELLY DA SILVA RIBEIRO", "faltas": 2.0, "presenca": 98.0}, {"nome": "GUILHERME MACIEL GOBBI", "faltas": 5.0, "presenca": 95.0}, {"nome": "ISABELY RODRIGUES AYUB DE OLIVEIRA", "faltas": 3.0, "presenca": 97.0}, {"nome": "JOAO GABRIEL LOPES DE SOUZA", "faltas": 3.0, "presenca": 97.0}, {"nome": "JOÃO VITOR CARDOSO PEREIRA", "faltas": 12.0, "presenca": 88.0}, {"nome": "JORGE ELIAS DO CARMO LOPES", "faltas": 2.0, "presenca": 98.0}, {"nome": "JOSÉ ANTONIO VIARO", "faltas": 20.0, "presenca": 80.0}, {"nome": "LEONARDO PEREIRA MARQUES", "faltas": 19.0, "presenca": 81.0}, {"nome": "LETÍCIA RIBEIRO DA SILVA", "faltas": 5.0, "presenca": 95.0}, {"nome": "LUAN FERNANDES DE REZENDE", "faltas": 9.0, "presenca": 91.0}, {"nome": "MAIKON ANTONIO SILVA", "faltas": 4.0, "presenca": 96.0}, {"nome": "MARIANA ESTEFANY BEZERRA DOS SANTOS", "faltas": 7.0, "presenca": 93.0}, {"nome": "MARIO GABRIEL LOIS", "faltas": 2.0, "presenca": 98.0}, {"nome": "PABLO DA SILVA", "faltas": 7.0, "presenca": 93.0}, {"nome": "RAUL MARONA PARRA", "faltas": 2.0, "presenca": 98.0}, {"nome": "RIAN RODRIGO DIAS PEREIRA", "faltas": 3.0, "presenca": 97.0}, {"nome": "VICTOR HUGO SILVA", "faltas": 7.0, "presenca": 93.0}, {"nome": "VITÓRIA APARECIDA DE SOUZA", "faltas": 7.0, "presenca": 93.0}, {"nome": "VITÓRIA DOS SANTOS DE JESUS", "faltas": 5.0, "presenca": 95.0}], "1ª série A": [{"nome": "ANA JULIA PEREIRA DOS SANTOS", "faltas": 5.0, "presenca": 95.0}, {"nome": "ANA LAURA CARVALHO LIMA", "faltas": 5.0, "presenca": 95.0}, {"nome": "ANA LUÍSA LOQUETE", "faltas": 0.0, "presenca": 100.0}, {"nome": "DIOGO DE SOUZA CORREA", "faltas": 3.0, "presenca": 97.0}, {"nome": "EMANUEL BISPO FERREIRA", "faltas": 3.0, "presenca": 97.0}, {"nome": "EMILLY NICOLI PIRES REMOLLI BRITO", "faltas": 1.0, "presenca": 99.0}, {"nome": "ENZO HENRIQUE DOS SANTOS DIAS", "faltas": 7.0, "presenca": 93.0}, {"nome": "ÉRICK BATISTA DE ANDRADE", "faltas": 4.0, "presenca": 96.0}, {"nome": "FABIANO FERNANDES RIBEIRO JUNIOR", "faltas": 3.0, "presenca": 97.0}, {"nome": "GEMILSON LOPES DE SOUZA", "faltas": 26.0, "presenca": 74.0}, {"nome": "GEOVANNA DOS SANTOS FERREIRA", "faltas": 8.0, "presenca": 92.0}, {"nome": "GRASIELE DOS SANTOS CARDOSO", "faltas": 18.0, "presenca": 82.0}, {"nome": "INAIÊ BERTINI DE CAMPOS", "faltas": 2.0, "presenca": 98.0}, {"nome": "IZADORA MARIA ALVES FERREIRA", "faltas": 10.0, "presenca": 90.0}, {"nome": "JULIA BERNARDINI FERREIRA", "faltas": 6.0, "presenca": 94.0}, {"nome": "KAUÃ CESAR MELERO", "faltas": 6.0, "presenca": 94.0}, {"nome": "KAYO DOTAS COLODINO", "faltas": 1.0, "presenca": 99.0}, {"nome": "LAÍS SUÉLI DOS SANTOS", "faltas": 5.0, "presenca": 95.0}, {"nome": "LAYANE ELISA DOS SANTOS", "faltas": 1.0, "presenca": 99.0}, {"nome": "LUARA CONSTANTINO CALDEIRA", "faltas": 8.0, "presenca": 92.0}, {"nome": "MARIA CLARA RODRIGUES DO CARMO SANTOS SILVA", "faltas": 15.0, "presenca": 85.0}, {"nome": "MARIA EDUARDA SOUZA DE MORAES", "faltas": 1.0, "presenca": 99.0}, {"nome": "MIGUEL ANTÔNIO DUTRA WARTHMANN", "faltas": 12.0, "presenca": 88.0}, {"nome": "MIGUEL SANTOS RIBEIRO", "faltas": 3.0, "presenca": 97.0}, {"nome": "MURIELY CHAGAS ZENARDI", "faltas": 0.0, "presenca": 100.0}, {"nome": "NARA BEATRIZ BEZERRA DOS SANTOS", "faltas": 5.0, "presenca": 95.0}, {"nome": "NÍNIVY SILMARA LIMA ADARIAS SOARES", "faltas": 9.0, "presenca": 91.0}, {"nome": "RAFAEL FERREIRA DE AZEVEDO", "faltas": 9.0, "presenca": 91.0}, {"nome": "THIAGO AZEVEDO CINI", "faltas": 5.0, "presenca": 95.0}, {"nome": "THIAGO TARDIOLI SOTELLO", "faltas": 4.0, "presenca": 96.0}, {"nome": "WEMILLIY SAMPAIO DO NASCIMENTO", "faltas": 8.0, "presenca": 92.0}], "7º ano A": [{"nome": "ANA VITORIA DOS SANTOS PAES", "faltas": 6.0, "presenca": 94.0}, {"nome": "ARTHUR VIEIRA OLIVEIRA", "faltas": 10.0, "presenca": 90.0}, {"nome": "BENITO PEROLA SANTIAGO", "faltas": 5.0, "presenca": 95.0}, {"nome": "CAIO LEANDRO GONDEK", "faltas": 11.0, "presenca": 89.0}, {"nome": "DANIELLY VITORIA BEATO DOS SANTOS", "faltas": 8.0, "presenca": 92.0}, {"nome": "DAVI CORREA DA SILVA", "faltas": 9.0, "presenca": 91.0}, {"nome": "DAVI LUCAS PIROTA FLORENTINO", "faltas": 7.0, "presenca": 93.0}, {"nome": "DOMINIC BRYAN DO AMARAL LIMA", "faltas": 7.0, "presenca": 93.0}, {"nome": "ELIZA GABRIELA PAVANELLI DA SILVA", "faltas": 0.0, "presenca": 100.0}, {"nome": "EMANUEL FRANCHINI MARQUES", "faltas": 6.0, "presenca": 94.0}, {"nome": "EMANUELLI CAROLINE HIPOLITO", "faltas": 12.0, "presenca": 88.0}, {"nome": "FELIPE RODRIGUES CORREA", "faltas": 5.0, "presenca": 95.0}, {"nome": "GABRIEL DA SILVA", "faltas": 0.0, "presenca": 100.0}, {"nome": "GABRIELLY DA SILVA", "faltas": 0.0, "presenca": 100.0}, {"nome": "GUILHERME PYETRO PEREIRA DE AQUINO", "faltas": 7.0, "presenca": 93.0}, {"nome": "HENRIQUE SEVIEIRO MAXIMO", "faltas": 0.0, "presenca": 100.0}, {"nome": "JHEMESON CRUZ SOUZA", "faltas": 11.0, "presenca": 89.0}, {"nome": "JOAO AUGUSTO RESTANI GITTI", "faltas": 1.0, "presenca": 99.0}, {"nome": "LARA CAMILA DE MELO GONÇALVES", "faltas": 1.0, "presenca": 99.0}, {"nome": "LETÍCIA MARIA VIARO", "faltas": 0.0, "presenca": 100.0}, {"nome": "LORENA FERNANDA BUZON QUINTANA", "faltas": 2.0, "presenca": 98.0}, {"nome": "LUCAS FERREIRA MELO", "faltas": 9.0, "presenca": 91.0}, {"nome": "LUIZ MIGUEL RIBEIRO LOPES", "faltas": 5.0, "presenca": 95.0}, {"nome": "MANOELA BEATO DE SOUZA", "faltas": 42.0, "presenca": 58.0}, {"nome": "MARIA EDUARDA TEIXEIRA HORN", "faltas": 10.0, "presenca": 90.0}, {"nome": "MIKAEL PEREIRA TORRES", "faltas": 20.0, "presenca": 80.0}, {"nome": "PEDRO DE CASTRO HENRIQUE", "faltas": 14.0, "presenca": 86.0}, {"nome": "RAFAEL FRANCISCO DA SILVA SANTOS", "faltas": 5.0, "presenca": 95.0}, {"nome": "SAMUEL DOS ANJOS DRUMOND SILVA", "faltas": 13.0, "presenca": 87.0}, {"nome": "SANDRO HENRIQUE DIAS DA SILVA", "faltas": 3.0, "presenca": 97.0}, {"nome": "VERONICA BRAZ RUIZ", "faltas": 5.0, "presenca": 95.0}, {"nome": "YNAHE OLIVEIRA GITI", "faltas": 5.0, "presenca": 95.0}, {"nome": "YSADORA VITORIA COSTA BRITO", "faltas": 1.0, "presenca": 99.0}]};
 
-  // BANCO DE CONTEÚDOS DO 3º BIMESTRE (SEDUC-SP)
+  // BANCO EXPANDIDO: 15 TÓPICOS POR DISCIPLINA
   const conteudosDisciplinas = {
     "EF_ANOS_FINAIS": {
-      "Língua Portuguesa": ["Gêneros jornalísticos e de opinião (reportagem, editorial, carta de leitor)", "Coesão referencial no texto e variedades linguísticas", "Artigo de opinião, resenha crítica e debate regrado", "Subordinação oracional (adjetivas e substantivas) e operadores argumentativos"],
-      "Matemática": ["Números decimais e frações: operações e resolução de problemas", "Noções de geometria espacial: prismas e pirâmides", "Equações e inequações do 1º grau / Sistemas de equações", "Estudo de Funções, Equações do 2º grau e Teorema de Tales"],
-      "Ciências": ["Sistema nervoso e sensorial / Locomoção e revestimento", "Máquinas simples, calorimetria e biomas brasileiros", "Sistema reprodutor, sexualidade e métodos contraceptivos", "Estrutura da matéria, Tabela Periódica, Reações Químicas e Genética"],
-      "História": ["Roma Antiga e o surgimento do Feudalismo", "As Américas antes da chegada dos europeus e Colonização", "Independências na América Latina e Brasil Império", "Era Vargas, Segunda Guerra Mundial e Guerra Fria"],
-      "Geografia": ["Hidrografia, clima e vegetação global e do Brasil", "Regiões brasileiras (Centro-Oeste, Sudeste e Sul) e Urbanização", "América Latina e África: aspectos socioeconômicos", "Europa e Ásia: geopolítica e conflitos territoriais"],
-      "Língua Inglesa": ["Rotinas, hábitos e tempo livre (Present Continuous)", "Narrativas no passado (Past Simple e Past Continuous) e conectores"],
-      "Projeto de Vida": ["Empatia, cooperação e comunicação assertiva", "Organização, determinação, foco e planejamento de metas", "Transição para o Ensino Médio e exploração do mundo do trabalho"],
-      "Tecnologia e Inovação": ["Cultura Digital: segurança na rede, fake news e dados pessoais", "Pensamento Computacional e Algoritmos simples (Scratch)", "Robótica/Maker: prototipagem, sensores e mídias sociais"]
+      "Língua Portuguesa": [
+        "1. Gêneros Jornalísticos: Notícia e Reportagem",
+        "2. Gêneros de Opinião: Editorial e Artigo de Opinião",
+        "3. Gêneros Críticos: Resenha Crítica e Carta do Leitor",
+        "4. Coesão Referencial (Pronomes e Sinônimos)",
+        "5. Coesão Sequencial e Operadores Argumentativos",
+        "6. Denotação, Conotação e Figuras de Linguagem",
+        "7. Variedades Linguísticas e Preconceito Linguístico",
+        "8. Sintaxe do Período Simples (Sujeito e Predicado)",
+        "9. Termos Integrantes da Oração (Objetos e Complementos)",
+        "10. Sintaxe do Período Composto por Coordenação",
+        "11. Sintaxe do Período Composto por Subordinação",
+        "12. Gêneros Literários: Poesia, Conto e Crônica",
+        "13. Leitura Crítica de Mídias Digitais e Fake News",
+        "14. Análise de Textos Multissemióticos e Publicidade",
+        "15. Aprofundamento: Redação Dissertativa-Argumentativa"
+      ],
+      "Matemática": [
+        "1. Conjuntos Numéricos: Naturais e Inteiros",
+        "2. Números Racionais, Frações e Decimais",
+        "3. Dízimas Periódicas e Números Irracionais",
+        "4. Razão, Proporção e Grandezas Proporcionais",
+        "5. Regra de Três Simples e Composta",
+        "6. Porcentagem e Educação Financeira Básica",
+        "7. Expressões Algébricas e Valor Numérico",
+        "8. Equações e Inequações do 1º Grau",
+        "9. Sistemas de Equações com Duas Incógnitas",
+        "10. Conceito de Função e Gráficos Cartesianos",
+        "11. Geometria Plana: Ângulos e Triângulos",
+        "12. Teorema de Tales e Teorema de Pitágoras",
+        "13. Geometria Espacial: Prismas e Pirâmides",
+        "14. Áreas de Figuras Planas e Cálculo de Volume",
+        "15. Aprofundamento: Estatística Descritiva e Probabilidade"
+      ],
+      "Ciências": [
+        "1. Sistema Nervoso e Órgãos dos Sentidos",
+        "2. Sistema Locomotor: Ossos e Músculos",
+        "3. Sistema Digestório e Nutrição Humana",
+        "4. Sistemas Respiratório e Circulatório",
+        "5. Citologia: Estrutura Celular e Organelas",
+        "6. Divisão Celular: Mitose e Meiose",
+        "7. Matéria, Substâncias e Misturas",
+        "8. Métodos de Separação de Misturas",
+        "9. Tabela Periódica e Elementos Químicos",
+        "10. Reações Químicas e Conservação da Massa",
+        "11. Ecologia: Biomas Brasileiros e Ecossistemas",
+        "12. Cadeias Alimentares e Fluxo de Energia",
+        "13. Máquinas Simples e Conceitos de Calor",
+        "14. Genética, Leis de Mendel e Hereditariedade",
+        "15. Aprofundamento: Biotecnologia e Saúde Pública"
+      ],
+      "História": [
+        "1. Roma Antiga: Monarquia, República e Império",
+        "2. Crise do Império Romano e Feudalismo",
+        "3. As Américas Pré-Colombianas (Maias, Incas, Astecas)",
+        "4. Povos Indígenas do Brasil Antes da Colonização",
+        "5. Grandes Navegações e Expansão Marítima",
+        "6. Colonização Espanhola e Portuguesa na América",
+        "7. Brasil Colônia: Açúcar, Mineração e Escravidão",
+        "8. Iluminismo e Revolução Francesa",
+        "9. Revolução Industrial e Mudanças Sociais",
+        "10. Independências na América Latina e Brasil Império",
+        "11. Imperialismo e Neocolonialismo (Século XIX)",
+        "12. Primeira Guerra Mundial e Revolução Russa",
+        "13. Era Vargas e Populismo no Brasil",
+        "14. Segunda Guerra Mundial e Guerra Fria",
+        "15. Aprofundamento: Ditadura Militar e Redemocratização"
+      ],
+      "Geografia": [
+        "1. Cartografia, Escalas e Coordenadas Geográficas",
+        "2. Fusos Horários e Projeções Cartográficas",
+        "3. Estrutura Interna da Terra e Tectônica de Placas",
+        "4. Agentes do Relevo e Tipos de Solo",
+        "5. Climatologia, Elementos e Fatores do Clima",
+        "6. Formações Vegetais e Biomas Globais",
+        "7. Hidrografia e Bacias Hidrográficas do Brasil",
+        "8. Dinâmica Demográfica e Crescimento Populacional",
+        "9. Migrações Humanas e Fluxos Migratórios",
+        "10. Processo de Urbanização e Problemas Urbanos",
+        "11. Espaço Agrário e Modernização da Agricultura",
+        "12. Regionalização do Território Brasileiro",
+        "13. Geografia da América Latina e África",
+        "14. Geopolítica da Europa e Ásia",
+        "15. Aprofundamento: Globalização e Sustentabilidade"
+      ],
+      "Língua Inglesa": [
+        "1. Estratégias de Leitura (Skimming e Scanning)",
+        "2. Falsos Cognatos e Vocabulário Temático",
+        "3. Rotinas e Hábitos (Simple Present)",
+        "4. Ações em Andamento (Present Continuous)",
+        "5. Passado Simples (Simple Past - Verbos Regulares/Irregulares)",
+        "6. Ações Contínuas no Passado (Past Continuous)",
+        "7. Expressando o Futuro (Will vs. Going to)",
+        "8. Verbos Modais: Can, Could, Should, Must",
+        "9. Pronomes Pessoais, Possessivos e Objeto",
+        "10. Adjetivos Comparativos e Superlativos",
+        "11. Preposições de Tempo, Lugar e Direção",
+        "12. Conectores Lógicos e Marcadores Discursivos",
+        "13. Interpretação de Músicas, Poemas e Quadrinhos",
+        "14. Leitura de Artigos da Web e Anúncios",
+        "15. Aprofundamento: Produção Escrita de Curta Extensão"
+      ],
+      "Projeto de Vida": [
+        "1. Autoconhecimento e História de Vida",
+        "2. Construção da Identidade e Autoestima",
+        "3. Reconhecimento e Gestão das Emoções",
+        "4. Empatia e Respeito à Diversidade",
+        "5. Comunicação Assertiva e Diálogo",
+        "6. Resolução Pacífica de Conflitos",
+        "7. Organização de Rotinas e Gestão do Tempo",
+        "8. Técnicas de Estudo e Foco",
+        "9. Determinação e Resiliência Diante de Desafios",
+        "10. Cidadania Ativa e Direitos Humanos",
+        "11. Mapeamento de Interesses e Habilidades",
+        "12. Exploração do Mundo do Trabalho",
+        "13. Definição de Metas de Curto e Longo Prazo",
+        "14. Transição para o Ensino Médio",
+        "15. Aprofundamento: Elaboração do Plano Pessoal"
+      ],
+      "Tecnologia e Inovação": [
+        "1. Cultura Digital e Uso Responsável da Internet",
+        "2. Segurança Digital e Proteção de Dados",
+        "3. Combate às Fake News e Checagem de Fatos",
+        "4. Análise Crítica dos Algoritmos e Redes Sociais",
+        "5. Pensamento Computacional e Decomposição",
+        "6. Reconhecimento de Padrões e Abstração",
+        "7. Algoritmos Simples e Sequenciamento Lógico",
+        "8. Programação em Blocos (Scratch)",
+        "9. Criação de Histórias e Jogos Interativos",
+        "10. Cultura Maker e Prototipagem com Recicláveis",
+        "11. Eletrônica Básica e Robótica Educacional",
+        "12. Sensores, Atuadores e Circuitos Simples",
+        "13. Produção de Mídias: Podcasts e Vídeos",
+        "14. Apresentações Digitais Interativas",
+        "15. Aprofundamento: Impactos da IA na Sociedade"
+      ]
     },
     "ENSINO_MEDIO": {
-      "Língua Portuguesa": ["Trovadorismo, Humanismo e Classicismo / Redação Dissertativa", "Realismo, Naturalismo e Parnasianismo / Intertextualidade", "Modernismo no Brasil (2ª e 3ª fases) e Literatura Contemporânea"],
-      "Matemática": ["Função Afim e Função Quadrática: estudo de gráficos e problemas", "Trigonometria na circunferência e Geometria Espacial (prismas/pirâmides)", "Geometria Analítica, Estatística Descritiva e Probabilidade"],
-      "Física": ["Dinâmica: Leis de Newton e Força de Atrito", "Termodinâmica e Óptica Geométrica", "Eletrodinâmica (Circuitos Elétricos) e Magnetismo"],
-      "Química": ["Funções Inorgânicas (Ácidos, Bases, Sais, Óxidos) e Reações", "Soluções (Concentração), Termoquímica e Cinética Química", "Química Orgânica (Funções Oxigenadas/Nitrogenadas e Isomeria)"],
-      "Biologia": ["Citologia: estrutura celular e divisão (mitose/meiose)", "Fisiologia Humana e Anatomia Comparada", "Genética (Leis de Mendel, Biotecnologia) e Evolução"],
-      "História": ["Absolutismo, Mercantilismo e Expansão Marítima", "Imperialismo no Século XIX, Primeira Guerra e Revolução Russa", "Ditadura Civil-Militar no Brasil e Redemocratização"],
-      "Geografia": ["Cartografia, geologia, relevo e solos", "Espaço urbano e agrário global e brasileiro", "Geopolítica contemporânea, globalização e blocos econômicos"],
-      "Projeto de Vida": ["Autoconhecimento e competências socioemocionais", "Mundo do Trabalho, carreiras e elaboração de currículo", "Planejamento Pós-Médio: Enem, vestibulares e empreendedorismo"]
+      "Língua Portuguesa": [
+        "1. Trovadorismo e Humanismo",
+        "2. Classicismo e Quinhentismo no Brasil",
+        "3. Barroco e Arcadismo",
+        "4. Romantismo: Poesia e Prosa",
+        "5. Realismo e Naturalismo",
+        "6. Parnasianismo e Simbolismo",
+        "7. Pré-Modernismo e Semana de Arte Moderna (1922)",
+        "8. Modernismo: 1ª, 2ª e 3ª Gerações",
+        "9. Literatura Contemporânea Brasileira",
+        "10. Estrutura do Texto Dissertativo-Argumentativo",
+        "11. Tese, Argumentação e Proposta de Intervenção",
+        "12. Coesão Textual e Uso de Operadores Lógicos",
+        "13. Regência Verbal, Nominal e Uso da Crase",
+        "14. Concordância Verbal e Nominal",
+        "15. Aprofundamento: Análise Crítica do Discurso"
+      ],
+      "Matemática": [
+        "1. Conceito de Função, Domínio e Imagem",
+        "2. Função Afim (1º Grau) e Problemas",
+        "3. Função Quadrática (2º Grau) e Máximos/Mínimos",
+        "4. Função Exponencial e Aplicações",
+        "5. Função Logarítmica e Escalas",
+        "6. Trigonometria no Triângulo Retângulo",
+        "7. Ciclo Trigonométrico e Funções Periódicas",
+        "8. Geometria Espacial: Prismas e Pirâmides",
+        "9. Geometria Espacial: Cilindros, Cones e Esferas",
+        "10. Geometria Analítica: Ponto, Reta e Distâncias",
+        "11. Equação da Circunferência e Cônicas",
+        "12. Princípio Fundamental da Contagem e Permutação",
+        "13. Arranjo, Combinação e Análise Combinatória",
+        "14. Probabilidade Simples e Condicional",
+        "15. Aprofundamento: Estatística Descritiva e Matrizes"
+      ],
+      "Física": [
+        "1. Cinemática: Movimento Uniforme e Variado",
+        "2. Vetores e Lançamento Oblíquo/Horizontal",
+        "3. Leis de Newton e Forças no Cotidiano",
+        "4. Trabalho, Potência e Energia Mecânica",
+        "5. Conservação da Energia e Quantidade de Movimento",
+        "6. Gravitação Universal e Leis de Kepler",
+        "7. Estática e Hidrostática (Pressão e Empuxo)",
+        "8. Termometria, Calorimetria e Dilatação",
+        "9. Leis da Termodinâmica e Máquinas Térmicas",
+        "10. Óptica Geométrica: Espelhos e Lentes",
+        "11. Ondulatória: Propriedades e Fenômenos Ondulatórios",
+        "12. Cargas Elétricas, Campo e Potencial Elétrico",
+        "13. Eletrodinâmica: Corrente, Tensão e Resistência",
+        "14. Circuitos Elétricos e Leis de Kirchhoff",
+        "15. Aprofundamento: Eletromagnetismo e Física Moderna"
+      ],
+      "Química": [
+        "1. Modelos Atômicos e Estrutura do Átomo",
+        "2. Tabela Periódica e Propriedades Periódicas",
+        "3. Ligações Químicas: Iônica, Covalente e Metálica",
+        "4. Geometria Molecular e Polaridade",
+        "5. Funções Inorgânicas: Ácidos, Bases, Sais e Óxidos",
+        "6. Reações Químicas e Balanceamento",
+        "7. Estequiometria e Cálculos Químicos",
+        "8. Soluções, Concentração e Diluição",
+        "9. Termoquímica: Entalpia e Leis de Hess",
+        "10. Cinética Química e Fatores de Velocidade",
+        "11. Equilíbrio Químico e Cálculo de pH/pOH",
+        "12. Eletroquímica: Pilhas e Eletrólise",
+        "13. Química Orgânica: Cadeias e Hidrocarbonetos",
+        "14. Funções Oxigenadas e Nitrogenadas",
+        "15. Aprofundamento: Isomeria e Reações Orgânicas"
+      ],
+      "Biologia": [
+        "1. Bioquímica Celular: Água, Sais, Glicídios e Proteínas",
+        "2. Enzimas, Ácidos Nucleicos e Síntese Proteica",
+        "3. Citologia: Membrana, Organelas e Transporte",
+        "4. Bioenergética: Respiração, Fermentação e Fotossíntese",
+        "5. Divisão Celular: Mitose e Meiose",
+        "6. Histologia Humana e Tecidos do Corpo",
+        "7. Fisiologia Humana: Sistemas do Corpo",
+        "8. Microbiologia: Vírus, Bactérias e Fungos",
+        "9. Parasitologia e Doenças Humanas",
+        "10. Embriologia e Anatomia Comparada",
+        "11. Genética Mendeliana e Hereditariedade",
+        "12. Grupos Sanguíneos (Sistema ABO e Rh)",
+        "13. Teoria da Evolução e Seleção Natural",
+        "14. Ecologia: Ciclo de Matéria e Biomas",
+        "15. Aprofundamento: Biotecnologia e Engenharia Genética"
+      ],
+      "História": [
+        "1. Antiguidade Ocidental: Grécia e Roma",
+        "2. Idade Média: Feudalismo e Igreja Católica",
+        "3. Renascimento Cultural e Científico",
+        "4. Absolutismo e Mercantilismo",
+        "5. Expansão Marítima e Colonização da América",
+        "6. Iluminismo e Revoluções Burguesas",
+        "7. Revolução Industrial e Formação do Capitalismo",
+        "8. Século XIX: Imperialismo e Ideologias",
+        "9. Brasil Colônia, Império e Período Regencial",
+        "10. Brasil República: Primeira República e Era Vargas",
+        "11. Primeira e Segunda Guerra Mundial",
+        "12. Nazifascismo e Revolução Russa",
+        "13. Guerra Fria e Conflitos Regionais",
+        "14. Ditadura Militar e Redemocratização do Brasil",
+        "15. Aprofundamento: Mundo Contemporâneo e Geopolítica"
+      ],
+      "Geografia": [
+        "1. Cartografia, Sensoriamento Remoto e SIG",
+        "2. Geologia, Tectônica e Estrutura da Terra",
+        "3. Geomorfologia, Relevo e Solos",
+        "4. Climatologia e Mudanças Climáticas",
+        "5. Domínios Morfoclimáticos e Biomas Globais",
+        "6. Recursos Hídricos e Bacias Hidrográficas",
+        "7. Demografia, Transição e Fluxos Migratórios",
+        "8. Processos de Urbanização e Rede Urbana",
+        "9. Espaço Agrário, Agronegócio e Reforma Agrária",
+        "10. Industrialização e Modelos de Produção",
+        "11. Matrizes Energéticas e Sustentabilidade",
+        "12. Globalização, Blocos Econômicos e Comércio",
+        "13. Geopolítica Contemporânea e Conflitos",
+        "14. Organização do Território Brasileiro",
+        "15. Aprofundamento: Planejamento Territorial e Ambiental"
+      ],
+      "Projeto de Vida": [
+        "1. Autoconhecimento e Projeto Pessoal",
+        "2. Competências Socioemocionais para a Vida",
+        "3. Gestão Financeira Pessoal e Consumo Consciente",
+        "4. O Mundo do Trabalho e Transformações Digitais",
+        "5. Mapeamento de Carreiras e Oportunidades",
+        "6. Elaboração de Currículo e Preparação para Entrevistas",
+        "7. Preparação para o ENEM e Vestibulares",
+        "8. Opções de Ensino Técnico e Superior",
+        "9. Empreendedorismo Social e Protagonismo",
+        "10. Direitos Trabalhistas e Ética Profissional",
+        "11. Liderança e Trabalho em Equipe",
+        "12. Planejamento de Metas Pós-Ensino Médio",
+        "13. Projeto de Carreira e Aprendizado Contínuo",
+        "14. Responsabilidade Social e Cidadania",
+        "15. Aprofundamento: Plano de Ação Pessoal Estruturado"
+      ]
     }
   };
 
+  // BANCO DE METODOLOGIAS / TIPOS DE ATIVIDADES
+  const listaOpcoesMetodologias = [
+    { id: "copia", label: "📝 Resumo / Cópia Direcionada", detalhe: "Realize a leitura atenta dos conteúdos selecionados no livro didático ou Material Digital (SEDUC-SP) e elabore um resumo manuscrito contemplando os conceitos fundamentais." },
+    { id: "questionario", label: "❓ Questionário Dirigido", detalhe: "Com base no Material Digital/Livro Didático, elabore um questionário com perguntas e respostas explicadas com suas próprias palavras." },
+    { id: "mapa", label: "🧠 Mapa Mental / Conceitual", detalhe: "Construa um Mapa Mental ou Esquema Conceitual conectando os tópicos selecionados a definições, subtemas e exemplos práticos, utilizando cores para diferenciar os conceitos." },
+    { id: "pesquisa", label: "🔍 Pesquisa Escrita", detalhe: "Redija um trabalho de pesquisa manuscrito contendo Introdução (apresentação dos temas), Desenvolvimento (conceitos essenciais) e Conclusão (síntese do aprendizado)." },
+    { id: "glossario", label: "📖 Glossário Ilustrado", detalhe: "Selecione os principais termos técnicos dos conteúdos indicados, escreva o significado detalhado de cada conceito e faça uma ilustração ou esquema representativo." },
+    { id: "exercicios", label: "📐 Resolução de Exercícios / Lista Prática", detalhe: "Resolva a lista de exercícios práticos referente aos objetos de conhecimento selecionados, apresentando todos os cálculos, justificativas e resoluções completas passo a passo." },
+    { id: "graficos", label: "📊 Análise de Gráficos / Tabelas / Infográficos", detalhe: "Análise criticamente os gráficos, tabelas e infográficos indicados sobre o tema e redija um parecer explicativo manuscrito interpretando os dados apresentados." },
+    { id: "midia", label: "🎬 Análise de Vídeo / Documentário / Podcast", detalhe: "Assista/Ouça a mídia recomendada sobre o tema e elabore uma ficha técnica contendo os pontos centrais abordados e uma síntese reflexiva manuscrita." },
+    { id: "pratica", label: "🎨 Produção Prática / Cartaz / Maquete", detalhe: "Desenvolva uma representação prática (cartaz explicativo, maquete ou protótipo) acompanhada de um relatório manuscrito descrevendo o funcionamento e os conceitos aplicados." }
+  ];
+
   let conteudosSelecionados = new Set();
+  let metodologiasSelecionadas = new Set();
+
+  // INICIALIZAÇÃO DA LISTA DE METODOLOGIAS
+  function inicializarMetodologias() {
+    const container = document.getElementById("lista-metodologias");
+    container.innerHTML = "";
+    listaOpcoesMetodologias.forEach(met => {
+      const div = document.createElement("div");
+      div.className = "topic-item";
+      div.innerHTML = `<input type="checkbox" style="width:auto; margin:0;" onclick="event.stopPropagation()"> <span>${met.label}</span>`;
+      
+      const checkbox = div.querySelector('input');
+
+      div.onclick = function() {
+        if (metodologiasSelecionadas.has(met.id)) {
+          metodologiasSelecionadas.delete(met.id);
+          div.classList.remove('selected');
+          checkbox.checked = false;
+        } else {
+          metodologiasSelecionadas.add(met.id);
+          div.classList.add('selected');
+          checkbox.checked = true;
+        }
+        gerarTrabalho();
+      };
+
+      checkbox.onclick = function(e) {
+        e.stopPropagation();
+        if (checkbox.checked) {
+          metodologiasSelecionadas.add(met.id);
+          div.classList.add('selected');
+        } else {
+          metodologiasSelecionadas.delete(met.id);
+          div.classList.remove('selected');
+        }
+        gerarTrabalho();
+      };
+
+      container.appendChild(div);
+    });
+  }
 
   function aoMudarTurma() {
     const turma = document.getElementById("select-turma").value;
@@ -303,6 +646,16 @@
     gerarTrabalho();
   }
 
+  function obterIconeFrequencia(presenca) {
+    if (presenca < 76.0) {
+      return "🔴";
+    } else if (presenca >= 76.0 && presenca <= 91.9) {
+      return "🟡";
+    } else {
+      return "🟢";
+    }
+  }
+
   function popularEstudantes() {
     const turma = document.getElementById("select-turma").value;
     const selectAluno = document.getElementById("select-aluno");
@@ -327,8 +680,8 @@
     lista.forEach(aluno => {
       const opt = document.createElement("option");
       opt.value = JSON.stringify(aluno);
-      const icone = aluno.faltas >= 10 ? "🔴" : (aluno.faltas > 0 ? "🟡" : "🟢");
-      opt.textContent = `${icone} ${aluno.nome} | Faltas: ${aluno.faltas}% (Presença: ${aluno.presenca}%)`;
+      const icone = obterIconeFrequencia(aluno.presenca);
+      opt.textContent = `${icone} ${aluno.nome} | Presença: ${aluno.presenca}% (Faltas: ${aluno.faltas}%)`;
       selectAluno.appendChild(opt);
     });
   }
@@ -382,53 +735,13 @@
     gerarTrabalho();
   }
 
-  function obterInstrucoesMetodologia(tipo, extensao) {
-    switch(tipo) {
-      case "copia":
-        return `
-          <ol>
-            <li><strong>Resumo e Cópia Direcionada:</strong> Realize a leitura atenta do(s) conteúdo(s) selecionado(s) no livro didático ou no Material Digital (SEDUC-SP).</li>
-            <li><strong>Elaboração Manuscrita:</strong> Escreva um resumo completo contemplando todos os temas indicados com extensão total de no mínimo <strong>${extensao}</strong>.</li>
-            <li><strong>Sintetização:</strong> Destaque os conceitos fundamentais e ideias-chave de cada assunto abordado.</li>
-          </ol>
-        `;
-      case "questionario":
-        return `
-          <ol>
-            <li><strong>Estudo Dirigido:</strong> Com base no Material Digital da SEDUC-SP, elabore um questionário com respostas completas no padrão: <strong>${extensao}</strong>.</li>
-            <li>As perguntas devem contemplar todos os tópicos listados acima.</li>
-            <li>Todas as respostas devem ser manuscritas e explicadas com suas próprias palavras.</li>
-          </ol>
-        `;
-      case "mapa":
-        return `
-          <ol>
-            <li><strong>Estruturação Visual:</strong> Construa um Mapa Mental ou Esquema Conceitual integrando os temas selecionados ocupando <strong>${extensao}</strong>.</li>
-            <li>Conecte os conceitos centrais a subtemas, definições e exemplos práticos.</li>
-            <li>Utilize canetas coloridas para diferenciar os tópicos.</li>
-          </ol>
-        `;
-      case "pesquisa":
-        return `
-          <ol>
-            <li><strong>Pesquisa Escrita:</strong> Redija um trabalho de pesquisa com extensão de <strong>${extensao}</strong> contendo:
-              <ul>
-                <li><strong>Introdução:</strong> Apresentação geral dos tópicos escolhidos.</li>
-                <li><strong>Desenvolvimento:</strong> Detalhamento dos conceitos essenciais.</li>
-                <li><strong>Conclusão:</strong> Síntese do aprendizado.</li>
-              </ul>
-            </li>
-          </ol>
-        `;
-      case "glossario":
-        return `
-          <ol>
-            <li><strong>Glossário Ilustrado:</strong> Selecione os principais termos técnicos dos conteúdos listados.</li>
-            <li>Escreva o significado detalhado de cada conceito e faça uma ilustração ou esquema representativo.</li>
-            <li>Extensão mínima exigida: <strong>${extensao}</strong>.</li>
-          </ol>
-        `;
+  function formatarDataBR(dataISO) {
+    if (!dataISO) return "";
+    const partes = dataISO.split("-");
+    if (partes.length === 3) {
+      return `${partes[2]}/${partes[1]}/${partes[0]}`;
     }
+    return dataISO;
   }
 
   function gerarTrabalho() {
@@ -436,35 +749,61 @@
     const turma = document.getElementById("select-turma").value;
     const alunoVal = document.getElementById("select-aluno").value;
     const disc = document.getElementById("select-disciplina").value;
-    const tipo = document.getElementById("select-metodologia").value;
     const extensao = document.getElementById("qtd-extensao").value;
     const aulas = document.getElementById("qtd-aulas").value;
+    const dataLimiteVal = document.getElementById("data-limite").value;
+    const orientacoesExtras = document.getElementById("orientacoes-extras").value.trim();
 
-    if (!turma || !alunoVal || !disc || conteudosSelecionados.size === 0) {
-      preview.innerHTML = `<p style="color: #a0aec0; text-align: center; margin-top: 150px;">Selecione a turma, o estudante e ao menos um conteúdo para gerar o roteiro.</p>`;
+    if (!turma || !alunoVal || !disc || conteudosSelecionados.size === 0 || metodologiasSelecionadas.size === 0) {
+      preview.innerHTML = `<p style="color: #a0aec0; text-align: center; margin-top: 150px;">Selecione a turma, o estudante, ao menos um conteúdo e ao menos um tipo de atividade para gerar o roteiro.</p>`;
       return;
     }
 
     const aluno = JSON.parse(alunoVal);
-    const dataEntrega = new Date();
-    dataEntrega.setDate(dataEntrega.getDate() + 7);
-    const dataFormatada = dataEntrega.toLocaleDateString('pt-BR');
+    const dataFormatada = formatarDataBR(dataLimiteVal);
 
-    const roteiro = obterInstrucoesMetodologia(tipo, extensao);
-
-    let listaHTML = "<ul style='margin-top:5px; margin-bottom:10px; color: var(--primary); font-weight: bold;'>";
+    // LISTA DE CONTEÚDOS SELECIONADOS
+    let conteudosHTML = "<ul style='margin-top:5px; margin-bottom:10px; color: var(--primary); font-weight: bold;'>";
     conteudosSelecionados.forEach(c => {
-      listaHTML += `<li>${c}</li>`;
+      conteudosHTML += `<li>${c}</li>`;
     });
-    listaHTML += "</ul>";
+    conteudosHTML += "</ul>";
+
+    // LISTA DE METODOLOGIAS SELECIONADAS
+    let metodologiasHTML = "<ol style='margin-top:5px; margin-bottom:10px;'>";
+    metodologiasSelecionadas.forEach(idMet => {
+      const metObj = listaOpcoesMetodologias.find(m => m.id === idMet);
+      if (metObj) {
+        metodologiasHTML += `<li style='margin-bottom:6px;'><strong>${metObj.label}:</strong> ${metObj.detalhe}</li>`;
+      }
+    });
+    metodologiasHTML += "</ol>";
+
+    // ORIENTAÇÕES EXTRAS DO PROFESSOR (SE HOUVER)
+    let extrasHTML = "";
+    if (orientacoesExtras) {
+      extrasHTML = `
+        <p><strong>ORIENTAÇÕES ESPECÍFICAS DO PROFESSOR:</strong></p>
+        <div style="background: #f7fafc; padding: 10px; border-left: 3px solid var(--secondary); margin-bottom: 12px; font-style: italic;">
+          ${orientacoesExtras.replace(/\n/g, '<br>')}
+        </div>
+      `;
+    }
 
     preview.innerHTML = `
-      <div class="preview-header">
-        <div class="preview-title">EE MANOEL DOS SANTOS</div>
-        <div style="text-align: center; font-size: 0.9rem; font-weight: bold; margin-top: 3px;">
-          ROTEIRO DE COMPENSAÇÃO DE AUSÊNCIA - 3º BIMESTRE
+      <!-- CABEÇALHO OFICIAL IDENTICO À IMAGEM -->
+      <div class="header-oficial">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/1/1a/Brasao_do_estado_de_Sao_Paulo.svg" alt="Brasão SP">
+        <div class="header-text">
+          <div class="line1">SECRETARIA DA EDUCAÇÃO</div>
+          <div class="line2">UNIDADE REGIONAL DE ENSINO - FERNANDÓPOLIS</div>
+          <div class="line3">EE “MANOEL DOS SANTOS”</div>
+          <div class="line4">RUA VERGÍLIO NOSSA Nº 1271 FONE (17) 3487-1145 - CEP 15310-011 MAGDA-SP</div>
+          <div class="line5">e-mail: e030533a@educacao.sp.gov.br</div>
         </div>
       </div>
+
+      <div class="preview-title">ROTEIRO DE COMPENSAÇÃO DE AUSÊNCIA</div>
 
       <p><strong>Estudante:</strong> ${aluno.nome}</p>
       <p>
@@ -480,10 +819,12 @@
       <hr style="border: 0.5px solid #cbd5e0; margin: 12px 0;">
 
       <p><strong>OBJETOS DE CONHECIMENTO SELECIONADOS (CONTEÚDOS):</strong></p>
-      ${listaHTML}
+      ${conteudosHTML}
 
-      <p><strong>ORIENTAÇÕES DA ATIVIDADE:</strong></p>
-      ${roteiro}
+      <p><strong>TIPO(S) DE ATIVIDADE E DIRETRIZES DA ATIVIDADE:</strong></p>
+      ${metodologiasHTML}
+
+      ${extrasHTML}
 
       <p><strong>EXIGÊNCIAS DE ENTREGA:</strong></p>
       <ul>
@@ -503,8 +844,8 @@
   function copiarTexto() {
     const preview = document.getElementById("preview-container");
     const alunoVal = document.getElementById("select-aluno").value;
-    if (!alunoVal || conteudosSelecionados.size === 0) {
-      alert("Selecione os dados do aluno e ao menos um conteúdo antes de copiar!");
+    if (!alunoVal || conteudosSelecionados.size === 0 || metodologiasSelecionadas.size === 0) {
+      alert("Selecione os dados do aluno, ao menos um conteúdo e ao menos um tipo de atividade antes de copiar!");
       return;
     }
     const texto = preview.innerText;
@@ -512,6 +853,11 @@
       alert("Trabalho copiado com sucesso! Você já pode colar no WhatsApp ou Classroom.");
     });
   }
+
+  // INICIALIZA AO CARREGAR A PÁGINA
+  window.onload = function() {
+    inicializarMetodologias();
+  };
 </script>
 
 </body>
