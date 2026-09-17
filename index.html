@@ -200,27 +200,28 @@
       </div>
 
       <div class="form-group">
-        <label for="select-aluno">Estudante (Frequência Exata):</label>
+        <label for="select-aluno">Estudante (Frequência Exata Atualizada):</label>
         <select id="select-aluno" onchange="gerarTrabalho()" disabled>
           <option value="">-- Selecione a Turma Primeiro --</option>
         </select>
       </div>
 
+      <!-- SELEÇÃO MÚLTIPLA DE DISCIPLINAS -->
       <div class="form-group">
-        <label for="select-disciplina">Componente Curricular (Disciplina):</label>
-        <select id="select-disciplina" onchange="aoMudarDisciplina()" disabled>
-          <option value="">-- Selecione a Turma Primeiro --</option>
-        </select>
-      </div>
-
-      <div class="form-group">
-        <label>Tópicos / Conteúdos (Mínimo 15 Opções - Selecione Vários):</label>
-        <div id="lista-conteudos" class="topic-list">
-          <p style="color: #a0aec0; text-align: center;">Selecione a disciplina acima.</p>
+        <label>Componente(s) Curricular(es) / Disciplina(s) (Selecione uma ou mais):</label>
+        <div id="lista-disciplinas" class="topic-list">
+          <p style="color: #a0aec0; text-align: center;">Selecione a turma acima.</p>
         </div>
       </div>
 
-      <!-- NOVA SELEÇÃO MÚLTIPLA DE TIPOS DE ATIVIDADES -->
+      <div class="form-group">
+        <label>Tópicos / Conteúdos (Selecione os temas das disciplinas escolhidas):</label>
+        <div id="lista-conteudos" class="topic-list">
+          <p style="color: #a0aec0; text-align: center;">Selecione ao menos uma disciplina acima.</p>
+        </div>
+      </div>
+
+      <!-- SELEÇÃO MÚLTIPLA DE TIPOS DE ATIVIDADES -->
       <div class="form-group">
         <label>Tipo(s) de Atividade (Selecione uma ou mais opções):</label>
         <div id="lista-metodologias" class="topic-list">
@@ -264,7 +265,7 @@
       
       <div id="preview-container">
         <p style="color: #a0aec0; text-align: center; margin-top: 150px;">
-          Selecione a turma, o estudante, o conteúdo e o tipo de atividade para gerar o roteiro.
+          Selecione a turma, o estudante, a(s) disciplina(s) e ao menos um conteúdo para gerar o roteiro.
         </p>
       </div>
 
@@ -277,8 +278,8 @@
 </div>
 
 <script>
-  // DADOS EXATOS DA PLANILHA (230 ALUNOS)
-  const turmasAlunos = {"6º ano A": [{"nome": "AGATHA DA SILVA POLICARPO", "faltas": 8.0, "presenca": 92.0}, {"nome": "AMANDA GOMES DA COSTA", "faltas": 0.0, "presenca": 100.0}, {"nome": "ANNA VICTORIA MARIANO DE OLIVEIRA", "faltas": 5.0, "presenca": 95.0}, {"nome": "ANTHONY DE SOUZA TONIM", "faltas": 1.0, "presenca": 99.0}, {"nome": "DIOGO TARDIOLI DA SILVA", "faltas": 3.0, "presenca": 97.0}, {"nome": "ENELIN FERREIRA DA SILVA SANTOS", "faltas": 17.0, "presenca": 83.0}, {"nome": "ESTER PALHARES RAMOS", "faltas": 0.0, "presenca": 100.0}, {"nome": "IGNEZ VITAL MARQUES", "faltas": 11.0, "presenca": 89.0}, {"nome": "JOÃO EDUARDO DA SILVA", "faltas": 6.0, "presenca": 94.0}, {"nome": "JOSE HENRIQUE SILVA DE JESUS", "faltas": 4.0, "presenca": 96.0}, {"nome": "LAVINIA MESCHIARI COLODINO", "faltas": 2.0, "presenca": 98.0}, {"nome": "LIVIA DE MELO MARQUES", "faltas": 3.0, "presenca": 97.0}, {"nome": "LORENA COSTA REYNALDO", "faltas": 6.0, "presenca": 94.0}, {"nome": "LORENA RAICCA BATISTA JUVÊNCIO", "faltas": 21.0, "presenca": 79.0}, {"nome": "MATHEUS DOS SANTOS VIANA", "faltas": 1.0, "presenca": 99.0}, {"nome": "PEDRO MORAIS TEIXEIRA", "faltas": 3.0, "presenca": 97.0}, {"nome": "RYAN SOUZA COLODINO", "faltas": 4.0, "presenca": 96.0}, {"nome": "THAUANY VITORIA CRUZ SIQUEIRA", "faltas": 8.0, "presenca": 92.0}, {"nome": "VINICIUS MARQUES ROQUE", "faltas": 4.0, "presenca": 96.0}], "9º ano A": [{"nome": "ALAN FERNANDO RIBEIRO DOURADO", "faltas": 1.0, "presenca": 99.0}, {"nome": "ANA CLARA BIATO DE SOUZA", "faltas": 1.0, "presenca": 99.0}, {"nome": "ANA JULIA MACIEL GOBBI", "faltas": 6.0, "presenca": 94.0}, {"nome": "ANA LIVIA SILVINO PAIVA", "faltas": 16.0, "presenca": 84.0}, {"nome": "APOLO MARQUES AGOSTINHO", "faltas": 0.0, "presenca": 100.0}, {"nome": "BÁRBARA DE ALMEIDA TEIXEIRA", "faltas": 0.0, "presenca": 100.0}, {"nome": "CHRISTIANO DE SIQUEIRA MOREIRA", "faltas": 1.0, "presenca": 99.0}, {"nome": "DERICK FERREIRA DA SILVA", "faltas": 1.0, "presenca": 99.0}, {"nome": "EZEQUIEL JUNIOR MARTINS DE SOUZA GONÇALVES", "faltas": 30.0, "presenca": 70.0}, {"nome": "GABRIEL BIUDES DE CASTRO", "faltas": 11.0, "presenca": 89.0}, {"nome": "GABRIELA MONTEIRO BISPO", "faltas": 5.0, "presenca": 95.0}, {"nome": "GUILHERME VICK DE SOUZA", "faltas": 7.0, "presenca": 93.0}, {"nome": "HELOA DE OLIVEIRA MARQUES", "faltas": 0.0, "presenca": 100.0}, {"nome": "HELOISA MARTINELI DE OLIVEIRA", "faltas": 3.0, "presenca": 97.0}, {"nome": "HUGO DOMICIANO FRACASSO", "faltas": 19.0, "presenca": 81.0}, {"nome": "ISABELLY GITE DA SILVA", "faltas": 1.0, "presenca": 99.0}, {"nome": "ISAC LUIS PAULO INACIO DOS SANTOS", "faltas": 3.0, "presenca": 97.0}, {"nome": "ISRAEL FELLIPE BERNARDINO REMOLLI CARDOSO", "faltas": 5.0, "presenca": 95.0}, {"nome": "JOSE MIGUEL MARTINS POSSETTI", "faltas": 0.0, "presenca": 100.0}, {"nome": "KAUAN FERNANDO RIBEIRO MARQUES", "faltas": 9.0, "presenca": 91.0}, {"nome": "KETLEN LUARA DA SILVA LEAL", "faltas": 12.0, "presenca": 88.0}, {"nome": "LUAN VITOR GONDEK DE OLIVEIRA", "faltas": 0.0, "presenca": 100.0}, {"nome": "LUIZ OTAVIO BEATO DA SILVA", "faltas": 5.0, "presenca": 95.0}, {"nome": "MARIA CLARA DAS NEVES ARAUJO", "faltas": 16.0, "presenca": 84.0}, {"nome": "MARIA EDUARDA DA SILVA", "faltas": 1.0, "presenca": 99.0}, {"nome": "MARIA FERNANDA RODRIGUES DO CARMO DOS SANTOS SILVA", "faltas": 16.0, "presenca": 84.0}, {"nome": "MARIA VALLENTINA AROSTI FERREIRA", "faltas": 7.0, "presenca": 93.0}, {"nome": "MATHEUS DE CASTRO HENRIQUE", "faltas": 7.0, "presenca": 93.0}, {"nome": "MAYNARA YNAIE OLIVEIRA SILVA", "faltas": 7.0, "presenca": 93.0}, {"nome": "MELLANY VICTORIA BARBOSA DE SOUZA", "faltas": 6.0, "presenca": 94.0}, {"nome": "RAYSSA SEVIERO DE SOUZA", "faltas": 11.0, "presenca": 89.0}, {"nome": "YASMIM KOLANO DE JESUS", "faltas": 3.0, "presenca": 97.0}], "3ª série A": [{"nome": "ALANA FERNANDA RIBEIRO DOURADO", "faltas": 1.0, "presenca": 99.0}, {"nome": "ALANA SANCHEZ GITTI", "faltas": 8.0, "presenca": 92.0}, {"nome": "ANA JULIA MENDES", "faltas": 8.0, "presenca": 92.0}, {"nome": "DANIEL MONTEIRO BISPO", "faltas": 14.0, "presenca": 86.0}, {"nome": "DAYVID VINICIUS DA SILVA PAIVA", "faltas": 11.0, "presenca": 89.0}, {"nome": "DIONE FERREIRA DIAS", "faltas": 45.0, "presenca": 55.0}, {"nome": "EMANUEL PEROLA SANTIAGO", "faltas": 4.0, "presenca": 96.0}, {"nome": "ESTHER LARA DE OLIVEIRA RODRIGUES", "faltas": 16.0, "presenca": 84.0}, {"nome": "FELIPE RIBEIRO DA SILVA", "faltas": 5.0, "presenca": 95.0}, {"nome": "FERNANDA BARBOSA VITORIANO", "faltas": 12.0, "presenca": 88.0}, {"nome": "HELOÍSA FERREIRA VITORIANO", "faltas": 12.0, "presenca": 88.0}, {"nome": "IURY VITORIANO DE SELES", "faltas": 10.0, "presenca": 90.0}, {"nome": "JENNIFER CRUZ SOUZA", "faltas": 8.0, "presenca": 92.0}, {"nome": "KAMILLY SEVIERO MÁXIMO", "faltas": 10.0, "presenca": 90.0}, {"nome": "LORENA FARIA TARDIOLI", "faltas": 12.0, "presenca": 88.0}, {"nome": "NATÁLIA APARECIDA VIARO", "faltas": 2.0, "presenca": 98.0}, {"nome": "NELSON LUAN ZONTA", "faltas": 23.0, "presenca": 77.0}, {"nome": "PETERSON FERREIRA TARDIOLI", "faltas": 12.0, "presenca": 88.0}, {"nome": "RODRIGO CASELLI SOUZA", "faltas": 8.0, "presenca": 92.0}, {"nome": "VICTOR JÚLIO RODRIGUES DA SILVA", "faltas": 18.0, "presenca": 82.0}, {"nome": "YAGO WILIAM DOMICIANO", "faltas": 15.0, "presenca": 85.0}], "6º ano B": [{"nome": "ALICE VITORIA MENDES DE OLIVEIRA", "faltas": 1.0, "presenca": 99.0}, {"nome": "ANGELICA CHRISTINE CARDOSO DO CARMO", "faltas": 10.0, "presenca": 90.0}, {"nome": "ARTHUR MOREIRA RODRIGUES", "faltas": 0.0, "presenca": 100.0}, {"nome": "BIANCA CALLEGARI PIRES", "faltas": 5.0, "presenca": 95.0}, {"nome": "ENZO GABRIEL DA SILVA MORENO", "faltas": 1.0, "presenca": 99.0}, {"nome": "ESTER RODRIGUES SOUZA", "faltas": 4.0, "presenca": 96.0}, {"nome": "KAROLINE MELO ESCOBAR", "faltas": 5.0, "presenca": 95.0}, {"nome": "LUIZ RICARDO SOUZA DE ALMEIDA", "faltas": 13.0, "presenca": 87.0}, {"nome": "LUIZA HELENA GONCALVES PIROTA", "faltas": 1.0, "presenca": 99.0}, {"nome": "MARIA CLARA HEINST DA SILVA", "faltas": 9.0, "presenca": 91.0}, {"nome": "MARIA FERNANDA FERREIRA SANTOS", "faltas": 1.0, "presenca": 99.0}, {"nome": "MARIANE MARQUES SANTANA BELASCO", "faltas": 3.0, "presenca": 97.0}, {"nome": "MATEUS CASTRO DE SOUZA", "faltas": 3.0, "presenca": 97.0}, {"nome": "OTAVIO FERNANDES DA SILVA", "faltas": 8.0, "presenca": 92.0}, {"nome": "TAUANE RIBEIRO BARDELLA", "faltas": 8.0, "presenca": 92.0}, {"nome": "YASMIN FERREIRA CARDOSO", "faltas": 14.0, "presenca": 86.0}], "3ª série B": [{"nome": "ANA BEATRIZ PAULANI PEREIRA", "faltas": 23.0, "presenca": 77.0}, {"nome": "ANA LARA CALLEGARI LOPES", "faltas": 10.0, "presenca": 90.0}, {"nome": "CAMILI DE ANGELI VIEIRA", "faltas": 7.0, "presenca": 93.0}, {"nome": "CARLOS EDUARDO SILVA CORRÊA", "faltas": 23.0, "presenca": 77.0}, {"nome": "CAROLLAYNE CALLEGARI GONDÉK DE OLIVEIRA", "faltas": 19.0, "presenca": 81.0}, {"nome": "DANIELA MARIA CARDOSO SILVA", "faltas": 8.0, "presenca": 92.0}, {"nome": "EDUARDA OLIVEIRA DOS SANTOS", "faltas": 10.0, "presenca": 90.0}, {"nome": "FELIPE GOMES DA COSTA", "faltas": 1.0, "presenca": 99.0}, {"nome": "JORGE RAFAEL SIQUEIRA DA SILVA", "faltas": 2.0, "presenca": 98.0}, {"nome": "KATARINA DOS ANJOS DRUMOND SILVA", "faltas": 17.0, "presenca": 83.0}, {"nome": "KAUÃ VINÍCIOS DE OLIVEIRA", "faltas": 6.0, "presenca": 94.0}, {"nome": "LUCAS HENRIQUE RIBEIRO DA SILVA", "faltas": 17.0, "presenca": 83.0}, {"nome": "PEDRO AUGUSTO RIBEIRO LOPES", "faltas": 15.0, "presenca": 85.0}, {"nome": "PEDRO LUCAS REZENDE DOS SANTOS", "faltas": 13.0, "presenca": 87.0}, {"nome": "TAFNES VITÓRIA ALVES BEATO", "faltas": 10.0, "presenca": 90.0}, {"nome": "VINÍCIUS FERREIRA BEATO", "faltas": 45.0, "presenca": 55.0}, {"nome": "YASMIM SUÉLI DOS SANTOS", "faltas": 5.0, "presenca": 95.0}], "8º ano A": [{"nome": "ANA CLARA DE SELES", "faltas": 0.0, "presenca": 100.0}, {"nome": "ARTUR VINICIOS DE OLIVEIRA", "faltas": 10.0, "presenca": 90.0}, {"nome": "CLARISSE VINHANSKI DINIZ", "faltas": 0.0, "presenca": 100.0}, {"nome": "DÉBORA FERNANDA PELEGRINO DE SOUZA", "faltas": 9.0, "presenca": 91.0}, {"nome": "ELISA NOSSA FREDRERICH", "faltas": 0.0, "presenca": 100.0}, {"nome": "FELIPE DOS SANTOS BUENO", "faltas": 6.0, "presenca": 94.0}, {"nome": "FELIPE DOURADO RUBIO", "faltas": 10.0, "presenca": 90.0}, {"nome": "FERNANDO HENRIQUE GARRIDO", "faltas": 3.0, "presenca": 97.0}, {"nome": "GUILHERME DE SOUZA BONFIM", "faltas": 7.0, "presenca": 93.0}, {"nome": "GUILHERME RIBEIRO ESCABORA", "faltas": 2.0, "presenca": 98.0}, {"nome": "IASMYN VITORIA SILVA DE FREITAS", "faltas": 4.0, "presenca": 96.0}, {"nome": "ISAAC OLIVEIRA LEITE", "faltas": 0.0, "presenca": 100.0}, {"nome": "IZADORA FERNANDES VITORIANO", "faltas": 11.0, "presenca": 89.0}, {"nome": "JOAO GUILHERME RIBEIRO GOMES", "faltas": 2.0, "presenca": 98.0}, {"nome": "JOAO LUCAS DA SILVA", "faltas": 29.0, "presenca": 71.0}, {"nome": "JULIA LOPES NOGUEIRA", "faltas": 0.0, "presenca": 100.0}, {"nome": "KARYNE DOTAS COLODINO", "faltas": 4.0, "presenca": 96.0}, {"nome": "KATHLEEN VITÓRIA FERREIRA SIMÕES", "faltas": 13.0, "presenca": 87.0}, {"nome": "MANUELLA DA SILVA RIBEIRO", "faltas": 15.0, "presenca": 85.0}, {"nome": "MANUELLA DOS SANTOS RIBEIRO", "faltas": 7.0, "presenca": 93.0}, {"nome": "MARIA EDUARDA BERGANTIN ZONTA", "faltas": 9.0, "presenca": 91.0}, {"nome": "MARIA EDUARDA PAZ MATIAS", "faltas": 0.0, "presenca": 100.0}, {"nome": "MARIA FERNANDA DE OLIVEIRA SILVA", "faltas": 0.0, "presenca": 100.0}, {"nome": "MELISSA MARIA SILVA", "faltas": 1.0, "presenca": 99.0}, {"nome": "MIGUEL PALHARES RAMOS", "faltas": 0.0, "presenca": 100.0}, {"nome": "PAULO CESAR SANTOS CARDOSO", "faltas": 5.0, "presenca": 95.0}, {"nome": "PAULO RYUKI SUZUKI NAGATA", "faltas": 10.0, "presenca": 90.0}, {"nome": "RUAN LUCAS DE AGUIAR", "faltas": 6.0, "presenca": 94.0}, {"nome": "SOPHIA LARA DE OLIVEIRA", "faltas": 3.0, "presenca": 97.0}, {"nome": "TAUA MATEUS CRUZ SIQUEIRA", "faltas": 14.0, "presenca": 86.0}, {"nome": "VALENTINA DOURADO MARINO", "faltas": 15.0, "presenca": 85.0}, {"nome": "WESLEY DIOGO BRANCALHONI VIEIRA", "faltas": 20.0, "presenca": 80.0}], "2ª série A": [{"nome": "ANA CLARA MOREIRA DE LIMA", "faltas": 9.0, "presenca": 91.0}, {"nome": "ANA JULIA DA SILVA", "faltas": 9.0, "presenca": 91.0}, {"nome": "ANTONIO PYETRO OLIVEIRA DA SILVA", "faltas": 14.0, "presenca": 86.0}, {"nome": "BIANCA DOS SANTOS CARDOSO BRAGA", "faltas": 6.0, "presenca": 94.0}, {"nome": "DAVI FERNANDO INÁCIO", "faltas": 5.0, "presenca": 95.0}, {"nome": "ELOÁ CONSTANTINO DE SOUZA", "faltas": 9.0, "presenca": 91.0}, {"nome": "ELOÍZA DOS SANTOS MALAVAZI", "faltas": 17.0, "presenca": 83.0}, {"nome": "EMANUELE DE OLIVEIRA VICK", "faltas": 8.0, "presenca": 92.0}, {"nome": "FELIPE DE OLIVEIRA DIAS", "faltas": 14.0, "presenca": 86.0}, {"nome": "FERNANDA MARIA DA SILVA", "faltas": 5.0, "presenca": 95.0}, {"nome": "GABRIELLY DA SILVA RIBEIRO", "faltas": 2.0, "presenca": 98.0}, {"nome": "GUILHERME MACIEL GOBBI", "faltas": 5.0, "presenca": 95.0}, {"nome": "ISABELY RODRIGUES AYUB DE OLIVEIRA", "faltas": 3.0, "presenca": 97.0}, {"nome": "JOAO GABRIEL LOPES DE SOUZA", "faltas": 3.0, "presenca": 97.0}, {"nome": "JOÃO VITOR CARDOSO PEREIRA", "faltas": 12.0, "presenca": 88.0}, {"nome": "JORGE ELIAS DO CARMO LOPES", "faltas": 2.0, "presenca": 98.0}, {"nome": "JOSÉ ANTONIO VIARO", "faltas": 20.0, "presenca": 80.0}, {"nome": "LEONARDO PEREIRA MARQUES", "faltas": 19.0, "presenca": 81.0}, {"nome": "LETÍCIA RIBEIRO DA SILVA", "faltas": 5.0, "presenca": 95.0}, {"nome": "LUAN FERNANDES DE REZENDE", "faltas": 9.0, "presenca": 91.0}, {"nome": "MAIKON ANTONIO SILVA", "faltas": 4.0, "presenca": 96.0}, {"nome": "MARIANA ESTEFANY BEZERRA DOS SANTOS", "faltas": 7.0, "presenca": 93.0}, {"nome": "MARIO GABRIEL LOIS", "faltas": 2.0, "presenca": 98.0}, {"nome": "PABLO DA SILVA", "faltas": 7.0, "presenca": 93.0}, {"nome": "RAUL MARONA PARRA", "faltas": 2.0, "presenca": 98.0}, {"nome": "RIAN RODRIGO DIAS PEREIRA", "faltas": 3.0, "presenca": 97.0}, {"nome": "VICTOR HUGO SILVA", "faltas": 7.0, "presenca": 93.0}, {"nome": "VITÓRIA APARECIDA DE SOUZA", "faltas": 7.0, "presenca": 93.0}, {"nome": "VITÓRIA DOS SANTOS DE JESUS", "faltas": 5.0, "presenca": 95.0}], "1ª série A": [{"nome": "ANA JULIA PEREIRA DOS SANTOS", "faltas": 5.0, "presenca": 95.0}, {"nome": "ANA LAURA CARVALHO LIMA", "faltas": 5.0, "presenca": 95.0}, {"nome": "ANA LUÍSA LOQUETE", "faltas": 0.0, "presenca": 100.0}, {"nome": "DIOGO DE SOUZA CORREA", "faltas": 3.0, "presenca": 97.0}, {"nome": "EMANUEL BISPO FERREIRA", "faltas": 3.0, "presenca": 97.0}, {"nome": "EMILLY NICOLI PIRES REMOLLI BRITO", "faltas": 1.0, "presenca": 99.0}, {"nome": "ENZO HENRIQUE DOS SANTOS DIAS", "faltas": 7.0, "presenca": 93.0}, {"nome": "ÉRICK BATISTA DE ANDRADE", "faltas": 4.0, "presenca": 96.0}, {"nome": "FABIANO FERNANDES RIBEIRO JUNIOR", "faltas": 3.0, "presenca": 97.0}, {"nome": "GEMILSON LOPES DE SOUZA", "faltas": 26.0, "presenca": 74.0}, {"nome": "GEOVANNA DOS SANTOS FERREIRA", "faltas": 8.0, "presenca": 92.0}, {"nome": "GRASIELE DOS SANTOS CARDOSO", "faltas": 18.0, "presenca": 82.0}, {"nome": "INAIÊ BERTINI DE CAMPOS", "faltas": 2.0, "presenca": 98.0}, {"nome": "IZADORA MARIA ALVES FERREIRA", "faltas": 10.0, "presenca": 90.0}, {"nome": "JULIA BERNARDINI FERREIRA", "faltas": 6.0, "presenca": 94.0}, {"nome": "KAUÃ CESAR MELERO", "faltas": 6.0, "presenca": 94.0}, {"nome": "KAYO DOTAS COLODINO", "faltas": 1.0, "presenca": 99.0}, {"nome": "LAÍS SUÉLI DOS SANTOS", "faltas": 5.0, "presenca": 95.0}, {"nome": "LAYANE ELISA DOS SANTOS", "faltas": 1.0, "presenca": 99.0}, {"nome": "LUARA CONSTANTINO CALDEIRA", "faltas": 8.0, "presenca": 92.0}, {"nome": "MARIA CLARA RODRIGUES DO CARMO SANTOS SILVA", "faltas": 15.0, "presenca": 85.0}, {"nome": "MARIA EDUARDA SOUZA DE MORAES", "faltas": 1.0, "presenca": 99.0}, {"nome": "MIGUEL ANTÔNIO DUTRA WARTHMANN", "faltas": 12.0, "presenca": 88.0}, {"nome": "MIGUEL SANTOS RIBEIRO", "faltas": 3.0, "presenca": 97.0}, {"nome": "MURIELY CHAGAS ZENARDI", "faltas": 0.0, "presenca": 100.0}, {"nome": "NARA BEATRIZ BEZERRA DOS SANTOS", "faltas": 5.0, "presenca": 95.0}, {"nome": "NÍNIVY SILMARA LIMA ADARIAS SOARES", "faltas": 9.0, "presenca": 91.0}, {"nome": "RAFAEL FERREIRA DE AZEVEDO", "faltas": 9.0, "presenca": 91.0}, {"nome": "THIAGO AZEVEDO CINI", "faltas": 5.0, "presenca": 95.0}, {"nome": "THIAGO TARDIOLI SOTELLO", "faltas": 4.0, "presenca": 96.0}, {"nome": "WEMILLIY SAMPAIO DO NASCIMENTO", "faltas": 8.0, "presenca": 92.0}], "7º ano A": [{"nome": "ANA VITORIA DOS SANTOS PAES", "faltas": 6.0, "presenca": 94.0}, {"nome": "ARTHUR VIEIRA OLIVEIRA", "faltas": 10.0, "presenca": 90.0}, {"nome": "BENITO PEROLA SANTIAGO", "faltas": 5.0, "presenca": 95.0}, {"nome": "CAIO LEANDRO GONDEK", "faltas": 11.0, "presenca": 89.0}, {"nome": "DANIELLY VITORIA BEATO DOS SANTOS", "faltas": 8.0, "presenca": 92.0}, {"nome": "DAVI CORREA DA SILVA", "faltas": 9.0, "presenca": 91.0}, {"nome": "DAVI LUCAS PIROTA FLORENTINO", "faltas": 7.0, "presenca": 93.0}, {"nome": "DOMINIC BRYAN DO AMARAL LIMA", "faltas": 7.0, "presenca": 93.0}, {"nome": "ELIZA GABRIELA PAVANELLI DA SILVA", "faltas": 0.0, "presenca": 100.0}, {"nome": "EMANUEL FRANCHINI MARQUES", "faltas": 6.0, "presenca": 94.0}, {"nome": "EMANUELLI CAROLINE HIPOLITO", "faltas": 12.0, "presenca": 88.0}, {"nome": "FELIPE RODRIGUES CORREA", "faltas": 5.0, "presenca": 95.0}, {"nome": "GABRIEL DA SILVA", "faltas": 0.0, "presenca": 100.0}, {"nome": "GABRIELLY DA SILVA", "faltas": 0.0, "presenca": 100.0}, {"nome": "GUILHERME PYETRO PEREIRA DE AQUINO", "faltas": 7.0, "presenca": 93.0}, {"nome": "HENRIQUE SEVIEIRO MAXIMO", "faltas": 0.0, "presenca": 100.0}, {"nome": "JHEMESON CRUZ SOUZA", "faltas": 11.0, "presenca": 89.0}, {"nome": "JOAO AUGUSTO RESTANI GITTI", "faltas": 1.0, "presenca": 99.0}, {"nome": "LARA CAMILA DE MELO GONÇALVES", "faltas": 1.0, "presenca": 99.0}, {"nome": "LETÍCIA MARIA VIARO", "faltas": 0.0, "presenca": 100.0}, {"nome": "LORENA FERNANDA BUZON QUINTANA", "faltas": 2.0, "presenca": 98.0}, {"nome": "LUCAS FERREIRA MELO", "faltas": 9.0, "presenca": 91.0}, {"nome": "LUIZ MIGUEL RIBEIRO LOPES", "faltas": 5.0, "presenca": 95.0}, {"nome": "MANOELA BEATO DE SOUZA", "faltas": 42.0, "presenca": 58.0}, {"nome": "MARIA EDUARDA TEIXEIRA HORN", "faltas": 10.0, "presenca": 90.0}, {"nome": "MIKAEL PEREIRA TORRES", "faltas": 20.0, "presenca": 80.0}, {"nome": "PEDRO DE CASTRO HENRIQUE", "faltas": 14.0, "presenca": 86.0}, {"nome": "RAFAEL FRANCISCO DA SILVA SANTOS", "faltas": 5.0, "presenca": 95.0}, {"nome": "SAMUEL DOS ANJOS DRUMOND SILVA", "faltas": 13.0, "presenca": 87.0}, {"nome": "SANDRO HENRIQUE DIAS DA SILVA", "faltas": 3.0, "presenca": 97.0}, {"nome": "VERONICA BRAZ RUIZ", "faltas": 5.0, "presenca": 95.0}, {"nome": "YNAHE OLIVEIRA GITI", "faltas": 5.0, "presenca": 95.0}, {"nome": "YSADORA VITORIA COSTA BRITO", "faltas": 1.0, "presenca": 99.0}]};
+  // DADOS 100% EXATOS DA PLANILHA (235 ALUNOS - ATUALIZADO)
+  const turmasAlunos = {"6º ano A": [{"nome": "AGATHA DA SILVA POLICARPO", "faltas": 7.0, "presenca": 93.0}, {"nome": "AMANDA GOMES DA COSTA", "faltas": 0.0, "presenca": 100.0}, {"nome": "ANNA VICTORIA MARIANO DE OLIVEIRA", "faltas": 5.0, "presenca": 95.0}, {"nome": "ANTHONY DE SOUZA TONIM", "faltas": 1.0, "presenca": 99.0}, {"nome": "DIOGO TARDIOLI DA SILVA", "faltas": 3.0, "presenca": 97.0}, {"nome": "ENELIN FERREIRA DA SILVA SANTOS", "faltas": 17.0, "presenca": 83.0}, {"nome": "ESTER PALHARES RAMOS", "faltas": 0.0, "presenca": 100.0}, {"nome": "IGNEZ VITAL MARQUES", "faltas": 12.0, "presenca": 88.0}, {"nome": "JOÃO EDUARDO DA SILVA", "faltas": 5.0, "presenca": 95.0}, {"nome": "JOSE HENRIQUE SILVA DE JESUS", "faltas": 4.0, "presenca": 96.0}, {"nome": "LAVINIA MESCHIARI COLODINO", "faltas": 2.0, "presenca": 98.0}, {"nome": "LIVIA DE MELO MARQUES", "faltas": 3.0, "presenca": 97.0}, {"nome": "LORENA COSTA REYNALDO", "faltas": 7.0, "presenca": 93.0}, {"nome": "LORENA RAICCA BATISTA JUVÊNCIO", "faltas": 23.0, "presenca": 77.0}, {"nome": "MATHEUS DOS SANTOS VIANA", "faltas": 1.0, "presenca": 99.0}, {"nome": "PEDRO MORAIS TEIXEIRA", "faltas": 2.0, "presenca": 98.0}, {"nome": "RYAN SOUZA COLODINO", "faltas": 4.0, "presenca": 96.0}, {"nome": "THAUANY VITORIA CRUZ SIQUEIRA", "faltas": 8.0, "presenca": 92.0}, {"nome": "VINICIUS MARQUES ROQUE", "faltas": 4.0, "presenca": 96.0}], "9º ano A": [{"nome": "ALAN FERNANDO RIBEIRO DOURADO", "faltas": 1.0, "presenca": 99.0}, {"nome": "ANA CLARA BIATO DE SOUZA", "faltas": 2.0, "presenca": 98.0}, {"nome": "ANA JULIA MACIEL GOBBI", "faltas": 6.0, "presenca": 94.0}, {"nome": "ANA LIVIA SILVINO PAIVA", "faltas": 16.0, "presenca": 84.0}, {"nome": "APOLO MARQUES AGOSTINHO", "faltas": 0.0, "presenca": 100.0}, {"nome": "BÁRBARA DE ALMEIDA TEIXEIRA", "faltas": 1.0, "presenca": 99.0}, {"nome": "CHRISTIANO DE SIQUEIRA MOREIRA", "faltas": 1.0, "presenca": 99.0}, {"nome": "DERICK FERREIRA DA SILVA", "faltas": 1.0, "presenca": 99.0}, {"nome": "EZEQUIEL JUNIOR MARTINS DE SOUZA GONÇALVES", "faltas": 32.0, "presenca": 68.0}, {"nome": "GABRIEL BIUDES DE CASTRO", "faltas": 12.0, "presenca": 88.0}, {"nome": "GABRIELA MONTEIRO BISPO", "faltas": 5.0, "presenca": 95.0}, {"nome": "GUILHERME VICK DE SOUZA", "faltas": 7.0, "presenca": 93.0}, {"nome": "HELOA DE OLIVEIRA MARQUES", "faltas": 0.0, "presenca": 100.0}, {"nome": "HELOISA MARTINELI DE OLIVEIRA", "faltas": 3.0, "presenca": 97.0}, {"nome": "HUGO DOMICIANO FRACASSO", "faltas": 19.0, "presenca": 81.0}, {"nome": "ISABELLY GITE DA SILVA", "faltas": 1.0, "presenca": 99.0}, {"nome": "ISAC LUIS PAULO INACIO DOS SANTOS", "faltas": 4.0, "presenca": 96.0}, {"nome": "ISRAEL FELLIPE BERNARDINO REMOLLI CARDOSO", "faltas": 6.0, "presenca": 94.0}, {"nome": "JOSE MIGUEL MARTINS POSSETTI", "faltas": 0.0, "presenca": 100.0}, {"nome": "KAUAN FERNANDO RIBEIRO MARQUES", "faltas": 9.0, "presenca": 91.0}, {"nome": "KETLEN LUARA DA SILVA LEAL", "faltas": 12.0, "presenca": 88.0}, {"nome": "LUAN VITOR GONDEK DE OLIVEIRA", "faltas": 0.0, "presenca": 100.0}, {"nome": "LUIZ OTAVIO BEATO DA SILVA", "faltas": 6.0, "presenca": 94.0}, {"nome": "MARIA CLARA DAS NEVES ARAUJO", "faltas": 15.0, "presenca": 85.0}, {"nome": "MARIA EDUARDA DA SILVA", "faltas": 1.0, "presenca": 99.0}, {"nome": "MARIA FERNANDA RODRIGUES DO CARMO DOS SANTOS SILVA", "faltas": 16.0, "presenca": 84.0}, {"nome": "MARIA VALLENTINA AROSTI FERREIRA", "faltas": 7.0, "presenca": 93.0}, {"nome": "MATHEUS DE CASTRO HENRIQUE", "faltas": 6.0, "presenca": 94.0}, {"nome": "MAYNARA YNAIE OLIVEIRA SILVA", "faltas": 7.0, "presenca": 93.0}, {"nome": "MELLANY VICTORIA BARBOSA DE SOUZA", "faltas": 6.0, "presenca": 94.0}, {"nome": "RAYSSA SEVIERO DE SOUZA", "faltas": 11.0, "presenca": 89.0}, {"nome": "YASMIM KOLANO DE JESUS", "faltas": 3.0, "presenca": 97.0}], "3ª série A": [{"nome": "ALANA FERNANDA RIBEIRO DOURADO", "faltas": 1.0, "presenca": 99.0}, {"nome": "ALANA SANCHEZ GITTI", "faltas": 8.0, "presenca": 92.0}, {"nome": "ANA JULIA MENDES", "faltas": 7.0, "presenca": 93.0}, {"nome": "DANIEL MONTEIRO BISPO", "faltas": 15.0, "presenca": 85.0}, {"nome": "DAYVID VINICIUS DA SILVA PAIVA", "faltas": 11.0, "presenca": 89.0}, {"nome": "DIONE FERREIRA DIAS", "faltas": 45.0, "presenca": 55.0}, {"nome": "EMANUEL PEROLA SANTIAGO", "faltas": 4.0, "presenca": 96.0}, {"nome": "ESTHER LARA DE OLIVEIRA RODRIGUES", "faltas": 15.0, "presenca": 85.0}, {"nome": "FELIPE RIBEIRO DA SILVA", "faltas": 5.0, "presenca": 95.0}, {"nome": "FERNANDA BARBOSA VITORIANO", "faltas": 11.0, "presenca": 89.0}, {"nome": "HELOÍSA FERREIRA VITORIANO", "faltas": 11.0, "presenca": 89.0}, {"nome": "IURY VITORIANO DE SELES", "faltas": 10.0, "presenca": 90.0}, {"nome": "JENNIFER CRUZ SOUZA", "faltas": 8.0, "presenca": 92.0}, {"nome": "KAMILLY SEVIERO MÁXIMO", "faltas": 9.0, "presenca": 91.0}, {"nome": "LORENA FARIA TARDIOLI", "faltas": 11.0, "presenca": 89.0}, {"nome": "NATÁLIA APARECIDA VIARO", "faltas": 2.0, "presenca": 98.0}, {"nome": "NELSON LUAN ZONTA", "faltas": 23.0, "presenca": 77.0}, {"nome": "PETERSON FERREIRA TARDIOLI", "faltas": 12.0, "presenca": 88.0}, {"nome": "RODRIGO CASELLI SOUZA", "faltas": 8.0, "presenca": 92.0}, {"nome": "VICTOR JÚLIO RODRIGUES DA SILVA", "faltas": 19.0, "presenca": 81.0}, {"nome": "YAGO WILIAM DOMICIANO", "faltas": 15.0, "presenca": 85.0}], "6º ano B": [{"nome": "ALICE VITORIA MENDES DE OLIVEIRA", "faltas": 1.0, "presenca": 99.0}, {"nome": "ANGELICA CHRISTINE CARDOSO DO CARMO", "faltas": 11.0, "presenca": 89.0}, {"nome": "ARTHUR MOREIRA RODRIGUES", "faltas": 0.0, "presenca": 100.0}, {"nome": "BIANCA CALLEGARI PIRES", "faltas": 4.0, "presenca": 96.0}, {"nome": "ENZO GABRIEL DA SILVA MORENO", "faltas": 1.0, "presenca": 99.0}, {"nome": "ESTER RODRIGUES SOUZA", "faltas": 4.0, "presenca": 96.0}, {"nome": "KAROLINE MELO ESCOBAR", "faltas": 5.0, "presenca": 95.0}, {"nome": "LUIZ RICARDO SOUZA DE ALMEIDA", "faltas": 15.0, "presenca": 85.0}, {"nome": "LUIZA HELENA GONCALVES PIROTA", "faltas": 0.0, "presenca": 100.0}, {"nome": "MARIA CLARA HEINST DA SILVA", "faltas": 9.0, "presenca": 91.0}, {"nome": "MARIA FERNANDA FERREIRA SANTOS", "faltas": 2.0, "presenca": 98.0}, {"nome": "MARIANE MARQUES SANTANA BELASCO", "faltas": 3.0, "presenca": 97.0}, {"nome": "MATEUS CASTRO DE SOUZA", "faltas": 4.0, "presenca": 96.0}, {"nome": "OTAVIO FERNANDES DA SILVA", "faltas": 7.0, "presenca": 93.0}, {"nome": "TAUANE RIBEIRO BARDELLA", "faltas": 8.0, "presenca": 92.0}, {"nome": "YASMIN COSTA SILVA", "faltas": 33.0, "presenca": 67.0}, {"nome": "YASMIN FERREIRA CARDOSO", "faltas": 15.0, "presenca": 85.0}], "3ª série B": [{"nome": "ANA BEATRIZ PAULANI PEREIRA", "faltas": 23.0, "presenca": 77.0}, {"nome": "ANA LARA CALLEGARI LOPES", "faltas": 11.0, "presenca": 89.0}, {"nome": "CAMILI DE ANGELI VIEIRA", "faltas": 7.0, "presenca": 93.0}, {"nome": "CARLOS EDUARDO SILVA CORRÊA", "faltas": 23.0, "presenca": 77.0}, {"nome": "CAROLLAYNE CALLEGARI GONDÉK DE OLIVEIRA", "faltas": 21.0, "presenca": 79.0}, {"nome": "DANIELA MARIA CARDOSO SILVA", "faltas": 7.0, "presenca": 93.0}, {"nome": "EDUARDA OLIVEIRA DOS SANTOS", "faltas": 10.0, "presenca": 90.0}, {"nome": "FELIPE GOMES DA COSTA", "faltas": 1.0, "presenca": 99.0}, {"nome": "JORGE RAFAEL SIQUEIRA DA SILVA", "faltas": 2.0, "presenca": 98.0}, {"nome": "KATARINA DOS ANJOS DRUMOND SILVA", "faltas": 18.0, "presenca": 82.0}, {"nome": "KAUÃ VINÍCIOS DE OLIVEIRA", "faltas": 6.0, "presenca": 94.0}, {"nome": "LUCAS HENRIQUE RIBEIRO DA SILVA", "faltas": 17.0, "presenca": 83.0}, {"nome": "PEDRO AUGUSTO RIBEIRO LOPES", "faltas": 13.0, "presenca": 87.0}, {"nome": "PEDRO LUCAS REZENDE DOS SANTOS", "faltas": 13.0, "presenca": 87.0}, {"nome": "TAFNES VITÓRIA ALVES BEATO", "faltas": 11.0, "presenca": 89.0}, {"nome": "VINÍCIUS FERREIRA BEATO", "faltas": 45.0, "presenca": 55.0}, {"nome": "YASMIM SUÉLI DOS SANTOS", "faltas": 5.0, "presenca": 95.0}], "8º ano A": [{"nome": "ANA CLARA DE SELES", "faltas": 1.0, "presenca": 99.0}, {"nome": "ARTUR VINICIOS DE OLIVEIRA", "faltas": 9.0, "presenca": 91.0}, {"nome": "CLARISSE VINHANSKI DINIZ", "faltas": 0.0, "presenca": 100.0}, {"nome": "DÉBORA FERNANDA PELEGRINO DE SOUZA", "faltas": 9.0, "presenca": 91.0}, {"nome": "ELISA NOSSA FREDRERICH", "faltas": 0.0, "presenca": 100.0}, {"nome": "FELIPE DOS SANTOS BUENO", "faltas": 5.0, "presenca": 95.0}, {"nome": "FELIPE DOURADO RUBIO", "faltas": 16.0, "presenca": 84.0}, {"nome": "FERNANDO HENRIQUE GARRIDO", "faltas": 3.0, "presenca": 97.0}, {"nome": "GUILHERME DE SOUZA BONFIM", "faltas": 7.0, "presenca": 93.0}, {"nome": "GUILHERME RIBEIRO ESCABORA", "faltas": 2.0, "presenca": 98.0}, {"nome": "IASMYN VITORIA SILVA DE FREITAS", "faltas": 4.0, "presenca": 96.0}, {"nome": "ISAAC OLIVEIRA LEITE", "faltas": 0.0, "presenca": 100.0}, {"nome": "IZADORA FERNANDES VITORIANO", "faltas": 9.0, "presenca": 91.0}, {"nome": "JOAO GUILHERME RIBEIRO GOMES", "faltas": 7.0, "presenca": 93.0}, {"nome": "JOAO LUCAS DA SILVA", "faltas": 30.0, "presenca": 70.0}, {"nome": "JULIA LOPES NOGUEIRA", "faltas": 0.0, "presenca": 100.0}, {"nome": "KARYNE DOTAS COLODINO", "faltas": 3.0, "presenca": 97.0}, {"nome": "KATHLEEN VITÓRIA FERREIRA SIMÕES", "faltas": 13.0, "presenca": 87.0}, {"nome": "MANUELLA DA SILVA RIBEIRO", "faltas": 11.0, "presenca": 89.0}, {"nome": "MANUELLA DOS SANTOS RIBEIRO", "faltas": 7.0, "presenca": 93.0}, {"nome": "MARIA EDUARDA BERGANTIN ZONTA", "faltas": 9.0, "presenca": 91.0}, {"nome": "MARIA EDUARDA PAZ MATIAS", "faltas": 0.0, "presenca": 100.0}, {"nome": "MARIA FERNANDA DE OLIVEIRA SILVA", "faltas": 0.0, "presenca": 100.0}, {"nome": "MELISSA MARIA SILVA", "faltas": 1.0, "presenca": 99.0}, {"nome": "MIGUEL PALHARES RAMOS", "faltas": 0.0, "presenca": 100.0}, {"nome": "PAULO CESAR SANTOS CARDOSO", "faltas": 5.0, "presenca": 95.0}, {"nome": "PAULO RYUKI SUZUKI NAGATA", "faltas": 11.0, "presenca": 89.0}, {"nome": "RUAN LUCAS DE AGUIAR", "faltas": 5.0, "presenca": 95.0}, {"nome": "SOPHIA LARA DE OLIVEIRA", "faltas": 3.0, "presenca": 97.0}, {"nome": "TAUA MATEUS CRUZ SIQUEIRA", "faltas": 15.0, "presenca": 85.0}, {"nome": "TIAGO SANTOS DE JESUS JUNIOR", "faltas": 27.0, "presenca": 73.0}, {"nome": "VALENTINA DOURADO MARINO", "faltas": 17.0, "presenca": 83.0}, {"nome": "WESLEY DIOGO BRANCALHONI VIEIRA", "faltas": 16.0, "presenca": 84.0}], "2ª série A": [{"nome": "ANA CLARA MOREIRA DE LIMA", "faltas": 9.0, "presenca": 91.0}, {"nome": "ANA JULIA DA SILVA", "faltas": 10.0, "presenca": 90.0}, {"nome": "ANTONIO PYETRO OLIVEIRA DA SILVA", "faltas": 14.0, "presenca": 86.0}, {"nome": "BIANCA DOS SANTOS CARDOSO BRAGA", "faltas": 6.0, "presenca": 94.0}, {"nome": "DAVI FERNANDO INÁCIO", "faltas": 5.0, "presenca": 95.0}, {"nome": "ELOÁ CONSTANTINO DE SOUZA", "faltas": 10.0, "presenca": 90.0}, {"nome": "ELOÍZA DOS SANTOS MALAVAZI", "faltas": 17.0, "presenca": 83.0}, {"nome": "EMANUELE DE OLIVEIRA VICK", "faltas": 7.0, "presenca": 93.0}, {"nome": "FELIPE DE OLIVEIRA DIAS", "faltas": 13.0, "presenca": 87.0}, {"nome": "FERNANDA MARIA DA SILVA", "faltas": 4.0, "presenca": 96.0}, {"nome": "GABRIELLY DA SILVA RIBEIRO", "faltas": 1.0, "presenca": 99.0}, {"nome": "GUILHERME MACIEL GOBBI", "faltas": 5.0, "presenca": 95.0}, {"nome": "ISABELY RODRIGUES AYUB DE OLIVEIRA", "faltas": 3.0, "presenca": 97.0}, {"nome": "JOAO GABRIEL LOPES DE SOUZA", "faltas": 4.0, "presenca": 96.0}, {"nome": "JOÃO VITOR CARDOSO PEREIRA", "faltas": 11.0, "presenca": 89.0}, {"nome": "JORGE ELIAS DO CARMO LOPES", "faltas": 2.0, "presenca": 98.0}, {"nome": "JOSÉ ANTONIO VIARO", "faltas": 21.0, "presenca": 79.0}, {"nome": "LEONARDO PEREIRA MARQUES", "faltas": 18.0, "presenca": 82.0}, {"nome": "LETÍCIA RIBEIRO DA SILVA", "faltas": 5.0, "presenca": 95.0}, {"nome": "LUAN FERNANDES DE REZENDE", "faltas": 9.0, "presenca": 91.0}, {"nome": "MAIKON ANTONIO SILVA", "faltas": 4.0, "presenca": 96.0}, {"nome": "MARIANA ESTEFANY BEZERRA DOS SANTOS", "faltas": 8.0, "presenca": 92.0}, {"nome": "MARIO GABRIEL LOIS", "faltas": 2.0, "presenca": 98.0}, {"nome": "PABLO DA SILVA", "faltas": 7.0, "presenca": 93.0}, {"nome": "RAUL MARONA PARRA", "faltas": 2.0, "presenca": 98.0}, {"nome": "RIAN RODRIGO DIAS PEREIRA", "faltas": 3.0, "presenca": 97.0}, {"nome": "VICTOR HUGO SILVA", "faltas": 7.0, "presenca": 93.0}, {"nome": "VITÓRIA APARECIDA DE SOUZA", "faltas": 8.0, "presenca": 92.0}, {"nome": "VITÓRIA DOS SANTOS DE JESUS", "faltas": 5.0, "presenca": 95.0}], "1ª série A": [{"nome": "ANA JULIA PEREIRA DOS SANTOS", "faltas": 5.0, "presenca": 95.0}, {"nome": "ANA LAURA CARVALHO LIMA", "faltas": 4.0, "presenca": 96.0}, {"nome": "ANA LUÍSA LOQUETE", "faltas": 0.0, "presenca": 100.0}, {"nome": "DIEMILY COSTA DA SILVA", "faltas": 13.0, "presenca": 87.0}, {"nome": "DIOGO DE SOUZA CORREA", "faltas": 3.0, "presenca": 97.0}, {"nome": "EMANUEL BISPO FERREIRA", "faltas": 3.0, "presenca": 97.0}, {"nome": "EMILLY NICOLI PIRES REMOLLI BRITO", "faltas": 2.0, "presenca": 98.0}, {"nome": "ENZO HENRIQUE DOS SANTOS DIAS", "faltas": 7.0, "presenca": 93.0}, {"nome": "ÉRICK BATISTA DE ANDRADE", "faltas": 4.0, "presenca": 96.0}, {"nome": "FABIANO FERNANDES RIBEIRO JUNIOR", "faltas": 3.0, "presenca": 97.0}, {"nome": "GEMILSON LOPES DE SOUZA", "faltas": 26.0, "presenca": 74.0}, {"nome": "GEOVANNA DOS SANTOS FERREIRA", "faltas": 9.0, "presenca": 91.0}, {"nome": "GRASIELE DOS SANTOS CARDOSO", "faltas": 17.0, "presenca": 83.0}, {"nome": "INAIÊ BERTINI DE CAMPOS", "faltas": 2.0, "presenca": 98.0}, {"nome": "IZADORA MARIA ALVES FERREIRA", "faltas": 9.0, "presenca": 91.0}, {"nome": "JULIA BERNARDINI FERREIRA", "faltas": 6.0, "presenca": 94.0}, {"nome": "KAUÃ CESAR MELERO", "faltas": 6.0, "presenca": 94.0}, {"nome": "KAYO DOTAS COLODINO", "faltas": 1.0, "presenca": 99.0}, {"nome": "LAÍS SUÉLI DOS SANTOS", "faltas": 5.0, "presenca": 95.0}, {"nome": "LAYANE ELISA DOS SANTOS", "faltas": 1.0, "presenca": 99.0}, {"nome": "LUARA CONSTANTINO CALDEIRA", "faltas": 7.0, "presenca": 93.0}, {"nome": "MARIA CLARA RODRIGUES DO CARMO SANTOS SILVA", "faltas": 15.0, "presenca": 85.0}, {"nome": "MARIA EDUARDA SOUZA DE MORAES", "faltas": 1.0, "presenca": 99.0}, {"nome": "MIGUEL ANTÔNIO DUTRA WARTHMANN", "faltas": 12.0, "presenca": 88.0}, {"nome": "MIGUEL SANTOS RIBEIRO", "faltas": 3.0, "presenca": 97.0}, {"nome": "MURIELY CHAGAS ZENARDI", "faltas": 0.0, "presenca": 100.0}, {"nome": "NARA BEATRIZ BEZERRA DOS SANTOS", "faltas": 5.0, "presenca": 95.0}, {"nome": "NÍNIVY SILMARA LIMA ADARIAS SOARES", "faltas": 9.0, "presenca": 91.0}, {"nome": "RAFAEL FERREIRA DE AZEVEDO", "faltas": 8.0, "presenca": 92.0}, {"nome": "THIAGO AZEVEDO CINI", "faltas": 6.0, "presenca": 94.0}, {"nome": "THIAGO TARDIOLI SOTELLO", "faltas": 4.0, "presenca": 96.0}, {"nome": "WEMILLIY SAMPAIO DO NASCIMENTO", "faltas": 7.0, "presenca": 93.0}], "7º ano A": [{"nome": "ANA VITORIA DOS SANTOS PAES", "faltas": 7.0, "presenca": 93.0}, {"nome": "ARTHUR VIEIRA OLIVEIRA", "faltas": 10.0, "presenca": 90.0}, {"nome": "BENITO PEROLA SANTIAGO", "faltas": 5.0, "presenca": 95.0}, {"nome": "CAIO LEANDRO GONDEK", "faltas": 13.0, "presenca": 87.0}, {"nome": "DANIELLY VITORIA BEATO DOS SANTOS", "faltas": 8.0, "presenca": 92.0}, {"nome": "DAVI CORREA DA SILVA", "faltas": 11.0, "presenca": 89.0}, {"nome": "DAVI HENRIQUE VIEIRA DA SILVA", "faltas": 0.0, "presenca": 100.0}, {"nome": "DAVI LUCAS PIROTA FLORENTINO", "faltas": 6.0, "presenca": 94.0}, {"nome": "DEILISDIANE COSTA SANTOS", "faltas": 4.0, "presenca": 96.0}, {"nome": "DOMINIC BRYAN DO AMARAL LIMA", "faltas": 7.0, "presenca": 93.0}, {"nome": "ELIZA GABRIELA PAVANELLI DA SILVA", "faltas": 0.0, "presenca": 100.0}, {"nome": "EMANUEL FRANCHINI MARQUES", "faltas": 8.0, "presenca": 92.0}, {"nome": "EMANUELLI CAROLINE HIPOLITO", "faltas": 11.0, "presenca": 89.0}, {"nome": "FELIPE RODRIGUES CORREA", "faltas": 4.0, "presenca": 96.0}, {"nome": "GABRIEL DA SILVA", "faltas": 0.0, "presenca": 100.0}, {"nome": "GABRIELLY DA SILVA", "faltas": 0.0, "presenca": 100.0}, {"nome": "GUILHERME PYETRO PEREIRA DE AQUINO", "faltas": 7.0, "presenca": 93.0}, {"nome": "HENRIQUE SEVIEIRO MAXIMO", "faltas": 0.0, "presenca": 100.0}, {"nome": "JHEMESON CRUZ SOUZA", "faltas": 8.0, "presenca": 92.0}, {"nome": "JOAO AUGUSTO RESTANI GITTI", "faltas": 1.0, "presenca": 99.0}, {"nome": "LARA CAMILA DE MELO GONÇALVES", "faltas": 1.0, "presenca": 99.0}, {"nome": "LETÍCIA MARIA VIARO", "faltas": 0.0, "presenca": 100.0}, {"nome": "LORENA FERNANDA BUZON QUINTANA", "faltas": 2.0, "presenca": 98.0}, {"nome": "LUCAS FERREIRA MELO", "faltas": 13.0, "presenca": 87.0}, {"nome": "LUIZ MIGUEL RIBEIRO LOPES", "faltas": 5.0, "presenca": 95.0}, {"nome": "MANOELA BEATO DE SOUZA", "faltas": 41.0, "presenca": 59.0}, {"nome": "MARIA EDUARDA TEIXEIRA HORN", "faltas": 11.0, "presenca": 89.0}, {"nome": "MIKAEL PEREIRA TORRES", "faltas": 17.0, "presenca": 83.0}, {"nome": "PEDRO DE CASTRO HENRIQUE", "faltas": 11.0, "presenca": 89.0}, {"nome": "RAFAEL FRANCISCO DA SILVA SANTOS", "faltas": 4.0, "presenca": 96.0}, {"nome": "SAMUEL DOS ANJOS DRUMOND SILVA", "faltas": 22.0, "presenca": 78.0}, {"nome": "SANDRO HENRIQUE DIAS DA SILVA", "faltas": 3.0, "presenca": 97.0}, {"nome": "VERONICA BRAZ RUIZ", "faltas": 4.0, "presenca": 96.0}, {"nome": "YNAHE OLIVEIRA GITI", "faltas": 5.0, "presenca": 95.0}, {"nome": "YSADORA VITORIA COSTA BRITO", "faltas": 1.0, "presenca": 99.0}]};
 
   // BANCO EXPANDIDO: 15 TÓPICOS POR DISCIPLINA
   const conteudosDisciplinas = {
@@ -573,10 +574,10 @@
     { id: "pratica", label: "🎨 Produção Prática / Cartaz / Maquete", detalhe: "Desenvolva uma representação prática (cartaz explicativo, maquete ou protótipo) acompanhada de um relatório manuscrito descrevendo o funcionamento e os conceitos aplicados." }
   ];
 
+  let disciplinasSelecionadas = new Set();
   let conteudosSelecionados = new Set();
   let metodologiasSelecionadas = new Set();
 
-  // INICIALIZAÇÃO DA LISTA DE METODOLOGIAS
   function inicializarMetodologias() {
     const container = document.getElementById("lista-metodologias");
     container.innerHTML = "";
@@ -618,31 +619,132 @@
 
   function aoMudarTurma() {
     const turma = document.getElementById("select-turma").value;
-    const selectDisc = document.getElementById("select-disciplina");
     const selectOrdem = document.getElementById("select-ordem");
+    const containerDisc = document.getElementById("lista-disciplinas");
 
-    selectDisc.innerHTML = '<option value="">-- Selecione a Disciplina --</option>';
-    document.getElementById("lista-conteudos").innerHTML = '<p style="color: #a0aec0; text-align: center;">Selecione a disciplina acima.</p>';
+    containerDisc.innerHTML = '<p style="color: #a0aec0; text-align: center;">Selecione a turma acima.</p>';
+    document.getElementById("lista-conteudos").innerHTML = '<p style="color: #a0aec0; text-align: center;">Selecione ao menos uma disciplina acima.</p>';
+    
+    disciplinasSelecionadas.clear();
     conteudosSelecionados.clear();
 
     if (turma && turmasAlunos[turma]) {
-      selectDisc.disabled = false;
       selectOrdem.disabled = false;
-
       popularEstudantes();
-
-      const grupo = (turma.includes("ano")) ? "EF_ANOS_FINAIS" : "ENSINO_MEDIO";
-      Object.keys(conteudosDisciplinas[grupo]).forEach(disc => {
-        const opt = document.createElement("option");
-        opt.value = disc;
-        opt.textContent = disc;
-        selectDisc.appendChild(opt);
-      });
+      popularDisciplinas();
     } else {
       document.getElementById("select-aluno").disabled = true;
-      selectDisc.disabled = true;
       selectOrdem.disabled = true;
     }
+    gerarTrabalho();
+  }
+
+  function popularDisciplinas() {
+    const turma = document.getElementById("select-turma").value;
+    const containerDisc = document.getElementById("lista-disciplinas");
+    containerDisc.innerHTML = "";
+
+    if (!turma) return;
+
+    const grupo = (turma.includes("ano")) ? "EF_ANOS_FINAIS" : "ENSINO_MEDIO";
+    const listaDisc = Object.keys(conteudosDisciplinas[grupo]);
+
+    listaDisc.forEach(disc => {
+      const div = document.createElement("div");
+      div.className = "topic-item";
+      div.innerHTML = `<input type="checkbox" style="width:auto; margin:0;" onclick="event.stopPropagation()"> <span>${disc}</span>`;
+      
+      const checkbox = div.querySelector('input');
+
+      div.onclick = function() {
+        if (disciplinasSelecionadas.has(disc)) {
+          disciplinasSelecionadas.delete(disc);
+          div.classList.remove('selected');
+          checkbox.checked = false;
+        } else {
+          disciplinasSelecionadas.add(disc);
+          div.classList.add('selected');
+          checkbox.checked = true;
+        }
+        popularConteudos();
+      };
+
+      checkbox.onclick = function(e) {
+        e.stopPropagation();
+        if (checkbox.checked) {
+          disciplinasSelecionadas.add(disc);
+          div.classList.add('selected');
+        } else {
+          disciplinasSelecionadas.delete(disc);
+          div.classList.remove('selected');
+        }
+        popularConteudos();
+      };
+
+      containerDisc.appendChild(div);
+    });
+  }
+
+  function popularConteudos() {
+    const turma = document.getElementById("select-turma").value;
+    const containerCont = document.getElementById("lista-conteudos");
+    containerCont.innerHTML = "";
+    conteudosSelecionados.clear();
+
+    if (!turma || disciplinasSelecionadas.size === 0) {
+      containerCont.innerHTML = '<p style="color: #a0aec0; text-align: center;">Selecione ao menos uma disciplina acima.</p>';
+      gerarTrabalho();
+      return;
+    }
+
+    const grupo = (turma.includes("ano")) ? "EF_ANOS_FINAIS" : "ENSINO_MEDIO";
+
+    disciplinasSelecionadas.forEach(disc => {
+      const itens = conteudosDisciplinas[grupo][disc] || [];
+
+      // Título da disciplina
+      const headerDisc = document.createElement("div");
+      headerDisc.style.cssText = "font-weight: bold; color: var(--primary); margin-top: 8px; margin-bottom: 4px; font-size: 0.9rem; border-bottom: 1px solid var(--border); padding-bottom: 2px;";
+      headerDisc.textContent = `📚 ${disc}`;
+      containerCont.appendChild(headerDisc);
+
+      itens.forEach(item => {
+        const itemChave = `[${disc}] ${item}`;
+        const div = document.createElement("div");
+        div.className = "topic-item";
+        div.innerHTML = `<input type="checkbox" style="width:auto; margin:0;" onclick="event.stopPropagation()"> <span>${item}</span>`;
+        
+        const checkbox = div.querySelector('input');
+
+        div.onclick = function() {
+          if (conteudosSelecionados.has(itemChave)) {
+            conteudosSelecionados.delete(itemChave);
+            div.classList.remove('selected');
+            checkbox.checked = false;
+          } else {
+            conteudosSelecionados.add(itemChave);
+            div.classList.add('selected');
+            checkbox.checked = true;
+          }
+          gerarTrabalho();
+        };
+
+        checkbox.onclick = function(e) {
+          e.stopPropagation();
+          if (checkbox.checked) {
+            conteudosSelecionados.add(itemChave);
+            div.classList.add('selected');
+          } else {
+            conteudosSelecionados.delete(itemChave);
+            div.classList.remove('selected');
+          }
+          gerarTrabalho();
+        };
+
+        containerCont.appendChild(div);
+      });
+    });
+
     gerarTrabalho();
   }
 
@@ -686,55 +788,6 @@
     });
   }
 
-  function aoMudarDisciplina() {
-    const turma = document.getElementById("select-turma").value;
-    const disc = document.getElementById("select-disciplina").value;
-    const listaContainer = document.getElementById("lista-conteudos");
-    listaContainer.innerHTML = "";
-    conteudosSelecionados.clear();
-
-    if (turma && disc) {
-      const grupo = (turma.includes("ano")) ? "EF_ANOS_FINAIS" : "ENSINO_MEDIO";
-      const itens = conteudosDisciplinas[grupo][disc] || [];
-
-      itens.forEach(item => {
-        const div = document.createElement("div");
-        div.className = "topic-item";
-        div.innerHTML = `<input type="checkbox" style="width:auto; margin:0;" onclick="event.stopPropagation()"> <span>${item}</span>`;
-        
-        const checkbox = div.querySelector('input');
-
-        div.onclick = function() {
-          if (conteudosSelecionados.has(item)) {
-            conteudosSelecionados.delete(item);
-            div.classList.remove('selected');
-            checkbox.checked = false;
-          } else {
-            conteudosSelecionados.add(item);
-            div.classList.add('selected');
-            checkbox.checked = true;
-          }
-          gerarTrabalho();
-        };
-
-        checkbox.onclick = function(e) {
-          e.stopPropagation();
-          if (checkbox.checked) {
-            conteudosSelecionados.add(item);
-            div.classList.add('selected');
-          } else {
-            conteudosSelecionados.delete(item);
-            div.classList.remove('selected');
-          }
-          gerarTrabalho();
-        };
-
-        listaContainer.appendChild(div);
-      });
-    }
-    gerarTrabalho();
-  }
-
   function formatarDataBR(dataISO) {
     if (!dataISO) return "";
     const partes = dataISO.split("-");
@@ -748,19 +801,19 @@
     const preview = document.getElementById("preview-container");
     const turma = document.getElementById("select-turma").value;
     const alunoVal = document.getElementById("select-aluno").value;
-    const disc = document.getElementById("select-disciplina").value;
     const extensao = document.getElementById("qtd-extensao").value;
     const aulas = document.getElementById("qtd-aulas").value;
     const dataLimiteVal = document.getElementById("data-limite").value;
     const orientacoesExtras = document.getElementById("orientacoes-extras").value.trim();
 
-    if (!turma || !alunoVal || !disc || conteudosSelecionados.size === 0 || metodologiasSelecionadas.size === 0) {
-      preview.innerHTML = `<p style="color: #a0aec0; text-align: center; margin-top: 150px;">Selecione a turma, o estudante, ao menos um conteúdo e ao menos um tipo de atividade para gerar o roteiro.</p>`;
+    if (!turma || !alunoVal || disciplinasSelecionadas.size === 0 || conteudosSelecionados.size === 0 || metodologiasSelecionadas.size === 0) {
+      preview.innerHTML = `<p style="color: #a0aec0; text-align: center; margin-top: 150px;">Selecione a turma, o estudante, a(s) disciplina(s), o(s) conteúdo(s) e o tipo de atividade para gerar o roteiro.</p>`;
       return;
     }
 
     const aluno = JSON.parse(alunoVal);
     const dataFormatada = formatarDataBR(dataLimiteVal);
+    const textoDisciplinas = Array.from(disciplinasSelecionadas).join(" / ");
 
     // LISTA DE CONTEÚDOS SELECIONADOS
     let conteudosHTML = "<ul style='margin-top:5px; margin-bottom:10px; color: var(--primary); font-weight: bold;'>";
@@ -811,7 +864,7 @@
         <strong>Frequência Atual:</strong> ${aluno.presenca}% Presença (${aluno.faltas}% Faltas)
       </p>
       <p>
-        <strong>Componente Curricular:</strong> ${disc} | 
+        <strong>Componente(s) Curricular(es):</strong> ${textoDisciplinas} | 
         <strong>Aulas a Compensar:</strong> ${aulas} aula(s)
       </p>
       <p><strong>Data de Emissão:</strong> ${new Date().toLocaleDateString('pt-BR')} | <strong>Data Limite de Entrega:</strong> ${dataFormatada}</p>
@@ -844,8 +897,8 @@
   function copiarTexto() {
     const preview = document.getElementById("preview-container");
     const alunoVal = document.getElementById("select-aluno").value;
-    if (!alunoVal || conteudosSelecionados.size === 0 || metodologiasSelecionadas.size === 0) {
-      alert("Selecione os dados do aluno, ao menos um conteúdo e ao menos um tipo de atividade antes de copiar!");
+    if (!alunoVal || disciplinasSelecionadas.size === 0 || conteudosSelecionados.size === 0 || metodologiasSelecionadas.size === 0) {
+      alert("Selecione os dados do aluno, ao menos uma disciplina, um conteúdo e um tipo de atividade antes de copiar!");
       return;
     }
     const texto = preview.innerText;
