@@ -18,8 +18,83 @@
     * { box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
     body { background-color: var(--bg); color: var(--text); margin: 0; padding: 20px; }
     
-    .container { max-width: 1100px; margin: 0 auto; }
+    .container { max-width: 1200px; margin: 0 auto; }
     
+    /* TELA DE LOGIN */
+    #login-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(26, 54, 93, 0.95);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+    }
+
+    .login-box {
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+      width: 90%;
+      max-width: 400px;
+      text-align: center;
+    }
+
+    .login-box img {
+      width: 70px;
+      margin-bottom: 15px;
+    }
+
+    .login-box h2 {
+      margin: 0 0 5px 0;
+      color: var(--primary);
+      font-size: 1.3rem;
+    }
+
+    .login-box p {
+      font-size: 0.88rem;
+      color: #718096;
+      margin-bottom: 20px;
+    }
+
+    .login-box input {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 15px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-size: 1rem;
+    }
+
+    .login-box button {
+      width: 100%;
+      padding: 12px;
+      background: var(--secondary);
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .login-box button:hover {
+      background: #2c5282;
+    }
+
+    .login-error {
+      color: #e53e3e;
+      font-size: 0.85rem;
+      margin-top: 10px;
+      display: none;
+    }
+
+    /* SISTEMA PRINCIPAL */
     header {
       background: var(--primary);
       color: white;
@@ -27,9 +102,24 @@
       border-radius: 8px;
       margin-bottom: 20px;
       text-align: center;
+      position: relative;
     }
     header h1 { margin: 0; font-size: 1.6rem; }
     header p { margin: 5px 0 0 0; opacity: 0.9; font-size: 0.95rem; }
+
+    .btn-logout {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      background: #e53e3e;
+      color: white;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 4px;
+      font-size: 0.8rem;
+      font-weight: bold;
+      cursor: pointer;
+    }
 
     .grid { display: grid; grid-template-columns: 1fr 1.1fr; gap: 20px; }
     @media (max-width: 850px) { .grid { grid-template-columns: 1fr; } }
@@ -40,6 +130,7 @@
       border-radius: 8px;
       border: 1px solid var(--border);
       box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+      margin-bottom: 20px;
     }
 
     .form-group { margin-bottom: 15px; }
@@ -120,19 +211,22 @@
 
     .btn-group { display: flex; gap: 10px; margin-top: 15px; }
     .btn {
-      flex: 1;
-      padding: 12px;
+      padding: 10px 16px;
       border: none;
       border-radius: 6px;
       font-weight: bold;
       cursor: pointer;
-      font-size: 0.95rem;
+      font-size: 0.9rem;
       transition: background 0.2s;
     }
     .btn-primary { background: var(--secondary); color: white; }
     .btn-primary:hover { background: #2c5282; }
     .btn-success { background: var(--accent); color: white; }
     .btn-success:hover { background: #22543d; }
+    .btn-danger { background: #e53e3e; color: white; }
+    .btn-danger:hover { background: #c53030; }
+    .btn-secondary { background: #718096; color: white; }
+    .btn-secondary:hover { background: #4a5568; }
 
     .sort-box {
       background: #edf2f7;
@@ -145,10 +239,36 @@
     }
     .sort-box label { margin: 0; white-space: nowrap; }
 
+    /* TABELA DE HISTÓRICO / RELATÓRIO */
+    .table-responsive { overflow-x: auto; margin-top: 15px; }
+    table { width: 100%; border-collapse: collapse; text-align: left; font-size: 0.88rem; }
+    th, td { padding: 10px; border-bottom: 1px solid var(--border); }
+    th { background: #edf2f7; color: var(--primary); }
+    tr:hover { background: #f7fafc; }
+
+    /* AREA DE IMPRESSÃO EM LOTE (ESCONDIDA NA TELA) */
+    #print-batch-container { display: none; }
+
     @media print {
       body * { visibility: hidden; }
-      #preview-container, #preview-container * { visibility: visible; }
-      #preview-container {
+      
+      /* SE IMPRESSÃO EM LOTE ESTIVER ATIVA */
+      body.printing-batch #print-batch-container, body.printing-batch #print-batch-container * {
+        visibility: visible;
+      }
+      body.printing-batch #print-batch-container {
+        display: block !important;
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+      }
+
+      /* SE IMPRESSÃO INDIVIDUAL ESTIVER ATIVA */
+      body:not(.printing-batch) #preview-container, body:not(.printing-batch) #preview-container * {
+        visibility: visible;
+      }
+      body:not(.printing-batch) #preview-container {
         position: absolute;
         left: 0;
         top: 0;
@@ -156,14 +276,30 @@
         border: none;
         padding: 0;
       }
-      .btn-group, header, .card:first-child { display: none !important; }
+
+      .page-break { page-break-after: always; break-after: page; padding-top: 20px; }
+      .btn-group, header, .card, #login-overlay { display: none !important; }
     }
   </style>
 </head>
 <body>
 
+<!-- TELA DE LOGIN OBRIGATÓRIA -->
+<div id="login-overlay">
+  <div class="login-box">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/1/1a/Brasao_do_estado_de_Sao_Paulo.svg" alt="Brasão SP">
+    <h2>EE Manoel dos Santos</h2>
+    <p>Acesso Restrito aos Professores e Gestão</p>
+    
+    <input type="password" id="input-senha" placeholder="Digite a Senha de Acesso" onkeypress="verificarTecla(event)">
+    <button onclick="autenticar()">Entrar no Sistema</button>
+    <div id="login-erro" class="login-error">Senha incorreta. Tente novamente!</div>
+  </div>
+</div>
+
 <div class="container">
   <header>
+    <button class="btn-logout" onclick="fazerLogout()">🔒 Sair</button>
     <h1>EE MANOEL DOS SANTOS - COMPENSAÇÃO DE AUSÊNCIA</h1>
     <p>Gerador Automático de Trabalhos e Roteiros de Recuperação (BNCC / PEI 9H / SEDUC-SP)</p>
   </header>
@@ -270,18 +406,90 @@
       </div>
 
       <div class="btn-group">
-        <button class="btn btn-primary" onclick="window.print()">Imprimir / Salvar PDF</button>
-        <button class="btn btn-success" onclick="copiarTexto()">Copiar Texto (WhatsApp)</button>
+        <button class="btn btn-primary" style="flex: 1;" onclick="imprimirUnico()">Imprimir / Salvar PDF</button>
+        <button class="btn btn-success" style="flex: 1;" onclick="copiarTexto()">Copiar Texto (WhatsApp)</button>
       </div>
     </div>
   </div>
+
+  <!-- SEÇÃO DE HISTÓRICO E RELATÓRIO PARA A GESTÃO -->
+  <div class="card">
+    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+      <h2>📋 Relatório de Roteiros Emitidos (Painel do Administrador / Gestão)</h2>
+      <div style="display: flex; gap: 10px;">
+        <button class="btn btn-primary" onclick="imprimirLote()">🖨️ Imprimir Selecionados em Lote</button>
+        <button class="btn btn-success" onclick="exportarCSV()">📥 Baixar Planilha (Excel)</button>
+        <button class="btn btn-danger" onclick="limparHistorico()">🗑️ Limpar Histórico</button>
+      </div>
+    </div>
+
+    <div class="table-responsive">
+      <table>
+        <thead>
+          <tr>
+            <th><input type="checkbox" id="check-all" onclick="marcarTodos(this)"></th>
+            <th>Data/Hora Emissão</th>
+            <th>Estudante</th>
+            <th>Turma</th>
+            <th>Disciplina(s)</th>
+            <th>Aulas</th>
+            <th>Data Limite</th>
+            <th>Ação</th>
+          </tr>
+        </thead>
+        <tbody id="tabela-historico">
+          <tr>
+            <td colspan="8" style="text-align: center; color: #a0aec0;">Nenhum trabalho emitido até o momento.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
 </div>
 
+<!-- CONTAINER OCULTO PARA IMPRESSÃO EM LOTE -->
+<div id="print-batch-container"></div>
+
 <script>
-  // DADOS 100% EXATOS DA PLANILHA (235 ALUNOS - ATUALIZADO)
+  const SENHA_CORRETA = "manoel2026";
+  let historicoTrabalhos = [];
+
+  function autenticar() {
+    const senhaDigitada = document.getElementById("input-senha").value;
+    const erroDiv = document.getElementById("login-erro");
+
+    if (senhaDigitada === SENHA_CORRETA) {
+      document.getElementById("login-overlay").style.display = "none";
+      localStorage.setItem("usuarioAutenticadoManoel", "true");
+    } else {
+      erroDiv.style.display = "block";
+    }
+  }
+
+  function verificarTecla(event) {
+    if (event.key === "Enter") {
+      autenticar();
+    }
+  }
+
+  function fazerLogout() {
+    localStorage.removeItem("usuarioAutenticadoManoel");
+    document.getElementById("input-senha").value = "";
+    document.getElementById("login-erro").style.display = "none";
+    document.getElementById("login-overlay").style.display = "flex";
+  }
+
+  function checarSessao() {
+    if (localStorage.getItem("usuarioAutenticadoManoel") === "true") {
+      document.getElementById("login-overlay").style.display = "none";
+    }
+  }
+
+  // DADOS 100% EXATOS DA PLANILHA (235 ALUNOS)
   const turmasAlunos = {"6º ano A": [{"nome": "AGATHA DA SILVA POLICARPO", "faltas": 7.0, "presenca": 93.0}, {"nome": "AMANDA GOMES DA COSTA", "faltas": 0.0, "presenca": 100.0}, {"nome": "ANNA VICTORIA MARIANO DE OLIVEIRA", "faltas": 5.0, "presenca": 95.0}, {"nome": "ANTHONY DE SOUZA TONIM", "faltas": 1.0, "presenca": 99.0}, {"nome": "DIOGO TARDIOLI DA SILVA", "faltas": 3.0, "presenca": 97.0}, {"nome": "ENELIN FERREIRA DA SILVA SANTOS", "faltas": 17.0, "presenca": 83.0}, {"nome": "ESTER PALHARES RAMOS", "faltas": 0.0, "presenca": 100.0}, {"nome": "IGNEZ VITAL MARQUES", "faltas": 12.0, "presenca": 88.0}, {"nome": "JOÃO EDUARDO DA SILVA", "faltas": 5.0, "presenca": 95.0}, {"nome": "JOSE HENRIQUE SILVA DE JESUS", "faltas": 4.0, "presenca": 96.0}, {"nome": "LAVINIA MESCHIARI COLODINO", "faltas": 2.0, "presenca": 98.0}, {"nome": "LIVIA DE MELO MARQUES", "faltas": 3.0, "presenca": 97.0}, {"nome": "LORENA COSTA REYNALDO", "faltas": 7.0, "presenca": 93.0}, {"nome": "LORENA RAICCA BATISTA JUVÊNCIO", "faltas": 23.0, "presenca": 77.0}, {"nome": "MATHEUS DOS SANTOS VIANA", "faltas": 1.0, "presenca": 99.0}, {"nome": "PEDRO MORAIS TEIXEIRA", "faltas": 2.0, "presenca": 98.0}, {"nome": "RYAN SOUZA COLODINO", "faltas": 4.0, "presenca": 96.0}, {"nome": "THAUANY VITORIA CRUZ SIQUEIRA", "faltas": 8.0, "presenca": 92.0}, {"nome": "VINICIUS MARQUES ROQUE", "faltas": 4.0, "presenca": 96.0}], "9º ano A": [{"nome": "ALAN FERNANDO RIBEIRO DOURADO", "faltas": 1.0, "presenca": 99.0}, {"nome": "ANA CLARA BIATO DE SOUZA", "faltas": 2.0, "presenca": 98.0}, {"nome": "ANA JULIA MACIEL GOBBI", "faltas": 6.0, "presenca": 94.0}, {"nome": "ANA LIVIA SILVINO PAIVA", "faltas": 16.0, "presenca": 84.0}, {"nome": "APOLO MARQUES AGOSTINHO", "faltas": 0.0, "presenca": 100.0}, {"nome": "BÁRBARA DE ALMEIDA TEIXEIRA", "faltas": 1.0, "presenca": 99.0}, {"nome": "CHRISTIANO DE SIQUEIRA MOREIRA", "faltas": 1.0, "presenca": 99.0}, {"nome": "DERICK FERREIRA DA SILVA", "faltas": 1.0, "presenca": 99.0}, {"nome": "EZEQUIEL JUNIOR MARTINS DE SOUZA GONÇALVES", "faltas": 32.0, "presenca": 68.0}, {"nome": "GABRIEL BIUDES DE CASTRO", "faltas": 12.0, "presenca": 88.0}, {"nome": "GABRIELA MONTEIRO BISPO", "faltas": 5.0, "presenca": 95.0}, {"nome": "GUILHERME VICK DE SOUZA", "faltas": 7.0, "presenca": 93.0}, {"nome": "HELOA DE OLIVEIRA MARQUES", "faltas": 0.0, "presenca": 100.0}, {"nome": "HELOISA MARTINELI DE OLIVEIRA", "faltas": 3.0, "presenca": 97.0}, {"nome": "HUGO DOMICIANO FRACASSO", "faltas": 19.0, "presenca": 81.0}, {"nome": "ISABELLY GITE DA SILVA", "faltas": 1.0, "presenca": 99.0}, {"nome": "ISAC LUIS PAULO INACIO DOS SANTOS", "faltas": 4.0, "presenca": 96.0}, {"nome": "ISRAEL FELLIPE BERNARDINO REMOLLI CARDOSO", "faltas": 6.0, "presenca": 94.0}, {"nome": "JOSE MIGUEL MARTINS POSSETTI", "faltas": 0.0, "presenca": 100.0}, {"nome": "KAUAN FERNANDO RIBEIRO MARQUES", "faltas": 9.0, "presenca": 91.0}, {"nome": "KETLEN LUARA DA SILVA LEAL", "faltas": 12.0, "presenca": 88.0}, {"nome": "LUAN VITOR GONDEK DE OLIVEIRA", "faltas": 0.0, "presenca": 100.0}, {"nome": "LUIZ OTAVIO BEATO DA SILVA", "faltas": 6.0, "presenca": 94.0}, {"nome": "MARIA CLARA DAS NEVES ARAUJO", "faltas": 15.0, "presenca": 85.0}, {"nome": "MARIA EDUARDA DA SILVA", "faltas": 1.0, "presenca": 99.0}, {"nome": "MARIA FERNANDA RODRIGUES DO CARMO DOS SANTOS SILVA", "faltas": 16.0, "presenca": 84.0}, {"nome": "MARIA VALLENTINA AROSTI FERREIRA", "faltas": 7.0, "presenca": 93.0}, {"nome": "MATHEUS DE CASTRO HENRIQUE", "faltas": 6.0, "presenca": 94.0}, {"nome": "MAYNARA YNAIE OLIVEIRA SILVA", "faltas": 7.0, "presenca": 93.0}, {"nome": "MELLANY VICTORIA BARBOSA DE SOUZA", "faltas": 6.0, "presenca": 94.0}, {"nome": "RAYSSA SEVIERO DE SOUZA", "faltas": 11.0, "presenca": 89.0}, {"nome": "YASMIM KOLANO DE JESUS", "faltas": 3.0, "presenca": 97.0}], "3ª série A": [{"nome": "ALANA FERNANDA RIBEIRO DOURADO", "faltas": 1.0, "presenca": 99.0}, {"nome": "ALANA SANCHEZ GITTI", "faltas": 8.0, "presenca": 92.0}, {"nome": "ANA JULIA MENDES", "faltas": 7.0, "presenca": 93.0}, {"nome": "DANIEL MONTEIRO BISPO", "faltas": 15.0, "presenca": 85.0}, {"nome": "DAYVID VINICIUS DA SILVA PAIVA", "faltas": 11.0, "presenca": 89.0}, {"nome": "DIONE FERREIRA DIAS", "faltas": 45.0, "presenca": 55.0}, {"nome": "EMANUEL PEROLA SANTIAGO", "faltas": 4.0, "presenca": 96.0}, {"nome": "ESTHER LARA DE OLIVEIRA RODRIGUES", "faltas": 15.0, "presenca": 85.0}, {"nome": "FELIPE RIBEIRO DA SILVA", "faltas": 5.0, "presenca": 95.0}, {"nome": "FERNANDA BARBOSA VITORIANO", "faltas": 11.0, "presenca": 89.0}, {"nome": "HELOÍSA FERREIRA VITORIANO", "faltas": 11.0, "presenca": 89.0}, {"nome": "IURY VITORIANO DE SELES", "faltas": 10.0, "presenca": 90.0}, {"nome": "JENNIFER CRUZ SOUZA", "faltas": 8.0, "presenca": 92.0}, {"nome": "KAMILLY SEVIERO MÁXIMO", "faltas": 9.0, "presenca": 91.0}, {"nome": "LORENA FARIA TARDIOLI", "faltas": 11.0, "presenca": 89.0}, {"nome": "NATÁLIA APARECIDA VIARO", "faltas": 2.0, "presenca": 98.0}, {"nome": "NELSON LUAN ZONTA", "faltas": 23.0, "presenca": 77.0}, {"nome": "PETERSON FERREIRA TARDIOLI", "faltas": 12.0, "presenca": 88.0}, {"nome": "RODRIGO CASELLI SOUZA", "faltas": 8.0, "presenca": 92.0}, {"nome": "VICTOR JÚLIO RODRIGUES DA SILVA", "faltas": 19.0, "presenca": 81.0}, {"nome": "YAGO WILIAM DOMICIANO", "faltas": 15.0, "presenca": 85.0}], "6º ano B": [{"nome": "ALICE VITORIA MENDES DE OLIVEIRA", "faltas": 1.0, "presenca": 99.0}, {"nome": "ANGELICA CHRISTINE CARDOSO DO CARMO", "faltas": 11.0, "presenca": 89.0}, {"nome": "ARTHUR MOREIRA RODRIGUES", "faltas": 0.0, "presenca": 100.0}, {"nome": "BIANCA CALLEGARI PIRES", "faltas": 4.0, "presenca": 96.0}, {"nome": "ENZO GABRIEL DA SILVA MORENO", "faltas": 1.0, "presenca": 99.0}, {"nome": "ESTER RODRIGUES SOUZA", "faltas": 4.0, "presenca": 96.0}, {"nome": "KAROLINE MELO ESCOBAR", "faltas": 5.0, "presenca": 95.0}, {"nome": "LUIZ RICARDO SOUZA DE ALMEIDA", "faltas": 15.0, "presenca": 85.0}, {"nome": "LUIZA HELENA GONCALVES PIROTA", "faltas": 0.0, "presenca": 100.0}, {"nome": "MARIA CLARA HEINST DA SILVA", "faltas": 9.0, "presenca": 91.0}, {"nome": "MARIA FERNANDA FERREIRA SANTOS", "faltas": 2.0, "presenca": 98.0}, {"nome": "MARIANE MARQUES SANTANA BELASCO", "faltas": 3.0, "presenca": 97.0}, {"nome": "MATEUS CASTRO DE SOUZA", "faltas": 4.0, "presenca": 96.0}, {"nome": "OTAVIO FERNANDES DA SILVA", "faltas": 7.0, "presenca": 93.0}, {"nome": "TAUANE RIBEIRO BARDELLA", "faltas": 8.0, "presenca": 92.0}, {"nome": "YASMIN COSTA SILVA", "faltas": 33.0, "presenca": 67.0}, {"nome": "YASMIN FERREIRA CARDOSO", "faltas": 15.0, "presenca": 85.0}], "3ª série B": [{"nome": "ANA BEATRIZ PAULANI PEREIRA", "faltas": 23.0, "presenca": 77.0}, {"nome": "ANA LARA CALLEGARI LOPES", "faltas": 11.0, "presenca": 89.0}, {"nome": "CAMILI DE ANGELI VIEIRA", "faltas": 7.0, "presenca": 93.0}, {"nome": "CARLOS EDUARDO SILVA CORRÊA", "faltas": 23.0, "presenca": 77.0}, {"nome": "CAROLLAYNE CALLEGARI GONDÉK DE OLIVEIRA", "faltas": 21.0, "presenca": 79.0}, {"nome": "DANIELA MARIA CARDOSO SILVA", "faltas": 7.0, "presenca": 93.0}, {"nome": "EDUARDA OLIVEIRA DOS SANTOS", "faltas": 10.0, "presenca": 90.0}, {"nome": "FELIPE GOMES DA COSTA", "faltas": 1.0, "presenca": 99.0}, {"nome": "JORGE RAFAEL SIQUEIRA DA SILVA", "faltas": 2.0, "presenca": 98.0}, {"nome": "KATARINA DOS ANJOS DRUMOND SILVA", "faltas": 18.0, "presenca": 82.0}, {"nome": "KAUÃ VINÍCIOS DE OLIVEIRA", "faltas": 6.0, "presenca": 94.0}, {"nome": "LUCAS HENRIQUE RIBEIRO DA SILVA", "faltas": 17.0, "presenca": 83.0}, {"nome": "PEDRO AUGUSTO RIBEIRO LOPES", "faltas": 13.0, "presenca": 87.0}, {"nome": "PEDRO LUCAS REZENDE DOS SANTOS", "faltas": 13.0, "presenca": 87.0}, {"nome": "TAFNES VITÓRIA ALVES BEATO", "faltas": 11.0, "presenca": 89.0}, {"nome": "VINÍCIUS FERREIRA BEATO", "faltas": 45.0, "presenca": 55.0}, {"nome": "YASMIM SUÉLI DOS SANTOS", "faltas": 5.0, "presenca": 95.0}], "8º ano A": [{"nome": "ANA CLARA DE SELES", "faltas": 1.0, "presenca": 99.0}, {"nome": "ARTUR VINICIOS DE OLIVEIRA", "faltas": 9.0, "presenca": 91.0}, {"nome": "CLARISSE VINHANSKI DINIZ", "faltas": 0.0, "presenca": 100.0}, {"nome": "DÉBORA FERNANDA PELEGRINO DE SOUZA", "faltas": 9.0, "presenca": 91.0}, {"nome": "ELISA NOSSA FREDRERICH", "faltas": 0.0, "presenca": 100.0}, {"nome": "FELIPE DOS SANTOS BUENO", "faltas": 5.0, "presenca": 95.0}, {"nome": "FELIPE DOURADO RUBIO", "faltas": 16.0, "presenca": 84.0}, {"nome": "FERNANDO HENRIQUE GARRIDO", "faltas": 3.0, "presenca": 97.0}, {"nome": "GUILHERME DE SOUZA BONFIM", "faltas": 7.0, "presenca": 93.0}, {"nome": "GUILHERME RIBEIRO ESCABORA", "faltas": 2.0, "presenca": 98.0}, {"nome": "IASMYN VITORIA SILVA DE FREITAS", "faltas": 4.0, "presenca": 96.0}, {"nome": "ISAAC OLIVEIRA LEITE", "faltas": 0.0, "presenca": 100.0}, {"nome": "IZADORA FERNANDES VITORIANO", "faltas": 9.0, "presenca": 91.0}, {"nome": "JOAO GUILHERME RIBEIRO GOMES", "faltas": 7.0, "presenca": 93.0}, {"nome": "JOAO LUCAS DA SILVA", "faltas": 30.0, "presenca": 70.0}, {"nome": "JULIA LOPES NOGUEIRA", "faltas": 0.0, "presenca": 100.0}, {"nome": "KARYNE DOTAS COLODINO", "faltas": 3.0, "presenca": 97.0}, {"nome": "KATHLEEN VITÓRIA FERREIRA SIMÕES", "faltas": 13.0, "presenca": 87.0}, {"nome": "MANUELLA DA SILVA RIBEIRO", "faltas": 11.0, "presenca": 89.0}, {"nome": "MANUELLA DOS SANTOS RIBEIRO", "faltas": 7.0, "presenca": 93.0}, {"nome": "MARIA EDUARDA BERGANTIN ZONTA", "faltas": 9.0, "presenca": 91.0}, {"nome": "MARIA EDUARDA PAZ MATIAS", "faltas": 0.0, "presenca": 100.0}, {"nome": "MARIA FERNANDA DE OLIVEIRA SILVA", "faltas": 0.0, "presenca": 100.0}, {"nome": "MELISSA MARIA SILVA", "faltas": 1.0, "presenca": 99.0}, {"nome": "MIGUEL PALHARES RAMOS", "faltas": 0.0, "presenca": 100.0}, {"nome": "PAULO CESAR SANTOS CARDOSO", "faltas": 5.0, "presenca": 95.0}, {"nome": "PAULO RYUKI SUZUKI NAGATA", "faltas": 11.0, "presenca": 89.0}, {"nome": "RUAN LUCAS DE AGUIAR", "faltas": 5.0, "presenca": 95.0}, {"nome": "SOPHIA LARA DE OLIVEIRA", "faltas": 3.0, "presenca": 97.0}, {"nome": "TAUA MATEUS CRUZ SIQUEIRA", "faltas": 15.0, "presenca": 85.0}, {"nome": "TIAGO SANTOS DE JESUS JUNIOR", "faltas": 27.0, "presenca": 73.0}, {"nome": "VALENTINA DOURADO MARINO", "faltas": 17.0, "presenca": 83.0}, {"nome": "WESLEY DIOGO BRANCALHONI VIEIRA", "faltas": 16.0, "presenca": 84.0}], "2ª série A": [{"nome": "ANA CLARA MOREIRA DE LIMA", "faltas": 9.0, "presenca": 91.0}, {"nome": "ANA JULIA DA SILVA", "faltas": 10.0, "presenca": 90.0}, {"nome": "ANTONIO PYETRO OLIVEIRA DA SILVA", "faltas": 14.0, "presenca": 86.0}, {"nome": "BIANCA DOS SANTOS CARDOSO BRAGA", "faltas": 6.0, "presenca": 94.0}, {"nome": "DAVI FERNANDO INÁCIO", "faltas": 5.0, "presenca": 95.0}, {"nome": "ELOÁ CONSTANTINO DE SOUZA", "faltas": 10.0, "presenca": 90.0}, {"nome": "ELOÍZA DOS SANTOS MALAVAZI", "faltas": 17.0, "presenca": 83.0}, {"nome": "EMANUELE DE OLIVEIRA VICK", "faltas": 7.0, "presenca": 93.0}, {"nome": "FELIPE DE OLIVEIRA DIAS", "faltas": 13.0, "presenca": 87.0}, {"nome": "FERNANDA MARIA DA SILVA", "faltas": 4.0, "presenca": 96.0}, {"nome": "GABRIELLY DA SILVA RIBEIRO", "faltas": 1.0, "presenca": 99.0}, {"nome": "GUILHERME MACIEL GOBBI", "faltas": 5.0, "presenca": 95.0}, {"nome": "ISABELY RODRIGUES AYUB DE OLIVEIRA", "faltas": 3.0, "presenca": 97.0}, {"nome": "JOAO GABRIEL LOPES DE SOUZA", "faltas": 4.0, "presenca": 96.0}, {"nome": "JOÃO VITOR CARDOSO PEREIRA", "faltas": 11.0, "presenca": 89.0}, {"nome": "JORGE ELIAS DO CARMO LOPES", "faltas": 2.0, "presenca": 98.0}, {"nome": "JOSÉ ANTONIO VIARO", "faltas": 21.0, "presenca": 79.0}, {"nome": "LEONARDO PEREIRA MARQUES", "faltas": 18.0, "presenca": 82.0}, {"nome": "LETÍCIA RIBEIRO DA SILVA", "faltas": 5.0, "presenca": 95.0}, {"nome": "LUAN FERNANDES DE REZENDE", "faltas": 9.0, "presenca": 91.0}, {"nome": "MAIKON ANTONIO SILVA", "faltas": 4.0, "presenca": 96.0}, {"nome": "MARIANA ESTEFANY BEZERRA DOS SANTOS", "faltas": 8.0, "presenca": 92.0}, {"nome": "MARIO GABRIEL LOIS", "faltas": 2.0, "presenca": 98.0}, {"nome": "PABLO DA SILVA", "faltas": 7.0, "presenca": 93.0}, {"nome": "RAUL MARONA PARRA", "faltas": 2.0, "presenca": 98.0}, {"nome": "RIAN RODRIGO DIAS PEREIRA", "faltas": 3.0, "presenca": 97.0}, {"nome": "VICTOR HUGO SILVA", "faltas": 7.0, "presenca": 93.0}, {"nome": "VITÓRIA APARECIDA DE SOUZA", "faltas": 8.0, "presenca": 92.0}, {"nome": "VITÓRIA DOS SANTOS DE JESUS", "faltas": 5.0, "presenca": 95.0}], "1ª série A": [{"nome": "ANA JULIA PEREIRA DOS SANTOS", "faltas": 5.0, "presenca": 95.0}, {"nome": "ANA LAURA CARVALHO LIMA", "faltas": 4.0, "presenca": 96.0}, {"nome": "ANA LUÍSA LOQUETE", "faltas": 0.0, "presenca": 100.0}, {"nome": "DIEMILY COSTA DA SILVA", "faltas": 13.0, "presenca": 87.0}, {"nome": "DIOGO DE SOUZA CORREA", "faltas": 3.0, "presenca": 97.0}, {"nome": "EMANUEL BISPO FERREIRA", "faltas": 3.0, "presenca": 97.0}, {"nome": "EMILLY NICOLI PIRES REMOLLI BRITO", "faltas": 2.0, "presenca": 98.0}, {"nome": "ENZO HENRIQUE DOS SANTOS DIAS", "faltas": 7.0, "presenca": 93.0}, {"nome": "ÉRICK BATISTA DE ANDRADE", "faltas": 4.0, "presenca": 96.0}, {"nome": "FABIANO FERNANDES RIBEIRO JUNIOR", "faltas": 3.0, "presenca": 97.0}, {"nome": "GEMILSON LOPES DE SOUZA", "faltas": 26.0, "presenca": 74.0}, {"nome": "GEOVANNA DOS SANTOS FERREIRA", "faltas": 9.0, "presenca": 91.0}, {"nome": "GRASIELE DOS SANTOS CARDOSO", "faltas": 17.0, "presenca": 83.0}, {"nome": "INAIÊ BERTINI DE CAMPOS", "faltas": 2.0, "presenca": 98.0}, {"nome": "IZADORA MARIA ALVES FERREIRA", "faltas": 9.0, "presenca": 91.0}, {"nome": "JULIA BERNARDINI FERREIRA", "faltas": 6.0, "presenca": 94.0}, {"nome": "KAUÃ CESAR MELERO", "faltas": 6.0, "presenca": 94.0}, {"nome": "KAYO DOTAS COLODINO", "faltas": 1.0, "presenca": 99.0}, {"nome": "LAÍS SUÉLI DOS SANTOS", "faltas": 5.0, "presenca": 95.0}, {"nome": "LAYANE ELISA DOS SANTOS", "faltas": 1.0, "presenca": 99.0}, {"nome": "LUARA CONSTANTINO CALDEIRA", "faltas": 7.0, "presenca": 93.0}, {"nome": "MARIA CLARA RODRIGUES DO CARMO SANTOS SILVA", "faltas": 15.0, "presenca": 85.0}, {"nome": "MARIA EDUARDA SOUZA DE MORAES", "faltas": 1.0, "presenca": 99.0}, {"nome": "MIGUEL ANTÔNIO DUTRA WARTHMANN", "faltas": 12.0, "presenca": 88.0}, {"nome": "MIGUEL SANTOS RIBEIRO", "faltas": 3.0, "presenca": 97.0}, {"nome": "MURIELY CHAGAS ZENARDI", "faltas": 0.0, "presenca": 100.0}, {"nome": "NARA BEATRIZ BEZERRA DOS SANTOS", "faltas": 5.0, "presenca": 95.0}, {"nome": "NÍNIVY SILMARA LIMA ADARIAS SOARES", "faltas": 9.0, "presenca": 91.0}, {"nome": "RAFAEL FERREIRA DE AZEVEDO", "faltas": 8.0, "presenca": 92.0}, {"nome": "THIAGO AZEVEDO CINI", "faltas": 6.0, "presenca": 94.0}, {"nome": "THIAGO TARDIOLI SOTELLO", "faltas": 4.0, "presenca": 96.0}, {"nome": "WEMILLIY SAMPAIO DO NASCIMENTO", "faltas": 7.0, "presenca": 93.0}], "7º ano A": [{"nome": "ANA VITORIA DOS SANTOS PAES", "faltas": 7.0, "presenca": 93.0}, {"nome": "ARTHUR VIEIRA OLIVEIRA", "faltas": 10.0, "presenca": 90.0}, {"nome": "BENITO PEROLA SANTIAGO", "faltas": 5.0, "presenca": 95.0}, {"nome": "CAIO LEANDRO GONDEK", "faltas": 13.0, "presenca": 87.0}, {"nome": "DANIELLY VITORIA BEATO DOS SANTOS", "faltas": 8.0, "presenca": 92.0}, {"nome": "DAVI CORREA DA SILVA", "faltas": 11.0, "presenca": 89.0}, {"nome": "DAVI HENRIQUE VIEIRA DA SILVA", "faltas": 0.0, "presenca": 100.0}, {"nome": "DAVI LUCAS PIROTA FLORENTINO", "faltas": 6.0, "presenca": 94.0}, {"nome": "DEILISDIANE COSTA SANTOS", "faltas": 4.0, "presenca": 96.0}, {"nome": "DOMINIC BRYAN DO AMARAL LIMA", "faltas": 7.0, "presenca": 93.0}, {"nome": "ELIZA GABRIELA PAVANELLI DA SILVA", "faltas": 0.0, "presenca": 100.0}, {"nome": "EMANUEL FRANCHINI MARQUES", "faltas": 8.0, "presenca": 92.0}, {"nome": "EMANUELLI CAROLINE HIPOLITO", "faltas": 11.0, "presenca": 89.0}, {"nome": "FELIPE RODRIGUES CORREA", "faltas": 4.0, "presenca": 96.0}, {"nome": "GABRIEL DA SILVA", "faltas": 0.0, "presenca": 100.0}, {"nome": "GABRIELLY DA SILVA", "faltas": 0.0, "presenca": 100.0}, {"nome": "GUILHERME PYETRO PEREIRA DE AQUINO", "faltas": 7.0, "presenca": 93.0}, {"nome": "HENRIQUE SEVIEIRO MAXIMO", "faltas": 0.0, "presenca": 100.0}, {"nome": "JHEMESON CRUZ SOUZA", "faltas": 8.0, "presenca": 92.0}, {"nome": "JOAO AUGUSTO RESTANI GITTI", "faltas": 1.0, "presenca": 99.0}, {"nome": "LARA CAMILA DE MELO GONÇALVES", "faltas": 1.0, "presenca": 99.0}, {"nome": "LETÍCIA MARIA VIARO", "faltas": 0.0, "presenca": 100.0}, {"nome": "LORENA FERNANDA BUZON QUINTANA", "faltas": 2.0, "presenca": 98.0}, {"nome": "LUCAS FERREIRA MELO", "faltas": 13.0, "presenca": 87.0}, {"nome": "LUIZ MIGUEL RIBEIRO LOPES", "faltas": 5.0, "presenca": 95.0}, {"nome": "MANOELA BEATO DE SOUZA", "faltas": 41.0, "presenca": 59.0}, {"nome": "MARIA EDUARDA TEIXEIRA HORN", "faltas": 11.0, "presenca": 89.0}, {"nome": "MIKAEL PEREIRA TORRES", "faltas": 17.0, "presenca": 83.0}, {"nome": "PEDRO DE CASTRO HENRIQUE", "faltas": 11.0, "presenca": 89.0}, {"nome": "RAFAEL FRANCISCO DA SILVA SANTOS", "faltas": 4.0, "presenca": 96.0}, {"nome": "SAMUEL DOS ANJOS DRUMOND SILVA", "faltas": 22.0, "presenca": 78.0}, {"nome": "SANDRO HENRIQUE DIAS DA SILVA", "faltas": 3.0, "presenca": 97.0}, {"nome": "VERONICA BRAZ RUIZ", "faltas": 4.0, "presenca": 96.0}, {"nome": "YNAHE OLIVEIRA GITI", "faltas": 5.0, "presenca": 95.0}, {"nome": "YSADORA VITORIA COSTA BRITO", "faltas": 1.0, "presenca": 99.0}]};
 
-  // DISCIPLINAS ESPECÍFICAS DE CADA TURMA COM REGRAS RÍGIDAS DE EXCEÇÃO
+  // DISCIPLINAS ESPECÍFICAS DE CADA TURMA
   const disciplinasPorTurma = {
     "6º ano A": [
       { id: "Lígua Portuguesa (Profª. Geovana)", nome: "Língua Portuguesa (Profª. Geovana)" },
@@ -465,212 +673,42 @@
     ]
   };
 
-  // REPOSITÓRIO COMPLETO DE TÓPICOS POR NOME GENÉRICO DA DISCIPLINA
+  // BANCO DE TÓPICOS GERAIS
   const bancoTopicosGerais = {
-    "Língua Portuguesa": [
-      "1. Gêneros Jornalísticos: Notícia, Reportagem e Editorial",
-      "2. Texto Dissertativo-Argumentativo e Tese",
-      "3. Coesão Textual e Operadores Lógicos",
-      "4. Variedades Linguísticas e Adequação Vocabular",
-      "5. Sintaxe do Período Simples e Composto",
-      "6. Literatura Brasileira e Movimentos Literários",
-      "7. Regência Verbal/Nominal e Uso da Crase",
-      "8. Análise de Textos Multissemióticos e Mídias Digitais"
-    ],
-    "Matemática": [
-      "1. Conjuntos Numéricos, Frações e Porcentagem",
-      "2. Equações, Inequações e Sistemas do 1º e 2º Grau",
-      "3. Conceito de Função (Afim, Quadrática e Exponencial)",
-      "4. Razão, Proporção e Regra de Três",
-      "5. Geometria Plana: Ângulos, Áreas e Teorema de Pitágoras",
-      "6. Geometria Espacial: Prismas, Cilindros e Volumes",
-      "7. Análise Combinatória e Probabilidade",
-      "8. Estatística Descritiva e Leitura de Gráficos"
-    ],
-    "Ciências": [
-      "1. Sistemas do Corpo Humano e Saúde Pública",
-      "2. Citologia e Divisão Celular (Mitose e Meiose)",
-      "3. Matéria, Misturas e Métodos de Separação",
-      "4. Tabela Periódica e Reações Químicas",
-      "5. Ecologia, Biomas e Cadeias Alimentares",
-      "6. Genética e Leis de Mendel"
-    ],
-    "História": [
-      "1. Roma e Grécia Antiga",
-      "2. Feudalismo e Idade Média",
-      "3. Grandes Navegações e Colonização do Brasil",
-      "4. Iluminismo, Revolução Francesa e Industrial",
-      "5. Brasil Império e Primeira República",
-      "6. Era Vargas e Ditadura Militar no Brasil",
-      "7. Primeira e Segunda Guerra Mundial",
-      "8. Guerra Fria e Mundo Contemporâneo"
-    ],
-    "Geografia": [
-      "1. Cartografia, Escalas e Fuso Horário",
-      "2. Relevo, Solos e Tectônica de Placas",
-      "3. Climatologia e Biomas Globais/Brasileiros",
-      "4. Demografia, Migrações e Urbanização",
-      "5. Espaço Agrário e Industrialização",
-      "6. Globalização, Geopolítica e Blocos Econômicos"
-    ],
-    "Inglês": [
-      "1. Estratégias de Leitura (Skimming e Scanning)",
-      "2. Compreensão Textual e Falsos Cognatos",
-      "3. Tempos Verbais (Simple Present, Past e Continuous)",
-      "4. Verbos Modais e Conectores Lógicos",
-      "5. Produção de Textos Curtos e Vocabulário Temático"
-    ],
-    "Educação Física": [
-      "1. Práticas Corporais, Esportes e Regras",
-      "2. Atividade Física, Saúde e Qualidade de Vida",
-      "3. Jogos Eletrônicos e Cultura Corporal",
-      "4. Danças, Lutas e Expressões Corporais"
-    ],
-    "Arte": [
-      "1. Elementos Linguísticos das Artes Visuais",
-      "2. História da Arte: do Impressionismo ao Modernismo",
-      "3. Arte Contemporânea e Intervenções Urbanas",
-      "4. Patrimônio Cultural e Expressões Artísticas"
-    ],
-    "T.I. / Programação": [
-      "1. Pensamento Computacional e Lógica de Programação",
-      "2. Algoritmos Simples e Estruturas de Decisão",
-      "3. Programação em Blocos e Desenvolvimento Web",
-      "4. Cultura Digital, Algoritmos e Redes Sociais"
-    ],
-    "Programação / T.I.": [
-      "1. Lógica Algorítmica e Estruturas de Repetição",
-      "2. Programação Orientada a Objetos / Web",
-      "3. Bancos de Dados e Estrutura de Informações"
-    ],
-    "Educação Financeira": [
-      "1. Planejamento Financeiro e Orçamento Pessoal",
-      "2. Consumo Consciente, Juros e Financiamentos",
-      "3. Tipos de Investimentos (Renda Fixa e Variável)",
-      "4. Mercado Financeiro e Inflação"
-    ],
-    "Biologia": [
-      "1. Bioquímica Celular e Fisiologia Humana",
-      "2. Genética, Genoma e Hereditariedade",
-      "3. Biotecnologia, Vacinas e Engenharia Genética",
-      "4. Ecologia, Ciclos Biogeoquímicos e Impactos Ambientais"
-    ],
-    "Física": [
-      "1. Cinemática e Leis de Newton",
-      "2. Trabalho, Energia e Conservação de Energia",
-      "3. Termodinâmica e Calorimetria",
-      "4. Eletrodinâmica, Circuitos e Leis de Kirchhoff",
-      "5. Ondulatória e Óptica Geométrica"
-    ],
-    "Química": [
-      "1. Estrutura Atômica e Tabela Periódica",
-      "2. Ligações Químicas e Funções Inorgânicas",
-      "3. Estequiometria e Cálculos Químicos",
-      "4. Soluções, Termoquímica e Equilíbrio Químico",
-      "5. Química Orgânica e Funções Oxigenadas/Nitrogenadas"
-    ],
-    "Filosofia": [
-      "1. Introdução à Filosofia e Pensamento Crítico",
-      "2. Ética, Moral e Filosofia Política",
-      "3. Epistemologia e Teoria do Conhecimento"
-    ],
-    "Sociologia": [
-      "1. Teorias Sociológicas Clássicas (Durkheim, Marx, Weber)",
-      "2. Cultura, Socialização e Diversidade Social",
-      "3. Trabalho, Direitos Sociais e Cidadania"
-    ],
-    "Redação e Leitura": [
-      "1. Leitura Crítica, Estruturas Narrativas e Argumentativas",
-      "2. Produção de Redação Dissertativa no Padrão ENEM/Provas Paulistas",
-      "3. Coerência, Coesão e Repertório Sociocultural Legítimo"
-    ],
-    "Robótica": [
-      "1. Introdução à Robótica Educacional e Montagem de Protótipos",
-      "2. Lógica de Programação aplicada a Sensores e Atuadores",
-      "3. Resolução de Problemas Práticos com Automação"
-    ],
-    "Práticas Experimentais": [
-      "1. Método Científico, Formulação de Hipóteses e Testes",
-      "2. Experimentos Práticos de Laboratório e Relatórios Científicos",
-      "3. Segurança em Laboratório e Análise de Resultados"
-    ],
-    "EMA - Esporte, Música e Arte": [
-      "1. Expressão Corporal, Ritmo e Sensibilidade Artística",
-      "2. Vivências Esportivas Coletivas e Inclusão",
-      "3. Criação Artística e Musical Multidisciplinar"
-    ],
-    "Orientação de Estudos – Língua Portuguesa": [
-      "1. Técnicas de Leitura, Grifos e Foco na Interpretação de Texto",
-      "2. Resolução Comentada de Questões da Prova Paulista e SARESP",
-      "3. Organização da Rotina de Estudos e Revisão Gramatical"
-    ],
-    "Orientação de Estudos – Matemática": [
-      "1. Resolução de Problemas Matemáticos e Raciocínio Lógico",
-      "2. Treino Intensivo de Cálculos e Operações Fundamentais",
-      "3. Análise de Questões das Provas Oficiais da SEDUC-SP"
-    ],
-    "Projeto de Vida": [
-      "1. Autoconhecimento, Autoestima e Competências Socioemocionais",
-      "2. Organização do Tempo e Planejamento Pessoal",
-      "3. Projeto Profissional, Mercado de Trabalho e Cidadania"
-    ],
-    "ME - Marketing e Estudos de Mercado": [
-      "1. Conceitos de Marketing e Mix de Marketing (4Ps)",
-      "2. Pesquisa de Mercado, Público-Alvo e Segmentação",
-      "3. Comportamento do Consumidor e Análise SWOT",
-      "4. Estratégias de Branding e Posicionamento de Mercado"
-    ],
-    "PM - Processos de Marketing": [
-      "1. Planejamento de Campanhas Publicitárias",
-      "2. Gestão de Mídias Sociais e Marketing Digital",
-      "3. Funil de Vendas, Inbound Marketing e Métricas",
-      "4. Atendimento ao Cliente e Fidelização"
-    ],
-    "GFC - Gestão Financeira e Contábil": [
-      "1. Princípios de Contabilidade e Balanço Patrimonial",
-      "2. Demonstrativo do Resultado do Exercício (DRE)",
-      "3. Fluxo de Caixa e Planejamento Orçamentário",
-      "4. Formação de Preço de Venda e Gestão de Custos"
-    ],
-    "GO - Gestão Operacional e Logística": [
-      "1. Gestão da Produção e Mapeamento de Processos",
-      "2. Administração de Materiais e Controle de Estoque",
-      "3. Cadeia de Suprimentos (Supply Chain) e Logística",
-      "4. Gestão da Qualidade e Indicadores de Desempenho"
-    ],
-    "CE - Comportamento Empreendedor": [
-      "1. Perfil Empreendedor e Intraempreendedorismo",
-      "2. Modelagem de Negócios (Business Model Canvas)",
-      "3. Liderança, Trabalho em Equipe e Resolução de Problemas",
-      "4. Plano de Negócios e Viabilidade Financeira"
-    ],
-    "IDN - Inovação e Design de Negócios": [
-      "1. Metodologia Design Thinking e Empatia com o Cliente",
-      "2. Transformação Digital, Startups e Modelos Disruptivos",
-      "3. Prototipagem, Validação e MVP (Produto Mínimo Viável)",
-      "4. Inovação Social e Sustentabilidade nos Negócios"
-    ],
-    "APB - Aprofundamento de Biologia": [
-      "1. Engenharia Genética e Tecnologia do DNA Recombinante",
-      "2. Biotecnologia na Saúde: Células-Tronco e Terapia Gênica",
-      "3. Bioética e Biossegurança nas Ciências da Vida",
-      "4. Fisiologia Comparada e Biotecnologia Ambiental"
-    ],
-    "APQ - Aprofundamento de Química": [
-      "1. Química Ambiental e Tratamento de Resíduos",
-      "2. Processos Industriais Químicos e Polímeros",
-      "3. Fontes Renováveis de Energia e Biocombustíveis",
-      "4. Química dos Materiais e Sustentabilidade"
-    ],
-    "Empreendedorismo": [
-      "1. Mentalidade Empreendedora e Oportunidades de Negócio",
-      "2. Gestão Financeira para Pequenas Empresas",
-      "3. Estratégias de Vendas e Planejamento Estratégico",
-      "4. Pitch de Negócios e Apresentações Eficazes"
-    ]
+    "Língua Portuguesa": ["1. Gêneros Jornalísticos: Notícia, Reportagem e Editorial", "2. Texto Dissertativo-Argumentativo e Tese", "3. Coesão Textual e Operadores Lógicos", "4. Variedades Linguísticas e Adequação Vocabular", "5. Sintaxe do Período Simples e Composto", "6. Literatura Brasileira e Movimentos Literários", "7. Regência Verbal/Nominal e Uso da Crase", "8. Análise de Textos Multissemióticos e Mídias Digitais"],
+    "Matemática": ["1. Conjuntos Numéricos, Frações e Porcentagem", "2. Equações, Inequações e Sistemas do 1º e 2º Grau", "3. Conceito de Função (Afim, Quadrática e Exponencial)", "4. Razão, Proporção e Regra de Três", "5. Geometria Plana: Ângulos, Áreas e Teorema de Pitágoras", "6. Geometria Espacial: Prismas, Cilindros e Volumes", "7. Análise Combinatória e Probabilidade", "8. Estatística Descritiva e Leitura de Gráficos"],
+    "Ciências": ["1. Sistemas do Corpo Humano e Saúde Pública", "2. Citologia e Divisão Celular (Mitose e Meiose)", "3. Matéria, Misturas e Métodos de Separação", "4. Tabela Periódica e Reações Químicas", "5. Ecologia, Biomas e Cadeias Alimentares", "6. Genética e Leis de Mendel"],
+    "História": ["1. Roma e Grécia Antiga", "2. Feudalismo e Idade Média", "3. Grandes Navegações e Colonização do Brasil", "4. Iluminismo, Revolução Francesa e Industrial", "5. Brasil Império e Primeira República", "6. Era Vargas e Ditadura Militar no Brasil", "7. Primeira e Segunda Guerra Mundial", "8. Guerra Fria e Mundo Contemporâneo"],
+    "Geografia": ["1. Cartografia, Escalas e Fuso Horário", "2. Relevo, Solos e Tectônica de Placas", "3. Climatologia e Biomas Globais/Brasileiros", "4. Demografia, Migrações e Urbanização", "5. Espaço Agrário e Industrialização", "6. Globalização, Geopolítica e Blocos Econômicos"],
+    "Inglês": ["1. Estratégias de Leitura (Skimming e Scanning)", "2. Compreensão Textual e Falsos Cognatos", "3. Tempos Verbais (Simple Present, Past e Continuous)", "4. Verbos Modais e Conectores Lógicos", "5. Produção de Textos Curtos e Vocabulário Temático"],
+    "Educação Física": ["1. Práticas Corporais, Esportes e Regras", "2. Atividade Física, Saúde e Qualidade de Vida", "3. Jogos Eletrônicos e Cultura Corporal", "4. Danças, Lutas e Expressões Corporais"],
+    "Arte": ["1. Elementos Linguísticos das Artes Visuais", "2. História da Arte: do Impressionismo ao Modernismo", "3. Arte Contemporânea e Intervenções Urbanas", "4. Patrimônio Cultural e Expressões Artísticas"],
+    "T.I. / Programação": ["1. Pensamento Computacional e Lógica de Programação", "2. Algoritmos Simples e Estruturas de Decisão", "3. Programação em Blocos e Desenvolvimento Web", "4. Cultura Digital, Algoritmos e Redes Sociais"],
+    "Programação / T.I.": ["1. Lógica Algorítmica e Estruturas de Repetição", "2. Programação Orientada a Objetos / Web", "3. Bancos de Dados e Estrutura de Informações"],
+    "Educação Financeira": ["1. Planejamento Financeiro e Orçamento Pessoal", "2. Consumo Consciente, Juros e Financiamentos", "3. Tipos de Investimentos (Renda Fixa e Variável)", "4. Mercado Financeiro e Inflação"],
+    "Biologia": ["1. Bioquímica Celular e Fisiologia Humana", "2. Genética, Genoma e Hereditariedade", "3. Biotecnologia, Vacinas e Engenharia Genética", "4. Ecologia, Ciclos Biogeoquímicos e Impactos Ambientais"],
+    "Física": ["1. Cinemática e Leis de Newton", "2. Trabalho, Energia e Conservação de Energia", "3. Termodinâmica e Calorimetria", "4. Eletrodinâmica, Circuitos e Leis de Kirchhoff", "5. Ondulatória e Óptica Geométrica"],
+    "Química": ["1. Estrutura Atômica e Tabela Periódica", "2. Ligações Químicas e Funções Inorgânicas", "3. Estequiometria e Cálculos Químicos", "4. Soluções, Termoquímica e Equilíbrio Químico", "5. Química Orgânica e Funções Oxigenadas/Nitrogenadas"],
+    "Filosofia": ["1. Introdução à Filosofia e Pensamento Crítico", "2. Ética, Moral e Filosofia Política", "3. Epistemologia e Teoria do Conhecimento"],
+    "Sociologia": ["1. Teorias Sociológicas Clássicas (Durkheim, Marx, Weber)", "2. Cultura, Socialização e Diversidade Social", "3. Trabalho, Direitos Sociais e Cidadania"],
+    "Redação e Leitura": ["1. Leitura Crítica, Estruturas Narrativas e Argumentativas", "2. Produção de Redação Dissertativa no Padrão ENEM/Provas Paulistas", "3. Coerência, Coesão e Repertório Sociocultural Legítimo"],
+    "Robótica": ["1. Introdução à Robótica Educacional e Montagem de Protótipos", "2. Lógica de Programação aplicada a Sensores e Atuadores", "3. Resolução de Problemas Práticos com Automação"],
+    "Práticas Experimentais": ["1. Método Científico, Formulação de Hipóteses e Testes", "2. Experimentos Práticos de Laboratório e Relatórios Científicos", "3. Segurança em Laboratório e Análise de Resultados"],
+    "EMA - Esporte, Música e Arte": ["1. Expressão Corporal, Ritmo e Sensibilidade Artística", "2. Vivências Esportivas Coletivas e Inclusão", "3. Criação Artística e Musical Multidisciplinar"],
+    "Orientação de Estudos – Língua Portuguesa": ["1. Técnicas de Leitura, Grifos e Foco na Interpretação de Texto", "2. Resolução Comentada de Questões da Prova Paulista e SARESP", "3. Organização da Rotina de Estudos e Revisão Gramatical"],
+    "Orientação de Estudos – Matemática": ["1. Resolução de Problemas Matemáticos e Raciocínio Lógico", "2. Treino Intensivo de Cálculos e Operações Fundamentais", "3. Análise de Questões das Provas Oficiais da SEDUC-SP"],
+    "Projeto de Vida": ["1. Autoconhecimento, Autoestima e Competências Socioemocionais", "2. Organização do Tempo e Planejamento Pessoal", "3. Projeto Profissional, Mercado de Trabalho e Cidadania"],
+    "ME - Marketing e Estudos de Mercado": ["1. Conceitos de Marketing e Mix de Marketing (4Ps)", "2. Pesquisa de Mercado, Público-Alvo e Segmentação", "3. Comportamento do Consumidor e Análise SWOT", "4. Estratégias de Branding e Posicionamento de Mercado"],
+    "PM - Processos de Marketing": ["1. Planejamento de Campanhas Publicitárias", "2. Gestão de Mídias Sociais e Marketing Digital", "3. Funil de Vendas, Inbound Marketing e Métricas", "4. Atendimento ao Cliente e Fidelização"],
+    "GFC - Gestão Financeira e Contábil": ["1. Princípios de Contabilidade e Balanço Patrimonial", "2. Demonstrativo do Resultado do Exercício (DRE)", "3. Fluxo de Caixa e Planejamento Orçamentário", "4. Formação de Preço de Venda e Gestão de Custos"],
+    "GO - Gestão Operacional e Logística": ["1. Gestão da Produção e Mapeamento de Processos", "2. Administração de Materiais e Controle de Estoque", "3. Cadeia de Suprimentos (Supply Chain) e Logística", "4. Gestão da Qualidade e Indicadores de Desempenho"],
+    "CE - Comportamento Empreendedor": ["1. Perfil Empreendedor e Intraempreendedorismo", "2. Modelagem de Negócios (Business Model Canvas)", "3. Liderança, Trabalho em Equipe e Resolução de Problemas", "4. Plano de Negócios e Viabilidade Financeira"],
+    "IDN - Inovação e Design de Negócios": ["1. Metodologia Design Thinking e Empatia com o Cliente", "2. Transformação Digital, Startups e Modelos Disruptivos", "3. Prototipagem, Validação e MVP (Produto Mínimo Viável)", "4. Inovação Social e Sustentabilidade nos Negócios"],
+    "APB - Aprofundamento de Biologia": ["1. Engenharia Genética e Tecnologia do DNA Recombinante", "2. Biotecnologia na Saúde: Células-Tronco e Terapia Gênica", "3. Bioética e Biossegurança nas Ciências da Vida", "4. Fisiologia Comparada e Biotecnologia Ambiental"],
+    "APQ - Aprofundamento de Química": ["1. Química Ambiental e Tratamento de Resíduos", "2. Processos Industriais Químicos e Polímeros", "3. Fontes Renováveis de Energia e Biocombustíveis", "4. Química dos Materiais e Sustentabilidade"],
+    "Empreendedorismo": ["1. Mentalidade Empreendedora e Oportunidades de Negócio", "2. Gestão Financeira para Pequenas Empresas", "3. Estratégias de Vendas e Planejamento Estratégico", "4. Pitch de Negócios e Apresentações Eficazes"]
   };
 
-  // BANCO DE METODOLOGIAS / TIPOS DE ATIVIDADES
   const listaOpcoesMetodologias = [
     { id: "copia", label: "📝 Resumo / Cópia Direcionada", detalhe: "Realize a leitura atenta dos conteúdos selecionados no livro didático ou Material Digital (SEDUC-SP) e elabore um resumo manuscrito contemplando os conceitos fundamentais." },
     { id: "questionario", label: "❓ Questionário Dirigido", detalhe: "Com base no Material Digital/Livro Didático, elabore um questionário com perguntas e respostas explicadas com suas próprias palavras." },
@@ -694,7 +732,6 @@
       const div = document.createElement("div");
       div.className = "topic-item";
       div.innerHTML = `<input type="checkbox" style="width:auto; margin:0;" onclick="event.stopPropagation()"> <span>${met.label}</span>`;
-      
       const checkbox = div.querySelector('input');
 
       div.onclick = function() {
@@ -761,7 +798,6 @@
       const div = document.createElement("div");
       div.className = "topic-item";
       div.innerHTML = `<input type="checkbox" style="width:auto; margin:0;" onclick="event.stopPropagation()"> <span>${discObj.nome}</span>`;
-      
       const checkbox = div.querySelector('input');
 
       div.onclick = function() {
@@ -806,11 +842,9 @@
     }
 
     disciplinasSelecionadas.forEach(discFull => {
-      // Identifica a chave para buscar os tópicos no banco geral
       let chaveBanco = Object.keys(bancoTopicosGerais).find(k => discFull.includes(k)) || "Língua Portuguesa";
       const itens = bancoTopicosGerais[chaveBanco] || [];
 
-      // Título da disciplina no painel
       const headerDisc = document.createElement("div");
       headerDisc.style.cssText = "font-weight: bold; color: var(--primary); margin-top: 8px; margin-bottom: 4px; font-size: 0.9rem; border-bottom: 1px solid var(--border); padding-bottom: 2px;";
       headerDisc.textContent = `📚 ${discFull}`;
@@ -821,7 +855,6 @@
         const div = document.createElement("div");
         div.className = "topic-item";
         div.innerHTML = `<input type="checkbox" style="width:auto; margin:0;" onclick="event.stopPropagation()"> <span>${item}</span>`;
-        
         const checkbox = div.querySelector('input');
 
         div.onclick = function() {
@@ -857,13 +890,9 @@
   }
 
   function obterIconeFrequencia(presenca) {
-    if (presenca < 76.0) {
-      return "🔴";
-    } else if (presenca >= 76.0 && presenca <= 91.9) {
-      return "🟡";
-    } else {
-      return "🟢";
-    }
+    if (presenca < 76.0) return "🔴";
+    else if (presenca >= 76.0 && presenca <= 91.9) return "🟡";
+    else return "🟢";
   }
 
   function popularEstudantes() {
@@ -872,18 +901,13 @@
     const ordem = document.getElementById("select-ordem").value;
 
     selectAluno.innerHTML = '<option value="">-- Selecione o Estudante --</option>';
-
     if (!turma || !turmasAlunos[turma]) return;
 
     let lista = [...turmasAlunos[turma]];
 
-    if (ordem === "alfabetica") {
-      lista.sort((a, b) => a.nome.localeCompare(b.nome));
-    } else if (ordem === "mais_faltas") {
-      lista.sort((a, b) => b.faltas - a.faltas);
-    } else if (ordem === "menos_faltas") {
-      lista.sort((a, b) => a.faltas - b.faltas);
-    }
+    if (ordem === "alfabetica") lista.sort((a, b) => a.nome.localeCompare(b.nome));
+    else if (ordem === "mais_faltas") lista.sort((a, b) => b.faltas - a.faltas);
+    else if (ordem === "menos_faltas") lista.sort((a, b) => a.faltas - b.faltas);
 
     selectAluno.disabled = false;
 
@@ -899,10 +923,7 @@
   function formatarDataBR(dataISO) {
     if (!dataISO) return "";
     const partes = dataISO.split("-");
-    if (partes.length === 3) {
-      return `${partes[2]}/${partes[1]}/${partes[0]}`;
-    }
-    return dataISO;
+    return partes.length === 3 ? `${partes[2]}/${partes[1]}/${partes[0]}` : dataISO;
   }
 
   function gerarTrabalho() {
@@ -923,36 +944,24 @@
     const dataFormatada = formatarDataBR(dataLimiteVal);
     const textoDisciplinas = Array.from(disciplinasSelecionadas).join(" ; ");
 
-    // LISTA DE CONTEÚDOS SELECIONADOS
     let conteudosHTML = "<ul style='margin-top:5px; margin-bottom:10px; color: var(--primary); font-weight: bold;'>";
-    conteudosSelecionados.forEach(c => {
-      conteudosHTML += `<li>${c}</li>`;
-    });
+    conteudosSelecionados.forEach(c => conteudosHTML += `<li>${c}</li>`);
     conteudosHTML += "</ul>";
 
-    // LISTA DE METODOLOGIAS SELECIONADAS
     let metodologiasHTML = "<ol style='margin-top:5px; margin-bottom:10px;'>";
     metodologiasSelecionadas.forEach(idMet => {
       const metObj = listaOpcoesMetodologias.find(m => m.id === idMet);
-      if (metObj) {
-        metodologiasHTML += `<li style='margin-bottom:6px;'><strong>${metObj.label}:</strong> ${metObj.detalhe}</li>`;
-      }
+      if (metObj) metodologiasHTML += `<li style='margin-bottom:6px;'><strong>${metObj.label}:</strong> ${metObj.detalhe}</li>`;
     });
     metodologiasHTML += "</ol>";
 
-    // ORIENTAÇÕES EXTRAS DO PROFESSOR (SE HOUVER)
-    let extrasHTML = "";
-    if (orientacoesExtras) {
-      extrasHTML = `
-        <p><strong>ORIENTAÇÕES ESPECÍFICAS DO PROFESSOR:</strong></p>
-        <div style="background: #f7fafc; padding: 10px; border-left: 3px solid var(--secondary); margin-bottom: 12px; font-style: italic;">
-          ${orientacoesExtras.replace(/\n/g, '<br>')}
-        </div>
-      `;
-    }
+    let extrasHTML = orientacoesExtras ? `
+      <p><strong>ORIENTAÇÕES ESPECÍFICAS DO PROFESSOR:</strong></p>
+      <div style="background: #f7fafc; padding: 10px; border-left: 3px solid var(--secondary); margin-bottom: 12px; font-style: italic;">
+        ${orientacoesExtras.replace(/\n/g, '<br>')}
+      </div>` : "";
 
     preview.innerHTML = `
-      <!-- CABEÇALHO OFICIAL IDENTICO À IMAGEM -->
       <div class="header-oficial">
         <img src="https://upload.wikimedia.org/wikipedia/commons/1/1a/Brasao_do_estado_de_Sao_Paulo.svg" alt="Brasão SP">
         <div class="header-text">
@@ -991,7 +1000,7 @@
       <ul>
         <li>Trabalho estritamente manuscrito e legível.</li>
         <li>Entrega impreterivelmente até <strong>${dataFormatada}</strong>.</li>
-        <li>Cumprimento integral da extensão established (<strong>${extensao}</strong>).</li>
+        <li>Cumprimento integral da extensão estabelecida (<strong>${extensao}</strong>).</li>
       </ul>
 
       <br>
@@ -1002,6 +1011,106 @@
     `;
   }
 
+  // SALVAR NO HISTÓRICO LOCAL E REFRESH DA TABELA
+  function salvarNoHistorico() {
+    const turma = document.getElementById("select-turma").value;
+    const alunoVal = document.getElementById("select-aluno").value;
+    const aulas = document.getElementById("qtd-aulas").value;
+    const dataLimiteVal = document.getElementById("data-limite").value;
+    const htmlCompleto = document.getElementById("preview-container").innerHTML;
+
+    if (!turma || !alunoVal) return;
+
+    const aluno = JSON.parse(alunoVal);
+    const textoDisciplinas = Array.from(disciplinasSelecionadas).join(" ; ");
+
+    const novoItem = {
+      id: Date.now(),
+      dataEmissao: new Date().toLocaleString('pt-BR'),
+      estudante: aluno.nome,
+      turma: turma,
+      disciplinas: textoDisciplinas,
+      aulas: aulas,
+      dataLimite: formatarDataBR(dataLimiteVal),
+      html: htmlCompleto
+    };
+
+    historicoTrabalhos.unshift(novoItem);
+    localStorage.setItem("historicoManoelSantos", JSON.stringify(historicoTrabalhos));
+    renderizarTabelaHistorico();
+  }
+
+  function carregarHistorico() {
+    const salvo = localStorage.getItem("historicoManoelSantos");
+    if (salvo) {
+      try {
+        historicoTrabalhos = JSON.parse(salvo);
+      } catch (e) {
+        historicoTrabalhos = [];
+      }
+    }
+    renderizarTabelaHistorico();
+  }
+
+  function renderizarTabelaHistorico() {
+    const tbody = document.getElementById("tabela-historico");
+    tbody.innerHTML = "";
+
+    if (historicoTrabalhos.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="8" style="text-align: center; color: #a0aec0;">Nenhum trabalho emitido até o momento.</td></tr>`;
+      return;
+    }
+
+    historicoTrabalhos.forEach(item => {
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td><input type="checkbox" class="check-item" value="${item.id}"></td>
+        <td>${item.dataEmissao}</td>
+        <td><strong>${item.estudante}</strong></td>
+        <td>${item.turma}</td>
+        <td>${item.disciplinas}</td>
+        <td>${item.aulas}</td>
+        <td>${item.dataLimite}</td>
+        <td>
+          <button class="btn btn-danger" style="padding: 2px 8px; font-size: 0.75rem;" onclick="removerItem(${item.id})">Excluir</button>
+        </td>
+      `;
+      tbody.appendChild(tr);
+    });
+  }
+
+  function marcarTodos(source) {
+    const checkboxes = document.querySelectorAll('.check-item');
+    checkboxes.forEach(cb => cb.checked = source.checked);
+  }
+
+  function removerItem(id) {
+    if (confirm("Deseja realmente remover este registro do histórico?")) {
+      historicoTrabalhos = historicoTrabalhos.filter(item => item.id !== id);
+      localStorage.setItem("historicoManoelSantos", JSON.stringify(historicoTrabalhos));
+      renderizarTabelaHistorico();
+    }
+  }
+
+  function limparHistorico() {
+    if (confirm("Atenção! Deseja apagar TODO o histórico de trabalhos registrados?")) {
+      historicoTrabalhos = [];
+      localStorage.removeItem("historicoManoelSantos");
+      renderizarTabelaHistorico();
+    }
+  }
+
+  function imprimirUnico() {
+    const alunoVal = document.getElementById("select-aluno").value;
+    if (!alunoVal || disciplinasSelecionadas.size === 0 || conteudosSelecionados.size === 0 || metodologiasSelecionadas.size === 0) {
+      alert("Selecione todos os dados do roteiro antes de imprimir!");
+      return;
+    }
+    salvarNoHistorico();
+    document.body.classList.remove("printing-batch");
+    window.print();
+  }
+
   function copiarTexto() {
     const preview = document.getElementById("preview-container");
     const alunoVal = document.getElementById("select-aluno").value;
@@ -1009,15 +1118,68 @@
       alert("Selecione os dados do aluno, ao menos uma disciplina, um conteúdo e um tipo de atividade antes de copiar!");
       return;
     }
+    salvarNoHistorico();
     const texto = preview.innerText;
     navigator.clipboard.writeText(texto).then(() => {
-      alert("Trabalho copiado com sucesso! Você já pode colar no WhatsApp ou Classroom.");
+      alert("Trabalho copiado com sucesso e salvo no histórico! Você já pode colar no WhatsApp ou Classroom.");
     });
+  }
+
+  // IMPRESSÃO EM LOTE (GERAL)
+  function imprimirLote() {
+    const selecionados = Array.from(document.querySelectorAll('.check-item:checked')).map(cb => parseInt(cb.value));
+    
+    if (selecionados.length === 0) {
+      alert("Selecione ao menos um trabalho na tabela marcando a caixa de seleção para imprimir em lote!");
+      return;
+    }
+
+    const batchContainer = document.getElementById("print-batch-container");
+    batchContainer.innerHTML = "";
+
+    const trabalhosParaImprimir = historicoTrabalhos.filter(item => selecionados.includes(item.id));
+
+    trabalhosParaImprimir.forEach((item, index) => {
+      const divDiv = document.createElement("div");
+      divDiv.className = index < trabalhosParaImprimir.length - 1 ? "page-break" : "";
+      divDiv.innerHTML = item.html;
+      batchContainer.appendChild(divDiv);
+    });
+
+    document.body.classList.add("printing-batch");
+    window.print();
+    document.body.classList.remove("printing-batch");
+  }
+
+  // EXPORTAR TABELA PARA PLANILHA EXCEL/CSV
+  function exportarCSV() {
+    if (historicoTrabalhos.length === 0) {
+      alert("Não há dados no histórico para exportar!");
+      return;
+    }
+
+    let csvContent = "data:text/csv;charset=utf-8,\uFEFF"; // UTF-8 BOM
+    csvContent += "Data Emissao;Estudante;Turma;Disciplinas;Aulas a Compensar;Data Limite\n";
+
+    historicoTrabalhos.forEach(item => {
+      const row = `"${item.dataEmissao}";"${item.estudante}";"${item.turma}";"${item.disciplinas}";"${item.aulas}";"${item.dataLimite}"`;
+      csvContent += row + "\n";
+    });
+
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", `Relatorio_Compensacao_Manoel_dos_Santos_${new Date().toISOString().slice(0,10)}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   }
 
   // INICIALIZA AO CARREGAR A PÁGINA
   window.onload = function() {
+    checarSessao();
     inicializarMetodologias();
+    carregarHistorico();
   };
 </script>
 
