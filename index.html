@@ -270,7 +270,6 @@
 
     #print-batch-container { display: none; }
 
-    /* ESTILOS ESPECÍFICOS DE IMPRESSÃO (AJUSTE INTELIGENTE) */
     @media print {
       @page {
         size: A4 portrait;
@@ -312,44 +311,26 @@
         line-height: 1.3 !important;
       }
 
-      /* Compactação automática dos elementos na folha impressa */
-      #preview-container p {
-        margin: 4px 0 !important;
-      }
-
+      #preview-container p { margin: 4px 0 !important; }
       #preview-container ul, #preview-container ol {
         margin-top: 2px !important;
         margin-bottom: 6px !important;
         padding-left: 20px !important;
       }
-
-      #preview-container li {
-        margin-bottom: 2px !important;
-      }
+      #preview-container li { margin-bottom: 2px !important; }
 
       .header-oficial {
         gap: 10px !important;
         padding-bottom: 8px !important;
         margin-bottom: 10px !important;
       }
-
-      .header-oficial svg {
-        width: 55px !important;
-        height: 55px !important;
-      }
-
+      .header-oficial svg { width: 55px !important; height: 55px !important; }
       .header-text .line1, .header-text .line2 { font-size: 0.85rem !important; }
       .header-text .line3 { font-size: 0.95rem !important; }
       .header-text .line4, .header-text .line5 { font-size: 0.75rem !important; }
 
-      .preview-title {
-        font-size: 1rem !important;
-        margin: 8px 0 !important;
-      }
-
-      .assinaturas-container {
-        margin-top: 20px !important;
-      }
+      .preview-title { font-size: 1rem !important; margin: 8px 0 !important; }
+      .assinaturas-container { margin-top: 20px !important; }
 
       .page-break { page-break-after: always; break-after: page; padding-top: 10px; }
       .btn-group, header, .card, #login-overlay { display: none !important; }
@@ -573,7 +554,7 @@
   // DADOS 100% EXATOS DA PLANILHA (235 ALUNOS)
   const turmasAlunos = {"6º ano A": [{"nome": "AGATHA DA SILVA POLICARPO", "faltas": 7.0, "presenca": 93.0}, {"nome": "AMANDA GOMES DA COSTA", "faltas": 0.0, "presenca": 100.0}, {"nome": "ANNA VICTORIA MARIANO DE OLIVEIRA", "faltas": 5.0, "presenca": 95.0}, {"nome": "ANTHONY DE SOUZA TONIM", "faltas": 1.0, "presenca": 99.0}, {"nome": "DIOGO TARDIOLI DA SILVA", "faltas": 3.0, "presenca": 97.0}, {"nome": "ENELIN FERREIRA DA SILVA SANTOS", "faltas": 17.0, "presenca": 83.0}, {"nome": "ESTER PALHARES RAMOS", "faltas": 0.0, "presenca": 100.0}, {"nome": "IGNEZ VITAL MARQUES", "faltas": 12.0, "presenca": 88.0}, {"nome": "JOÃO EDUARDO DA SILVA", "faltas": 5.0, "presenca": 95.0}, {"nome": "JOSE HENRIQUE SILVA DE JESUS", "faltas": 4.0, "presenca": 96.0}, {"nome": "LAVINIA MESCHIARI COLODINO", "faltas": 2.0, "presenca": 98.0}, {"nome": "LIVIA DE MELO MARQUES", "faltas": 3.0, "presenca": 97.0}, {"nome": "LORENA COSTA REYNALDO", "faltas": 7.0, "presenca": 93.0}, {"nome": "LORENA RAICCA BATISTA JUVÊNCIO", "faltas": 23.0, "presenca": 77.0}, {"nome": "MATHEUS DOS SANTOS VIANA", "faltas": 1.0, "presenca": 99.0}, {"nome": "PEDRO MORAIS TEIXEIRA", "faltas": 2.0, "presenca": 98.0}, {"nome": "RYAN SOUZA COLODINO", "faltas": 4.0, "presenca": 96.0}, {"nome": "THAUANY VITORIA CRUZ SIQUEIRA", "faltas": 8.0, "presenca": 92.0}, {"nome": "VINICIUS MARQUES ROQUE", "faltas": 4.0, "presenca": 96.0}], "9º ano A": [{"nome": "ALAN FERNANDO RIBEIRO DOURADO", "faltas": 1.0, "presenca": 99.0}, {"nome": "ANA CLARA BIATO DE SOUZA", "faltas": 2.0, "presenca": 98.0}, {"nome": "ANA JULIA MACIEL GOBBI", "faltas": 6.0, "presenca": 94.0}, {"nome": "ANA LIVIA SILVINO PAIVA", "faltas": 16.0, "presenca": 84.0}, {"nome": "APOLO MARQUES AGOSTINHO", "faltas": 0.0, "presenca": 100.0}, {"nome": "BÁRBARA DE ALMEIDA TEIXEIRA", "faltas": 1.0, "presenca": 99.0}, {"nome": "CHRISTIANO DE SIQUEIRA MOREIRA", "faltas": 1.0, "presenca": 99.0}, {"nome": "DERICK FERREIRA DA SILVA", "faltas": 1.0, "presenca": 99.0}, {"nome": "EZEQUIEL JUNIOR MARTINS DE SOUZA GONÇALVES", "faltas": 32.0, "presenca": 68.0}, {"nome": "GABRIEL BIUDES DE CASTRO", "faltas": 12.0, "presenca": 88.0}, {"nome": "GABRIELA MONTEIRO BISPO", "faltas": 5.0, "presenca": 95.0}, {"nome": "GUILHERME VICK DE SOUZA", "faltas": 7.0, "presenca": 93.0}, {"nome": "HELOA DE OLIVEIRA MARQUES", "faltas": 0.0, "presenca": 100.0}, {"nome": "HELOISA MARTINELI DE OLIVEIRA", "faltas": 3.0, "presenca": 97.0}, {"nome": "HUGO DOMICIANO FRACASSO", "faltas": 19.0, "presenca": 81.0}, {"nome": "ISABELLY GITE DA SILVA", "faltas": 1.0, "presenca": 99.0}, {"nome": "ISAC LUIS PAULO INACIO DOS SANTOS", "faltas": 4.0, "presenca": 96.0}, {"nome": "ISRAEL FELLIPE BERNARDINO REMOLLI CARDOSO", "faltas": 6.0, "presenca": 94.0}, {"nome": "JOSE MIGUEL MARTINS POSSETTI", "faltas": 0.0, "presenca": 100.0}, {"nome": "KAUAN FERNANDO RIBEIRO MARQUES", "faltas": 9.0, "presenca": 91.0}, {"nome": "KETLEN LUARA DA SILVA LEAL", "faltas": 12.0, "presenca": 88.0}, {"nome": "LUAN VITOR GONDEK DE OLIVEIRA", "faltas": 0.0, "presenca": 100.0}, {"nome": "LUIZ OTAVIO BEATO DA SILVA", "faltas": 6.0, "presenca": 94.0}, {"nome": "MARIA CLARA DAS NEVES ARAUJO", "faltas": 15.0, "presenca": 85.0}, {"nome": "MARIA EDUARDA DA SILVA", "faltas": 1.0, "presenca": 99.0}, {"nome": "MARIA FERNANDA RODRIGUES DO CARMO DOS SANTOS SILVA", "faltas": 16.0, "presenca": 84.0}, {"nome": "MARIA VALLENTINA AROSTI FERREIRA", "faltas": 7.0, "presenca": 93.0}, {"nome": "MATHEUS DE CASTRO HENRIQUE", "faltas": 6.0, "presenca": 94.0}, {"nome": "MAYNARA YNAIE OLIVEIRA SILVA", "faltas": 7.0, "presenca": 93.0}, {"nome": "MELLANY VICTORIA BARBOSA DE SOUZA", "faltas": 6.0, "presenca": 94.0}, {"nome": "RAYSSA SEVIERO DE SOUZA", "faltas": 11.0, "presenca": 89.0}, {"nome": "YASMIM KOLANO DE JESUS", "faltas": 3.0, "presenca": 97.0}], "3ª série A": [{"nome": "ALANA FERNANDA RIBEIRO DOURADO", "faltas": 1.0, "presenca": 99.0}, {"nome": "ALANA SANCHEZ GITTI", "faltas": 8.0, "presenca": 92.0}, {"nome": "ANA JULIA MENDES", "faltas": 7.0, "presenca": 93.0}, {"nome": "DANIEL MONTEIRO BISPO", "faltas": 15.0, "presenca": 85.0}, {"nome": "DAYVID VINICIUS DA SILVA PAIVA", "faltas": 11.0, "presenca": 89.0}, {"nome": "DIONE FERREIRA DIAS", "faltas": 45.0, "presenca": 55.0}, {"nome": "EMANUEL PEROLA SANTIAGO", "faltas": 4.0, "presenca": 96.0}, {"nome": "ESTHER LARA DE OLIVEIRA RODRIGUES", "faltas": 15.0, "presenca": 85.0}, {"nome": "FELIPE RIBEIRO DA SILVA", "faltas": 5.0, "presenca": 95.0}, {"nome": "FERNANDA BARBOSA VITORIANO", "faltas": 11.0, "presenca": 89.0}, {"nome": "HELOÍSA FERREIRA VITORIANO", "faltas": 11.0, "presenca": 89.0}, {"nome": "IURY VITORIANO DE SELES", "faltas": 10.0, "presenca": 90.0}, {"nome": "JENNIFER CRUZ SOUZA", "faltas": 8.0, "presenca": 92.0}, {"nome": "KAMILLY SEVIERO MÁXIMO", "faltas": 9.0, "presenca": 91.0}, {"nome": "LORENA FARIA TARDIOLI", "faltas": 11.0, "presenca": 89.0}, {"nome": "NATÁLIA APARECIDA VIARO", "faltas": 2.0, "presenca": 98.0}, {"nome": "NELSON LUAN ZONTA", "faltas": 23.0, "presenca": 77.0}, {"nome": "PETERSON FERREIRA TARDIOLI", "faltas": 12.0, "presenca": 88.0}, {"nome": "RODRIGO CASELLI SOUZA", "faltas": 8.0, "presenca": 92.0}, {"nome": "VICTOR JÚLIO RODRIGUES DA SILVA", "faltas": 19.0, "presenca": 81.0}, {"nome": "YAGO WILIAM DOMICIANO", "faltas": 15.0, "presenca": 85.0}], "6º ano B": [{"nome": "ALICE VITORIA MENDES DE OLIVEIRA", "faltas": 1.0, "presenca": 99.0}, {"nome": "ANGELICA CHRISTINE CARDOSO DO CARMO", "faltas": 11.0, "presenca": 89.0}, {"nome": "ARTHUR MOREIRA RODRIGUES", "faltas": 0.0, "presenca": 100.0}, {"nome": "BIANCA CALLEGARI PIRES", "faltas": 4.0, "presenca": 96.0}, {"nome": "ENZO GABRIEL DA SILVA MORENO", "faltas": 1.0, "presenca": 99.0}, {"nome": "ESTER RODRIGUES SOUZA", "faltas": 4.0, "presenca": 96.0}, {"nome": "KAROLINE MELO ESCOBAR", "faltas": 5.0, "presenca": 95.0}, {"nome": "LUIZ RICARDO SOUZA DE ALMEIDA", "faltas": 15.0, "presenca": 85.0}, {"nome": "LUIZA HELENA GONCALVES PIROTA", "faltas": 0.0, "presenca": 100.0}, {"nome": "MARIA CLARA HEINST DA SILVA", "faltas": 9.0, "presenca": 91.0}, {"nome": "MARIA FERNANDA FERREIRA SANTOS", "faltas": 2.0, "presenca": 98.0}, {"nome": "MARIANE MARQUES SANTANA BELASCO", "faltas": 3.0, "presenca": 97.0}, {"nome": "MATEUS CASTRO DE SOUZA", "faltas": 4.0, "presenca": 96.0}, {"nome": "OTAVIO FERNANDES DA SILVA", "faltas": 7.0, "presenca": 93.0}, {"nome": "TAUANE RIBEIRO BARDELLA", "faltas": 8.0, "presenca": 92.0}, {"nome": "YASMIN COSTA SILVA", "faltas": 33.0, "presenca": 67.0}, {"nome": "YASMIN FERREIRA CARDOSO", "faltas": 15.0, "presenca": 85.0}], "3ª série B": [{"nome": "ANA BEATRIZ PAULANI PEREIRA", "faltas": 23.0, "presenca": 77.0}, {"nome": "ANA LARA CALLEGARI LOPES", "faltas": 11.0, "presenca": 89.0}, {"nome": "CAMILI DE ANGELI VIEIRA", "faltas": 7.0, "presenca": 93.0}, {"nome": "CARLOS EDUARDO SILVA CORRÊA", "faltas": 23.0, "presenca": 77.0}, {"nome": "CAROLLAYNE CALLEGARI GONDÉK DE OLIVEIRA", "faltas": 21.0, "presenca": 79.0}, {"nome": "DANIELA MARIA CARDOSO SILVA", "faltas": 7.0, "presenca": 93.0}, {"nome": "EDUARDA OLIVEIRA DOS SANTOS", "faltas": 10.0, "presenca": 90.0}, {"nome": "FELIPE GOMES DA COSTA", "faltas": 1.0, "presenca": 99.0}, {"nome": "JORGE RAFAEL SIQUEIRA DA SILVA", "faltas": 2.0, "presenca": 98.0}, {"nome": "KATARINA DOS ANJOS DRUMOND SILVA", "faltas": 18.0, "presenca": 82.0}, {"nome": "KAUÃ VINÍCIOS DE OLIVEIRA", "faltas": 6.0, "presenca": 94.0}, {"nome": "LUCAS HENRIQUE RIBEIRO DA SILVA", "faltas": 17.0, "presenca": 83.0}, {"nome": "PEDRO AUGUSTO RIBEIRO LOPES", "faltas": 13.0, "presenca": 87.0}, {"nome": "PEDRO LUCAS REZENDE DOS SANTOS", "faltas": 13.0, "presenca": 87.0}, {"nome": "TAFNES VITÓRIA ALVES BEATO", "faltas": 11.0, "presenca": 89.0}, {"nome": "VINÍCIUS FERREIRA BEATO", "faltas": 45.0, "presenca": 55.0}, {"nome": "YASMIM SUÉLI DOS SANTOS", "faltas": 5.0, "presenca": 95.0}], "8º ano A": [{"nome": "ANA CLARA DE SELES", "faltas": 1.0, "presenca": 99.0}, {"nome": "ARTUR VINICIOS DE OLIVEIRA", "faltas": 9.0, "presenca": 91.0}, {"nome": "CLARISSE VINHANSKI DINIZ", "faltas": 0.0, "presenca": 100.0}, {"nome": "DÉBORA FERNANDA PELEGRINO DE SOUZA", "faltas": 9.0, "presenca": 91.0}, {"nome": "ELISA NOSSA FREDRERICH", "faltas": 0.0, "presenca": 100.0}, {"nome": "FELIPE DOS SANTOS BUENO", "faltas": 5.0, "presenca": 95.0}, {"nome": "FELIPE DOURADO RUBIO", "faltas": 16.0, "presenca": 84.0}, {"nome": "FERNANDO HENRIQUE GARRIDO", "faltas": 3.0, "presenca": 97.0}, {"nome": "GUILHERME DE SOUZA BONFIM", "faltas": 7.0, "presenca": 93.0}, {"nome": "GUILHERME RIBEIRO ESCABORA", "faltas": 2.0, "presenca": 98.0}, {"nome": "IASMYN VITORIA SILVA DE FREITAS", "faltas": 4.0, "presenca": 96.0}, {"nome": "ISAAC OLIVEIRA LEITE", "faltas": 0.0, "presenca": 100.0}, {"nome": "IZADORA FERNANDES VITORIANO", "faltas": 9.0, "presenca": 91.0}, {"nome": "JOAO GUILHERME RIBEIRO GOMES", "faltas": 7.0, "presenca": 93.0}, {"nome": "JOAO LUCAS DA SILVA", "faltas": 30.0, "presenca": 70.0}, {"nome": "JULIA LOPES NOGUEIRA", "faltas": 0.0, "presenca": 100.0}, {"nome": "KARYNE DOTAS COLODINO", "faltas": 3.0, "presenca": 97.0}, {"nome": "KATHLEEN VITÓRIA FERREIRA SIMÕES", "faltas": 13.0, "presenca": 87.0}, {"nome": "MANUELLA DA SILVA RIBEIRO", "faltas": 11.0, "presenca": 89.0}, {"nome": "MANUELLA DOS SANTOS RIBEIRO", "faltas": 7.0, "presenca": 93.0}, {"nome": "MARIA EDUARDA BERGANTIN ZONTA", "faltas": 9.0, "presenca": 91.0}, {"nome": "MARIA EDUARDA PAZ MATIAS", "faltas": 0.0, "presenca": 100.0}, {"nome": "MARIA FERNANDA DE OLIVEIRA SILVA", "faltas": 0.0, "presenca": 100.0}, {"nome": "MELISSA MARIA SILVA", "faltas": 1.0, "presenca": 99.0}, {"nome": "MIGUEL PALHARES RAMOS", "faltas": 0.0, "presenca": 100.0}, {"nome": "PAULO CESAR SANTOS CARDOSO", "faltas": 5.0, "presenca": 95.0}, {"nome": "PAULO RYUKI SUZUKI NAGATA", "faltas": 11.0, "presenca": 89.0}, {"nome": "RUAN LUCAS DE AGUIAR", "faltas": 5.0, "presenca": 95.0}, {"nome": "SOPHIA LARA DE OLIVEIRA", "faltas": 3.0, "presenca": 97.0}, {"nome": "TAUA MATEUS CRUZ SIQUEIRA", "faltas": 15.0, "presenca": 85.0}, {"nome": "TIAGO SANTOS DE JESUS JUNIOR", "faltas": 27.0, "presenca": 73.0}, {"nome": "VALENTINA DOURADO MARINO", "faltas": 17.0, "presenca": 83.0}, {"nome": "WESLEY DIOGO BRANCALHONI VIEIRA", "faltas": 16.0, "presenca": 84.0}], "2ª série A": [{"nome": "ANA CLARA MOREIRA DE LIMA", "faltas": 9.0, "presenca": 91.0}, {"nome": "ANA JULIA DA SILVA", "faltas": 10.0, "presenca": 90.0}, {"nome": "ANTONIO PYETRO OLIVEIRA DA SILVA", "faltas": 14.0, "presenca": 86.0}, {"nome": "BIANCA DOS SANTOS CARDOSO BRAGA", "faltas": 6.0, "presenca": 94.0}, {"nome": "DAVI FERNANDO INÁCIO", "faltas": 5.0, "presenca": 95.0}, {"nome": "ELOÁ CONSTANTINO DE SOUZA", "faltas": 10.0, "presenca": 90.0}, {"nome": "ELOÍZA DOS SANTOS MALAVAZI", "faltas": 17.0, "presenca": 83.0}, {"nome": "EMANUELE DE OLIVEIRA VICK", "faltas": 7.0, "presenca": 93.0}, {"nome": "FELIPE DE OLIVEIRA DIAS", "faltas": 13.0, "presenca": 87.0}, {"nome": "FERNANDA MARIA DA SILVA", "faltas": 4.0, "presenca": 96.0}, {"nome": "GABRIELLY DA SILVA RIBEIRO", "faltas": 1.0, "presenca": 99.0}, {"nome": "GUILHERME MACIEL GOBBI", "faltas": 5.0, "presenca": 95.0}, {"nome": "ISABELY RODRIGUES AYUB DE OLIVEIRA", "faltas": 3.0, "presenca": 97.0}, {"nome": "JOAO GABRIEL LOPES DE SOUZA", "faltas": 4.0, "presenca": 96.0}, {"nome": "JOÃO VITOR CARDOSO PEREIRA", "faltas": 11.0, "presenca": 89.0}, {"nome": "JORGE ELIAS DO CARMO LOPES", "faltas": 2.0, "presenca": 98.0}, {"nome": "JOSÉ ANTONIO VIARO", "faltas": 21.0, "presenca": 79.0}, {"nome": "LEONARDO PEREIRA MARQUES", "faltas": 18.0, "presenca": 82.0}, {"nome": "LETÍCIA RIBEIRO DA SILVA", "faltas": 5.0, "presenca": 95.0}, {"nome": "LUAN FERNANDES DE REZENDE", "faltas": 9.0, "presenca": 91.0}, {"nome": "MAIKON ANTONIO SILVA", "faltas": 4.0, "presenca": 96.0}, {"nome": "MARIANA ESTEFANY BEZERRA DOS SANTOS", "faltas": 8.0, "presenca": 92.0}, {"nome": "MARIO GABRIEL LOIS", "faltas": 2.0, "presenca": 98.0}, {"nome": "PABLO DA SILVA", "faltas": 7.0, "presenca": 93.0}, {"nome": "RAUL MARONA PARRA", "faltas": 2.0, "presenca": 98.0}, {"nome": "RIAN RODRIGO DIAS PEREIRA", "faltas": 3.0, "presenca": 97.0}, {"nome": "VICTOR HUGO SILVA", "faltas": 7.0, "presenca": 93.0}, {"nome": "VITÓRIA APARECIDA DE SOUZA", "faltas": 8.0, "presenca": 92.0}, {"nome": "VITÓRIA DOS SANTOS DE JESUS", "faltas": 5.0, "presenca": 95.0}], "1ª série A": [{"nome": "ANA JULIA PEREIRA DOS SANTOS", "faltas": 5.0, "presenca": 95.0}, {"nome": "ANA LAURA CARVALHO LIMA", "faltas": 4.0, "presenca": 96.0}, {"nome": "ANA LUÍSA LOQUETE", "faltas": 0.0, "presenca": 100.0}, {"nome": "DIEMILY COSTA DA SILVA", "faltas": 13.0, "presenca": 87.0}, {"nome": "DIOGO DE SOUZA CORREA", "faltas": 3.0, "presenca": 97.0}, {"nome": "EMANUEL BISPO FERREIRA", "faltas": 3.0, "presenca": 97.0}, {"nome": "EMILLY NICOLI PIRES REMOLLI BRITO", "faltas": 2.0, "presenca": 98.0}, {"nome": "ENZO HENRIQUE DOS SANTOS DIAS", "faltas": 7.0, "presenca": 93.0}, {"nome": "ÉRICK BATISTA DE ANDRADE", "faltas": 4.0, "presenca": 96.0}, {"nome": "FABIANO FERNANDES RIBEIRO JUNIOR", "faltas": 3.0, "presenca": 97.0}, {"nome": "GEMILSON LOPES DE SOUZA", "faltas": 26.0, "presenca": 74.0}, {"nome": "GEOVANNA DOS SANTOS FERREIRA", "faltas": 9.0, "presenca": 91.0}, {"nome": "GRASIELE DOS SANTOS CARDOSO", "faltas": 17.0, "presenca": 83.0}, {"nome": "INAIÊ BERTINI DE CAMPOS", "faltas": 2.0, "presenca": 98.0}, {"nome": "IZADORA MARIA ALVES FERREIRA", "faltas": 9.0, "presenca": 91.0}, {"nome": "JULIA BERNARDINI FERREIRA", "faltas": 6.0, "presenca": 94.0}, {"nome": "KAUÃ CESAR MELERO", "faltas": 6.0, "presenca": 94.0}, {"nome": "KAYO DOTAS COLODINO", "faltas": 1.0, "presenca": 99.0}, {"nome": "LAÍS SUÉLI DOS SANTOS", "faltas": 5.0, "presenca": 95.0}, {"nome": "LAYANE ELISA DOS SANTOS", "faltas": 1.0, "presenca": 99.0}, {"nome": "LUARA CONSTANTINO CALDEIRA", "faltas": 7.0, "presenca": 93.0}, {"nome": "MARIA CLARA RODRIGUES DO CARMO SANTOS SILVA", "faltas": 15.0, "presenca": 85.0}, {"nome": "MARIA EDUARDA SOUZA DE MORAES", "faltas": 1.0, "presenca": 99.0}, {"nome": "MIGUEL ANTÔNIO DUTRA WARTHMANN", "faltas": 12.0, "presenca": 88.0}, {"nome": "MIGUEL SANTOS RIBEIRO", "faltas": 3.0, "presenca": 97.0}, {"nome": "MURIELY CHAGAS ZENARDI", "faltas": 0.0, "presenca": 100.0}, {"nome": "NARA BEATRIZ BEZERRA DOS SANTOS", "faltas": 5.0, "presenca": 95.0}, {"nome": "NÍNIVY SILMARA LIMA ADARIAS SOARES", "faltas": 9.0, "presenca": 91.0}, {"nome": "RAFAEL FERREIRA DE AZEVEDO", "faltas": 8.0, "presenca": 92.0}, {"nome": "THIAGO AZEVEDO CINI", "faltas": 6.0, "presenca": 94.0}, {"nome": "THIAGO TARDIOLI SOTELLO", "faltas": 4.0, "presenca": 96.0}, {"nome": "WEMILLIY SAMPAIO DO NASCIMENTO", "faltas": 7.0, "presenca": 93.0}], "7º ano A": [{"nome": "ANA VITORIA DOS SANTOS PAES", "faltas": 7.0, "presenca": 93.0}, {"nome": "ARTHUR VIEIRA OLIVEIRA", "faltas": 10.0, "presenca": 90.0}, {"nome": "BENITO PEROLA SANTIAGO", "faltas": 5.0, "presenca": 95.0}, {"nome": "CAIO LEANDRO GONDEK", "faltas": 13.0, "presenca": 87.0}, {"nome": "DANIELLY VITORIA BEATO DOS SANTOS", "faltas": 8.0, "presenca": 92.0}, {"nome": "DAVI CORREA DA SILVA", "faltas": 11.0, "presenca": 89.0}, {"nome": "DAVI HENRIQUE VIEIRA DA SILVA", "faltas": 0.0, "presenca": 100.0}, {"nome": "DAVI LUCAS PIROTA FLORENTINO", "faltas": 6.0, "presenca": 94.0}, {"nome": "DEILISDIANE COSTA SANTOS", "faltas": 4.0, "presenca": 96.0}, {"nome": "DOMINIC BRYAN DO AMARAL LIMA", "faltas": 7.0, "presenca": 93.0}, {"nome": "ELIZA GABRIELA PAVANELLI DA SILVA", "faltas": 0.0, "presenca": 100.0}, {"nome": "EMANUEL FRANCHINI MARQUES", "faltas": 8.0, "presenca": 92.0}, {"nome": "EMANUELLI CAROLINE HIPOLITO", "faltas": 11.0, "presenca": 89.0}, {"nome": "FELIPE RODRIGUES CORREA", "faltas": 4.0, "presenca": 96.0}, {"nome": "GABRIEL DA SILVA", "faltas": 0.0, "presenca": 100.0}, {"nome": "GABRIELLY DA SILVA", "faltas": 0.0, "presenca": 100.0}, {"nome": "GUILHERME PYETRO PEREIRA DE AQUINO", "faltas": 7.0, "presenca": 93.0}, {"nome": "HENRIQUE SEVIEIRO MAXIMO", "faltas": 0.0, "presenca": 100.0}, {"nome": "JHEMESON CRUZ SOUZA", "faltas": 8.0, "presenca": 92.0}, {"nome": "JOAO AUGUSTO RESTANI GITTI", "faltas": 1.0, "presenca": 99.0}, {"nome": "LARA CAMILA DE MELO GONÇALVES", "faltas": 1.0, "presenca": 99.0}, {"nome": "LETÍCIA MARIA VIARO", "faltas": 0.0, "presenca": 100.0}, {"nome": "LORENA FERNANDA BUZON QUINTANA", "faltas": 2.0, "presenca": 98.0}, {"nome": "LUCAS FERREIRA MELO", "faltas": 13.0, "presenca": 87.0}, {"nome": "LUIZ MIGUEL RIBEIRO LOPES", "faltas": 5.0, "presenca": 95.0}, {"nome": "MANOELA BEATO DE SOUZA", "faltas": 41.0, "presenca": 59.0}, {"nome": "MARIA EDUARDA TEIXEIRA HORN", "faltas": 11.0, "presenca": 89.0}, {"nome": "MIKAEL PEREIRA TORRES", "faltas": 17.0, "presenca": 83.0}, {"nome": "PEDRO DE CASTRO HENRIQUE", "faltas": 11.0, "presenca": 89.0}, {"nome": "RAFAEL FRANCISCO DA SILVA SANTOS", "faltas": 4.0, "presenca": 96.0}, {"nome": "SAMUEL DOS ANJOS DRUMOND SILVA", "faltas": 22.0, "presenca": 78.0}, {"nome": "SANDRO HENRIQUE DIAS DA SILVA", "faltas": 3.0, "presenca": 97.0}, {"nome": "VERONICA BRAZ RUIZ", "faltas": 4.0, "presenca": 96.0}, {"nome": "YNAHE OLIVEIRA GITI", "faltas": 5.0, "presenca": 95.0}, {"nome": "YSADORA VITORIA COSTA BRITO", "faltas": 1.0, "presenca": 99.0}]};
 
-  // DISCIPLINAS LIMPAS (SEM NOME DE PROFESSORES)
+  // DISCIPLINAS POR TURMA
   const disciplinasPorTurma = {
     "6º ano A": [
       { id: "Língua Portuguesa", nome: "Língua Portuguesa" },
@@ -745,354 +726,292 @@
     ]
   };
 
-  // BANCO DE TÓPICOS AMPLIADO
+  // BANCO DE TÓPICOS RIGOROSAMENTE SEPARADO POR ETAPA (EF II vs. EM) ALINHADO À SEDUC-SP
   const bancoTopicosGerais = {
-    "Língua Portuguesa": [
-      "1. Gêneros Jornalísticos: Notícia, Reportagem e Editorial",
-      "2. Texto Dissertativo-Argumentativo e Tese",
-      "3. Coesão Textual e Operadores Lógicos Interparágrafos",
-      "4. Variedades Linguísticas e Adequação Vocabular",
-      "5. Sintaxe do Período Simples e Composto",
-      "6. Literatura Brasileira e Movimentos Literários",
-      "7. Regência Verbal/Nominal e Uso da Crase",
-      "8. Análise de Textos Multissemióticos e Mídias Digitais",
-      "9. Concordância Verbal e Nominal Aplicada",
-      "10. Figuras de Linguagem e Recursos Estilísticos",
-      "11. Ambiguidade, Polissemia e Paráfrase",
-      "12. Pontuação e Expressividade Textual",
-      "13. Leitura Crítica de Textos Publicitários",
-      "14. Processos de Formação de Palavras",
-      "15. Estruturas Narrativas, Foco Narrativo e Verossimilhança",
-      "16. Poesia, Métrica, Rima e Ritmo",
-      "17. Colocação Pronominal (Próclise, Mesóclise e Êclise)",
-      "18. Leitura e Análise de Contos e Crônicas Modernas",
-      "19. Coerência Textual e Incompatibilidades Semânticas",
-      "20. Produção e Revisão Textual Orientada"
+    // --- ENSINO FUNDAMENTAL II (6º ao 9º Ano) ---
+    "Língua Portuguesa_EF": [
+      "1. Leitura e Interpretação de Textos Narrativos e Poéticos",
+      "2. Gêneros Textuais: Notícia, Reportagem, Carta e Conto",
+      "3. Ortografia, Acentuação Gráfica e Pontuação",
+      "4. Classes de Palavras (Substantivo, Adjetivo, Verbo, Advérbio)",
+      "5. Sintaxe: Sujeito, Predicado e Complementos Verbais",
+      "6. Coesão Textual e Pronomes Relativos",
+      "7. Figuras de Linguagem Básicas (Metáfora, Comparação, Personificação)",
+      "8. Variedade Linguística e Preconceito Linguístico",
+      "9. Leitura Crítica de Textos Multissemióticos e Quadrinhos",
+      "10. Produção Textual: Narrativa de Enigma e Parágrafo Argumentativo"
     ],
-    "Matemática": [
-      "1. Conjuntos Numéricos, Frações e Porcentagem",
-      "2. Equações, Inequações e Sistemas do 1º e 2º Grau",
-      "3. Conceito de Função (Afim, Quadrática e Exponencial)",
-      "4. Razão, Proporção e Regra de Três Simples/Composta",
-      "5. Geometria Plana: Ângulos, Áreas e Teorema de Pitágoras",
-      "6. Geometria Espacial: Prismas, Cilindros e Volumes",
-      "7. Análise Combinatória e Probabilidade",
-      "8. Estatística Descritiva, Média, Mediana e Leitura de Gráficos",
-      "9. Trigonometria no Triângulo Retângulo e Círculo Trigonométrico",
-      "10. Matrizes, Determinantes e Sistemas Lineares",
-      "11. Progressões Aritméticas (PA) e Geométricas (PG)",
-      "12. Geometria Analítica: Ponto, Reta e Distâncias",
-      "13. Polígonos Regulares, Diagonal e Soma dos Ângulos",
-      "14. Porcentagem Aplicada a Descontos e Acréscimos",
-      "15. Unidades de Medida, Conversões e Escalas",
-      "16. Raciocínio Lógico-Matemático e Resolução de Problemas",
-      "17. Teorema de Tales e Semelhança de Triângulos",
-      "18. Funções Logarítmicas e Aplicações",
-      "19. Números Complexos e Suas Representações",
-      "20. Análise de Variação, Taxas e Gráficos do Cotidiano"
+    "Matemática_EF": [
+      "1. Operações Fundamentais com Números Naturais e Inteiros",
+      "2. Frações, Dízimas Periódicas e Porcentagem Básica",
+      "3. Potenciação, Radiciação e Expressões Numéricas",
+      "4. Equações e Inequações do 1º Grau",
+      "5. Razão, Proporção e Regra de Três Simples",
+      "6. Geometria Plana: Ângulos, Triângulos e Quadriláteros",
+      "7. Cálculo de Perímetro, Área e Unidades de Medida",
+      "8. Equações do 2º Grau e Teorema de Pitágoras (8º e 9º ano)",
+      "9. Leitura de Gráficos de Barras, Setores e Tabela de Frequência",
+      "10. Probabilidade Simples e Estatística Descritiva Básica"
     ],
     "Ciências": [
-      "1. Sistemas do Corpo Humano e Saúde Pública",
-      "2. Citologia e Divisão Celular (Mitose e Meiose)",
-      "3. Matéria, Misturas e Métodos de Separação",
-      "4. Tabela Periódica e Reações Químicas",
-      "5. Ecologia, Biomas e Cadeias Alimentares",
-      "6. Genética e Leis de Mendel",
-      "7. Astronomia, Sistema Solar e Fases da Lua",
-      "8. Fontes de Energia Renováveis e Não Renováveis",
-      "9. Transformações Físicas e Químicas da Matéria",
-      "10. Propriedades da Água e Ciclo Hidrológico",
-      "11. Sistema Nervoso e Órgãos dos Sentidos",
-      "12. Sistema Imunológico, Vacinas e Soros",
-      "13. Seres Vivos: Classificação e Reinos da Natureza",
-      "14. Fisiologia Vegetal e Fotossíntese",
-      "15. Ondas, Luz, Som e Suas Aplicações",
-      "16. Calor, Temperatura e Propagação do Calor",
-      "17. Força, Movimento e Máquinas Simples",
-      "18. Sustentabilidade, Lixo e Reciclagem",
-      "19. Doenças Transmissíveis e Prevenção",
-      "20. História da Ciência e Método Científico"
+      "1. Célula: Unidade Fundamental da Vida e Tecidos",
+      "2. Sistemas do Corpo Humano (Digestório, Respiratório, Circulatório, Nervoso)",
+      "3. Matéria, Misturas, Substâncias e Separação de Misturas",
+      "4. Ecologia: Ecossistemas, Biomas Brasileiros e Teias Alimentares",
+      "5. Tabela Periódica, Elementos e Reações Químicas Simples",
+      "6. Astronomia: Terra, Lua, Sol, Estações do Ano e Sistema Solar",
+      "7. Fontes de Energia Renováveis e Conservação Ambiental",
+      "8. Genética Básica, Hereditariedade e Leis de Mendel",
+      "9. Propriedades da Água, Solo e Ciclos Biogeoquímicos",
+      "10. Saúde Pública, Vacinas, Vírus e Bactérias"
     ],
-    "História": [
-      "1. Roma e Grécia Antiga",
-      "2. Feudalismo e Idade Média",
-      "3. Grandes Navegações e Colonização do Brasil",
-      "4. Iluminismo, Revolução Francesa e Industrial",
-      "5. Brasil Império e Primeira República",
-      "6. Era Vargas e Ditadura Militar no Brasil",
-      "7. Primeira e Segunda Guerra Mundial",
-      "8. Guerra Fria e Mundo Contemporâneo",
-      "9. Povos Indígenas e Matriz Africana na Formação do Brasil",
-      "10. Revolução Russa e Expansão do Socialismo",
-      "11. Absolutismo Monárquico e Mercantilismo",
-      "12. Conflitos do Século XXI e Geopolítica Histórica",
-      "13. Processo de Independência da América Latina",
-      "14. Movimentos Sociais no Brasil (Canudos, Contestado, Chibata)",
-      "15. Redemocratização do Brasil e Constituição de 1988",
-      "16. Antiguidade Oriental: Egito e Mesopotâmia",
-      "17. Renascimento Cultural e Reforma Protestante",
-      "18. Crise de 1929 e Nazifascismo na Europa",
-      "19. Neocolonialismo e Imperialismo no Século XIX",
-      "20. Patrimônio Histórico, Memória e Cidadania"
+    "História_EF": [
+      "1. Introdução aos Estudos Históricos e Fontes Históricas",
+      "2. Pré-História, Primeiras Civilizações e Antiguidade Oriental",
+      "3. Grécia e Roma Antiga: Sociedade, Política e Cidadania",
+      "4. Idade Média: Feudalismo, Igreja e Cultura Medieval",
+      "5. Renascimento Cultural, Formação dos Estados Nacionais e Navegações",
+      "6. Brasil Colônia: Açúcar, Mineração e Povos Indígenas/Africanos",
+      "7. Iluminismo, Revolução Industrial e Revolução Francesa",
+      "8. Brasil Império: Processo de Independência e Escravidão",
+      "9. Brasil República: Primeira República, Era Vargas e Populismo",
+      "10. Guerras Mundiais, Guerra Fria e Brasil Contemporâneo"
     ],
-    "Geografia": [
-      "1. Cartografia, Escalas e Fuso Horário",
-      "2. Relevo, Solos e Tectônica de Placas",
-      "3. Climatologia e Biomas Globais/Brasileiros",
-      "4. Demografia, Migrações e Urbanização",
-      "5. Espaço Agrário e Industrialização",
-      "6. Globalização, Geopolítica e Blocos Econômicos",
-      "7. Recursos Hídricos e Bacias Hidrográficas do Brasil",
-      "8. Problemas Ambientais Urbanos e Rurais",
-      "9. Geopolítica do Oriente Médio e Conflitos Internacionais",
-      "10. Divisão Regional do Brasil (IBGE e Complexos Regionais)",
-      "11. Matriz Energética Brasileira e Mundial",
-      "12. Transporte, Logística e Infraestrutura Territorial",
-      "13. Indicadores Socioeconômicos (IDH, Gini e PIB)",
-      "14. Redes Urbanas e Hierarquia das Cidades",
-      "15. Uso do Solo, Agronegócio e Agricultura Familiar",
-      "16. Geoclimatologia e Mudanças Climáticas",
-      "17. Geopolítica da América Latina",
-      "18. Sensoriamento Remoto, GPS e SIG",
-      "19. População Ativa, Mercado de Trabalho e Setores da Economia",
-      "20. Domínios Morfoclimáticos Brasileiros"
+    "Geografia_EF": [
+      "1. Cartografia Básica, Orientação, Escalas e Coordenadas Geográficas",
+      "2. Relevo, Solos, Tectônica de Placas e Agentess do Relevo",
+      "3. Clima, Tempo Atmosférico e Biomas Brasileiros",
+      "4. Hidrografia e Bacias Hídricas do Brasil",
+      "5. População Mundial e Brasileira: Demografia e Migrações",
+      "6. Espaço Urbano e Espaço Rural no Brasil",
+      "7. Divisão Regional do Brasil (IBGE e Complexos Regionais)",
+      "8. América Latina, África e Dinâmicas Socioeconômicas",
+      "9. Ásia, Europa e Oceania: Aspectos Naturais e Humanos",
+      "10. Questões Ambientais Globais e Desenvolvimento Sustentável"
+    ],
+
+    // --- ENSINO MÉDIO (1ª a 3ª Série) ---
+    "Língua Portuguesa_EM": [
+      "1. Análise Textual e Discursiva de Gêneros Jornalísticos e Políticos",
+      "2. Estudo Aprofundado do Texto Dissertativo-Argumentativo (Padrão ENEM)",
+      "3. Coesão, Coerência e Operadores Argumentativos Interparágrafos",
+      "4. Sintaxe do Período Composto: Coordenação e Subordinação",
+      "5. Regência Verbal/Nominal, Concordância e Uso da Crase",
+      "6. Literatura Brasileira: Barroco, Arcadismo, Romantismo e Realismo",
+      "7. Modernismo no Brasil, Semana de 22 e Poesia Contemporânea",
+      "8. Análise de Recursos Estilísticos, Figuras de Linguagem e Intertexto",
+      "9. Colocação Pronominal e Variação Linguística em Diferentes Mídias",
+      "10. Leitura e Análise das Obras Literárias Obrigatórias dos Vestibulares"
+    ],
+    "Matemática_EM": [
+      "1. Conjuntos Numéricos e Teoria dos Conjuntos",
+      "2. Estudo Geral das Funções: Afim, Quadrática, Exponencial e Logarítmica",
+      "3. Trigonometria no Triângulo Retângulo e Círculo Trigonométrico",
+      "4. Progressões Aritméticas (PA) e Geométricas (PG)",
+      "5. Matrizes, Determinantes e Sistemas Lineares",
+      "6. Análise Combinatória (Arranjo, Permutação, Combinação) e Probabilidade",
+      "7. Geometria Espacial: Prismas, Pirâmides, Cilindros, Cones e Esferas",
+      "8. Geometria Analítica: Ponto, Reta, Distâncias e Círculo",
+      "9. Estatística Desritiva: Média, Mediana, Moda, Desvio Padrão e Variance",
+      "10. Números Complexos e Polinômios"
+    ],
+    "História_EM": [
+      "1. Historiografia, Memória e Usos do Passado",
+      "2. Absolutismo Monárquico, Mercantilismo e Expansão Marítima",
+      "3. Revoluções Burguesas, Iluminismo e Consolidação do Capitalismo",
+      "4. Processos de Independência nas Américas e Formação dos Estados",
+      "5. Imperialismo, Neocolonialismo do Século XIX e Primeira Guerra Mundial",
+      "6. Crise de 1929, Regimes Totalitários (Nazifascismo) e Segunda Guerra",
+      "7. Guerra Fria, Descolonização Africana e Asiática e Geopolítica",
+      "8. Brasil: Ditadura Civil-Militar (1964-1985) e Redemocratização",
+      "9. Conflitos Contemporâneos, Globalização e Direitos Humanos",
+      "10. História dos Povos Indígenas e Afro-brasileiros (Leis 10.639 e 11.645)"
+    ],
+    "Geografia_EM": [
+      "1. Cartografia Temática, Sensoriamento Remoto e Tecnologias Geográficas",
+      "2. Geoclimatologia, Biomas Globais e Mudanças Climáticas",
+      "3. Globalização, Geopolítica Mundial e Blocos Econômicos",
+      "4. Demografia Global, Fluxos Migratórios e Mercado de Trabalho",
+      "5. Geopolítica do Petróleo, Matriz Energética e Transição Energética",
+      "6. Espaço Agrário Global, Agronegócio e Segurança Alimentar",
+      "7. Industrialização, Redes de Transporte, Logística e Cidades Globais",
+      "8. Problemas Ambientais Urbanos e Governança Ambiental Global",
+      "9. Organização Territorial do Brasil e Infraestrutura",
+      "10. Geopolítica do Oriente Médio, América Latina e Grandes Potências"
     ],
     "Biologia": [
-      "1. Bioquímica Celular e Fisiologia Humana",
-      "2. Genética, Genoma e Hereditariedade",
-      "3. Biotecnologia, Vacinas e Engenharia Genética",
-      "4. Ecologia, Ciclos Biogeoquímicos e Impactos Ambientais",
-      "5. Teoria da Evolução (Darwinismo e Neodarwinismo)",
-      "6. Botânica: Grupos Vegetais e Fisiologia",
-      "7. Zoologia: Invertebrados e Vertebrados",
-      "8. Microbiologia: Vírus, Bactérias e Fungos",
-      "9. Biologia Celular: Organelas e Membrana Plasmática",
-      "10. Histologia Humana e Animal",
-      "11. Embriologia e Desenvolvimento Humano",
-      "12. Parasitologia e Saúde Pública no Brasil",
-      "13. Biomas Brasileiros e Biodiversidade",
-      "14. Relações Ecológicas Harmônicas e Desarmônicas",
-      "15. Engenharia de Tecidos e Células-Tronco",
-      "16. Mutação Genética e Anomalias Cromossômicas",
-      "17. Metabolismo Energético: Respiração, Fermentação e Fotossíntese",
-      "18. Conservação da Natureza e Unidades de Conservação",
-      "19. Taxonomia e Sistemática Filogenética",
-      "20. Biotecnologia Agrícola e Organismos Transgênicos"
+      "1. Bioquímica Celular: Água, Sais, Carboidratos, Lipídios e Proteínas",
+      "2. Citologia: Organelas Celulares, Membrana e Transporte Plasmático",
+      "3. Metabolismo Energético: Fotosíntese, Respiração e Fermentação",
+      "4. Genética Molecular: Estrutura do DNA/RNA, Síntese Proteica e Mutações",
+      "5. Engenharia Genética, Biotecnologia, Transgênicos e Células-Tronco",
+      "6. Teoria Evolutiva: Darwinismo, Neodarwinismo e Especiação",
+      "7. Ecologia: Ciclos Biogeoquímicos, Teias Ecológicas e Biomas",
+      "8. Botânica: Morfologia, Fisiologia Vegetal e Grupos Botânicos",
+      "9. Zoologia Comparada dos Invertebrados e Vertebrados",
+      "10. Fisiologia Humana, Sistema Imunológico e Parasitologia"
     ],
     "Física": [
-      "1. Cinemática Escalar e Vetorial (MRU e MRUV)",
-      "2. Leis de Newton e Suas Aplicações",
-      "3. Trabalho, Energia Mecânica e Conservação",
-      "4. Impulso, Quantidade de Movimento e Colisões",
-      "5. Gravitação Universal e Leis de Kepler",
-      "6. Estática dos Corpos Rígidos e Hidrostática (Pascal e Arquimedes)",
-      "7. Termometria, Calorimetria e Dilatação Térmica",
-      "8. Termodinâmica: Leis e Máquinas Térmicas",
-      "9. Óptica Geométrica: Reflexão, Refração e Lentes",
-      "10. Ondulatória: Propriedades, Fenômenos Ondulatórios e Som",
-      "11. Carga Elétrica, Campo Elétrico e Potencial",
-      "12. Circuitos Elétricos, Corrente, Tensão e Resistência (Leis de Ohm)",
-      "13. Potência Elétrica e Consumo de Energia Residencial",
-      "14. Magnetismo e Indução Eletromagnética",
-      "15. Movimento Circular Uniforme e Aceleração Centrípeta",
-      "16. Acústica, Efeito Doppler e Frequências",
-      "17. Introdução à Física Moderna e Efeito Fotoelétrico",
-      "18. Espelhos Planos e Esféricos",
-      "19. Geradores, Receptores e Medidores Elétricos",
-      "20. Vetores, Decomposição e Operações Vetoriais"
+      "1. Cinemática Escalar e Vetorial (MRU, MRUV e Movimento Circular)",
+      "2. Dinâmica: Leis de Newton, Força Atrito, Centrípeta e Trabalho/Energia",
+      "3. Impulso, Quantidade de Movimento e Colisões Mecânicas",
+      "4. Gravitação Universal e Leis de Kepler",
+      "5. Hidrostática: Pressão, Princípio de Pascal e Empuxo (Arquimedes)",
+      "6. Termometria, Calorimetria e Dilatação Térmica dos Corpos",
+      "7. Termodinâmica: Leis da Termodinâmica e Máquinas Térmicas",
+      "8. Óptica Geométrica: Reflexão, Espelhos, Refração e Lentes",
+      "9. Ondulatória: Fenômenos Ondulatórios, Acústica e Efeito Doppler",
+      "10. Eletrostática, Circuitos Elétricos (Leis de Ohm) e Eletromagnetismo"
     ],
     "Química": [
-      "1. Estrutura Atômica e Modelos Atômicos",
-      "2. Tabela Periódica e Propriedades Periódicas",
-      "3. Ligações Químicas (Iônica, Covalente e Metálica)",
-      "4. Funções Inorgânicas (Ácidos, Bases, Sais e Óxidos)",
-      "5. Reações Químicas e Balanceamento de Equações",
-      "6. Estequiometria e Cálculos Químicos",
-      "7. Soluções: Concentração, Molaridade e Diluição",
-      "8. Termoquímica: Entalpia e Reações Endo/Exotérmicas",
-      "9. Cinética Química e Fatores que Alteram a Velocidade",
-      "10. Equilíbrio Químico e Princípio de Le Chatelier",
-      "11. pH, pOH e Hidrólise Salina",
-      "12. Eletroquímica: Pilhas, Baterias e Eletrólise",
-      "13. Introdução à Química Orgânica e Cadeias Carbônicas",
-      "14. Funções Oxigenadas e Nitrogenadas",
-      "15. Isomeria Plana e Espacial",
-      "16. Reações Orgânicas (Substituição, Adição e Eliminação)",
-      "17. Polímeros Sintéticos e Naturais",
-      "18. Química Ambiental, Efeito Estufa e Chuva Ácida",
-      "19. Separação de Misturas e Tratamento de Água",
-      "20. Radioatividade, Fusão e Fissão Nuclear"
+      "1. Estrutura Atômica, Modelos Atômicos e Distribuição Eletrônica",
+      "2. Tabela Periódica, Propriedades Periódicas e Ligações Químicas",
+      "3. Funções Inorgânicas: Ácidos, Bases, Sais e Óxidos",
+      "4. Reações Químicas, Balanceamento e Estequiometria",
+      "5. Soluções Químicas: Concentração, Molaridade e Diluição",
+      "6. Termoquímica: Entalpia e Diagramas de Energia",
+      "7. Cinética Química e Equilíbrio Químico (Le Chatelier)",
+      "8. Eletroquímica: Pilhas, Baterias e Eletrólise",
+      "9. Química Orgânica: Cadeias Carbônicas e Funções Orgânicas",
+      "10. Isomeria, Reações Orgânicas e Química Ambiental"
     ],
-    "Inglês": [
-      "1. Estratégias de Leitura (Skimming e Scanning)",
-      "2. Compreensão Textual e Falsos Cognatos",
-      "3. Tempos Verbais (Simple Present, Past e Continuous)",
-      "4. Verbos Modais e Conectores Lógicos",
-      "5. Produção de Textos Curtos e Vocabulário Temático",
-      "6. Present Perfect e Past Perfect",
-      "7. Voz Passiva e Discurso Indireto (Reported Speech)",
-      "8. Interpretação de Notícias e Artigos Internacionais",
-      "9. Phrasal Verbs e Idioms do Cotidiano",
-      "10. Orações Condicionais (Conditionals 0, 1, 2 e 3)"
-    ],
+
+    // --- DISCIPLINAS COM CONTEÚDOS EXCLUSIVOS E ADEQUADOS ---
     "Educação Física": [
-      "1. Práticas Corporais, Esportes e Regras",
-      "2. Atividade Física, Saúde e Qualidade de Vida",
-      "3. Jogos Eletrônicos e Cultura Corporal",
-      "4. Danças, Lutas e Expressões Corporais",
-      "5. Anatomia Aplicada ao Movimento e Exercício",
-      "6. Esportes de Invasão, Rede e Combate",
-      "7. Sedentarismo, Obesidade e Benefícios do Exercício",
-      "8. Jogos Cooperativos e Inclusão no Esporte"
+      "1. Esportes de Marca, Precisão, Invasão e Combate",
+      "2. Brincadeiras e Jogos Populares, Tradicionais e Cooperativos",
+      "3. Ginástica Geral, Ginástica de Condicionamento e Conscientização Corporal",
+      "4. Danças Urbanas, Tradicionais, do Brasil e do Mundo",
+      "5. Lutas do Brasil e Lutas do Mundo",
+      "6. Práticas Corporais de Aventura (Urbanas e na Natureza)",
+      "7. Atividade Física, Saúde, Sedentarismo e Qualidade de Vida",
+      "8. Cultura Corporal de Movimento e Padrões de Beleza/Corpo"
     ],
     "Arte": [
-      "1. Elementos Linguísticos das Artes Visuais",
-      "2. História da Arte: do Impressionismo ao Modernismo",
-      "3. Arte Contemporânea e Intervenções Urbanas",
-      "4. Patrimônio Cultural e Expressões Artísticas",
-      "5. Arte Brasileira, Semana de Arte Moderna de 1922",
-      "6. Teatralidade, Dança e Performance",
-      "7. Elementos da Linguagem Musical e Sonoridades",
-      "8. Audiovisual, Cinema e Fotografia"
+      "1. Elementos da Linguagem das Artes Visuais (Ponto, Linha, Cor, Forma)",
+      "2. História da Arte: da Arte Pré-Histórica ao Renascimento",
+      "3. Arte Brasileira: Arte Indígena, Barroco e Semana de 22",
+      "4. Arte Contemporânea, Instalações e Intervenções Urbanas",
+      "5. Elementos do Teatro, Dramaturgia e Expressão Corporal",
+      "6. Elementos da Linguagem Musical, Ritmo e Sonoridade",
+      "7. Dança: Expressão Corporal, Ritmo e Estilos de Dança",
+      "8. Patrimônio Cultural Material e Imaterial"
     ],
-    "T.I. / Programação": [
-      "1. Pensamento Computacional e Lógica de Programação",
-      "2. Algoritmos Simples e Estruturas de Decisão",
-      "3. Programação em Blocos e Desenvolvimento Web",
-      "4. Cultura Digital, Algoritmos e Redes Sociais",
-      "5. Lógica Algorítmica e Estruturas de Repetição",
-      "6. Introdução a HTML, CSS e JavaScript",
-      "7. Bancos de Dados, Segurança e Privacidade Digital",
-      "8. Inteligência Artificial e Automação no Cotidiano"
-    ],
-    "Programação / T.I.": [
-      "1. Lógica Algorítmica e Estruturas de Repetição",
-      "2. Programação Orientada a Objetos / Web",
-      "3. Bancos de Dados e Estrutura de Informações",
-      "4. Desenvolvimento de Interfaces de Usuário (UI/UX)",
-      "5. Segurança da Informação e Cibersegurança"
-    ],
-    "Educação Financeira": [
-      "1. Planejamento Financeiro e Orçamento Pessoal",
-      "2. Consumo Consciente, Juros e Financiamentos",
-      "3. Tipos de Investimentos (Renda Fixa e Variável)",
-      "4. Mercado Financeiro e Inflação",
-      "5. Empréstimos, Cartão de Crédito e Prevenção ao Endividamento",
-      "6. Matemática Financeira Aplicada e Juros Compostos"
+    "Inglês": [
+      "1. Estratégias de Leitura (Skimming, Scanning e Cognatos)",
+      "2. Compreensão e Interpretação de Textos Multissemióticos",
+      "3. Tempos Verbais (Simple Present, Present Continuous, Past Simple)",
+      "4. Verbos Modais (Can, Could, Should, Must)",
+      "5. Pronomes, Adjetivos e Conectores Lógicos",
+      "6. Vocabulário Temático: Cotidiano, Tecnologia e Profissões",
+      "7. Present Perfect e Past Continuous (Anos Finais / EM)",
+      "8. Conditional Sentences e Voz Passiva (Ensino Médio)"
     ],
     "Filosofia": [
-      "1. Introdução à Filosofia e Pensamento Crítico",
-      "2. Ética, Moral e Filosofia Política",
-      "3. Epistemologia e Teoria do Conhecimento",
-      "4. Filosofia Antiga, Medieval, Moderna e Contemporânea",
-      "5. Estética, Filosofia da Ciência e Direitos Humanos"
+      "1. Introdução ao Pensamento Filosófico e Mito x Filosofia",
+      "2. Filosofia Antiga: Sócrates, Platão e Aristóteles",
+      "3. Ética, Moral e Valores na Sociedade Contemporânea",
+      "4. Filosofia Política: Estado, Cidadania e Direitos Humanos",
+      "5. Epistemologia: Teoria do Conhecimento e Ciência"
     ],
     "Sociologia": [
-      "1. Teorias Sociológicas Clássicas (Durkheim, Marx, Weber)",
-      "2. Cultura, Socialização e Diversidade Social",
-      "3. Trabalho, Direitos Sociais e Cidadania",
-      "4. Estado, Poder e Movimentos Sociais no Brasil",
-      "5. Desigualdade Social, Gênero e Etnia"
+      "1. Introdução à Sociologia e Imaginação Sociológica",
+      "2. Teorias Sociológicas Clássicas (Durkheim, Marx e Weber)",
+      "3. Cultura, Socialização, Identidade e Diversidade Social",
+      "4. Trabalho, Sociedade e Transformações no Mundo do Trabalho",
+      "5. Desigualdade Social, Etnia, Gênero e Movimentos Sociais"
     ],
     "Redação e Leitura": [
-      "1. Leitura Crítica, Estruturas Narrativas e Argumentativas",
-      "2. Produção de Redação Dissertativa no Padrão ENEM/Provas Paulistas",
-      "3. Coerência, Coesão e Repertório Sociocultural Legítimo",
-      "4. Proposta de Intervenção Detalhada e Projetos de Texto",
-      "5. Análise de Redações Nota 1000 e Erros Frequentes"
+      "1. Leitura Crítica e Estruturação de Parágrafos",
+      "2. Produção de Redação Dissertativa-Argumentativa",
+      "3. Repertório Sociocultural e Proposta de Intervenção",
+      "4. Coesão, Coerência e Revisão Textual"
     ],
     "Robótica": [
-      "1. Introdução à Robótica Educacional e Montagem de Protótipos",
-      "2. Lógica de Programação aplicada a Sensores e Atuadores",
-      "3. Resolução de Problemas Práticos com Automação",
-      "4. Microcontroladores (Arduino), Circuitos e ComponentesEletrônicos",
-      "5. Projetos de Automação Sustentável e Robótica Social"
+      "1. Montagem de Protótipos e Introdução à Robótica Educacional",
+      "2. Lógica de Programação Aplicada a Sensores e Atuadores",
+      "3. Microcontroladores (Arduino), Circuitos e Componentes",
+      "4. Resolução de Problemas com Automação Sustentável"
+    ],
+    "T.I. / Programação": [
+      "1. Lógica Algorítmica e Pensamento Computacional",
+      "2. Estruturas de Decisão e Repetição na Programação",
+      "3. Introdução ao Desenvolvimento Web (HTML/CSS)",
+      "4. Cultura Digital, Cibersegurança e Algoritmos"
+    ],
+    "Programação / T.I.": [
+      "1. Lógica Algorítmica e Pensamento Computacional",
+      "2. Estruturas de Decisão e Repetição na Programação",
+      "3. Introdução ao Desenvolvimento Web (HTML/CSS)",
+      "4. Cultura Digital, Cibersegurança e Algoritmos"
+    ],
+    "Educação Financeira": [
+      "1. Planejamento Financeiro e Orçamento Pessoal/Familiar",
+      "2. Consumo Consciente, Necessidade x Desejo",
+      "3. Juros Simples, Juros Compostos e Financiamentos",
+      "4. Investimentos, Renda Fixa/Variável e Prevenção ao Endividamento"
     ],
     "Práticas Experimentais": [
-      "1. Método Científico, Formulação de Hipóteses e Testes",
-      "2. Experimentos Práticos de Laboratório e Relatórios Científicos",
-      "3. Segurança em Laboratório, Manuseio de Vidrarias e Análise",
-      "4. Investigação Científica Aplicada a Problemas Locais"
+      "1. Método Científico, Hipóteses e Testes Práticos",
+      "2. Normas de Segurança em Laboratório e Manuseio de Materiais",
+      "3. Coleta de Dados, Elaboração de Relatórios e Análise"
     ],
     "EMA - Esporte, Música e Arte": [
-      "1. Expressão Corporal, Ritmo e Sensibilidade Artística",
-      "2. Vivências Esportivas Coletivas e Inclusão",
-      "3. Criação Artística e Musical Multidisciplinar",
-      "4. Projetos Interdisciplinares e Mostras Culturais"
+      "1. Vivências Esportivas Coletivas e Inclusão",
+      "2. Expressão Corporal, Ritmo e Sensibilidade Artística",
+      "3. Projetos Interdisciplinares e Mostras Culturais"
     ],
     "Orientação de Estudos – Língua Portuguesa": [
       "1. Técnicas de Leitura, Grifos e Foco na Interpretação de Texto",
       "2. Resolução Comentada de Questões da Prova Paulista e SARESP",
-      "3. Organização da Rotina de Estudos e Revisão Gramatical",
-      "4. Estratégias para Provas Objetivas e Discursivas"
+      "3. Organização da Rotina de Estudos e Revisão Gramatical"
     ],
     "Orientação de Estudos – Matemática": [
       "1. Resolução de Problemas Matemáticos e Raciocínio Lógico",
       "2. Treino Intensivo de Cálculos e Operações Fundamentais",
-      "3. Análise de Questões das Provas Oficiais da SEDUC-SP",
-      "4. Gestão do Tempo e Estratégias de Resolução de Provas"
+      "3. Análise de Questões das Provas Oficiais da SEDUC-SP"
     ],
     "Projeto de Vida": [
       "1. Autoconhecimento, Autoestima e Competências Socioemocionais",
       "2. Organização do Tempo e Planejamento Pessoal",
-      "3. Projeto Profissional, Mercado de Trabalho e Cidadania",
-      "4. Planejamento Acadêmico, Vestibulares e Carreira"
+      "3. Projeto Profissional, Mercado de Trabalho e Cidadania"
     ],
     "ME - Marketing e Estudos de Mercado": [
       "1. Conceitos de Marketing e Mix de Marketing (4Ps)",
       "2. Pesquisa de Mercado, Público-Alvo e Segmentação",
-      "3. Comportamento do Consumidor e Análise SWOT",
-      "4. Estratégias de Branding e Posicionamento de Mercado"
+      "3. Comportamento do Consumidor e Análise SWOT"
     ],
     "PM - Processos de Marketing": [
-      "1. Planejamento de Campanhas Publicitárias",
-      "2. Gestão de Mídias Sociais e Marketing Digital",
-      "3. Funil de Vendas, Inbound Marketing e Métricas",
-      "4. Atendimento ao Cliente e Fidelização"
+      "1. Planejamento de Campanhas Publicitárias e Mídias Sociais",
+      "2. Funil de Vendas, Inbound Marketing e Métricas"
     ],
     "GFC - Gestão Financeira e Contábil": [
       "1. Princípios de Contabilidade e Balanço Patrimonial",
-      "2. Demonstrativo do Resultado do Exercício (DRE)",
-      "3. Fluxo de Caixa e Planejamento Orçamentário",
-      "4. Formação de Preço de Venda e Gestão de Custos"
+      "2. Fluxo de Caixa, DRE e Gestão Orçamentária"
     ],
     "GO - Gestão Operacional e Logística": [
-      "1. Gestão da Produção e Mapeamento de Processos",
-      "2. Administração de Materiais e Controle de Estoque",
-      "3. Cadeia de Suprimentos (Supply Chain) e Logística",
-      "4. Gestão da Qualidade e Indicadores de Desempenho"
+      "1. Mapeamento de Processos e Controle de Estoque",
+      "2. Cadeia de Suprimentos (Supply Chain) e Logística"
     ],
     "CE - Comportamento Empreendedor": [
-      "1. Perfil Empreendedor e Intraempreendedorismo",
-      "2. Modelagem de Negócios (Business Model Canvas)",
-      "3. Liderança, Trabalho em Equipe e Resolução de Problemas",
-      "4. Plano de Negócios e Viabilidade Financeira"
+      "1. Perfil Empreendedor e Modelagem de Negócios (Canvas)",
+      "2. Liderança, Trabalho em Equipe e Plano de Negócios"
     ],
     "IDN - Inovação e Design de Negócios": [
-      "1. Metodologia Design Thinking e Empatia com o Cliente",
-      "2. Transformação Digital, Startups e Modelos Disruptivos",
-      "3. Prototipagem, Validação e MVP (Produto Mínimo Viável)",
-      "4. Inovação Social e Sustentabilidade nos Negócios"
+      "1. Metodologia Design Thinking e Empatia",
+      "2. Prototipagem, Validação e MVP (Produto Mínimo Viável)"
     ],
     "APB - Aprofundamento de Biologia": [
       "1. Engenharia Genética e Tecnologia do DNA Recombinante",
-      "2. Biotecnologia na Saúde: Células-Tronco e Terapia Gênica",
-      "3. Bioética e Biossegurança nas Ciências da Vida",
-      "4. Fisiologia Comparada e Biotecnologia Ambiental",
-      "5. Oncologia, Imunoterapia e Genômica Humana"
+      "2. Biotecnologia na Saúde: Células-Tronco e Terapia Gênica"
     ],
     "APQ - Aprofundamento de Química": [
       "1. Química Ambiental e Tratamento de Resíduos",
-      "2. Processos Industriais Químicos e Polímeros",
-      "3. Fontes Renováveis de Energia e Biocombustíveis",
-      "4. Química dos Materiais e Sustentabilidade",
-      "5. Nanotecnologia e Química Verde"
+      "2. Processos Industriais Químicos e Polímeros"
     ],
     "Empreendedorismo": [
       "1. Mentalidade Empreendedora e Oportunidades de Negócio",
-      "2. Gestão Financeira para Pequenas Empresas",
-      "3. Estratégias de Vendas e Planejamento Estratégico",
-      "4. Pitch de Negócios e Apresentações Eficazes"
+      "2. Gestão Financeira para Pequenas Empresas e Vendas"
     ]
   };
 
@@ -1228,14 +1147,29 @@
       return;
     }
 
+    const ehEnsinoMedio = turma.includes("série");
+
     disciplinasSelecionadas.forEach(discFull => {
-      let chaveBanco = Object.keys(bancoTopicosGerais).find(k => discFull.includes(k)) || "Língua Portuguesa";
-      const itens = bancoTopicosGerais[chaveBanco] || [];
+      let chaveBusca = discFull;
+
+      // Direcionamento Inteligente EF vs. EM
+      if (["Língua Portuguesa", "Matemática", "História", "Geografia"].includes(discFull)) {
+        chaveBusca = ehEnsinoMedio ? `${discFull}_EM` : `${discFull}_EF`;
+      }
+
+      const itens = bancoTopicosGerais[chaveBusca] || bancoTopicosGerais[discFull] || [];
 
       const headerDisc = document.createElement("div");
       headerDisc.style.cssText = "font-weight: bold; color: var(--primary); margin-top: 8px; margin-bottom: 4px; font-size: 0.9rem; border-bottom: 1px solid var(--border); padding-bottom: 2px;";
       headerDisc.textContent = `📚 ${discFull}`;
       containerCont.appendChild(headerDisc);
+
+      if (itens.length === 0) {
+        const pVazio = document.createElement("p");
+        pVazio.style.cssText = "color: #a0aec0; font-size: 0.85rem; margin: 4px 0;";
+        pVazio.textContent = "Nenhum conteúdo pré-definido para este componente. Utilize o campo de inclusão personalizada abaixo.";
+        containerCont.appendChild(pVazio);
+      }
 
       itens.forEach(item => {
         const itemChave = `[${discFull}] ${item}`;
