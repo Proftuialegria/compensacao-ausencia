@@ -366,7 +366,10 @@
   <div class="grid">
     <!-- CONTROLES -->
     <div class="card">
-      <h2>1. Configuração da Atividade</h2>
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+        <h2 style="margin: 0;">1. Configuração da Atividade</h2>
+        <button type="button" class="btn btn-danger" style="padding: 5px 10px; font-size: 0.8rem;" onclick="limparTodasSelecoes()">🔄 Limpar Seleções</button>
+      </div>
       
       <div class="form-group">
         <label for="select-turma">Turma / Série:</label>
@@ -396,7 +399,7 @@
 
       <div class="form-group">
         <label for="select-aluno">Estudante (Frequência Exata Atualizada):</label>
-        <select id="select-aluno" onchange="gerarTrabalho()" disabled>
+        <select id="select-aluno" onchange="aoMudarAluno()" disabled>
           <option value="">-- Selecione a Turma Primeiro --</option>
         </select>
       </div>
@@ -1069,16 +1072,40 @@
     });
   }
 
+  function limparTodasSelecoes() {
+    disciplinasSelecionadas.clear();
+    conteudosSelecionados.clear();
+    metodologiasSelecionadas.clear();
+
+    document.getElementById("orientacoes-extras").value = "";
+
+    document.querySelectorAll(".topic-item").forEach(item => {
+      item.classList.remove("selected");
+      const cb = item.querySelector("input[type='checkbox']");
+      if (cb) cb.checked = false;
+    });
+
+    const turma = document.getElementById("select-turma").value;
+    if (turma) {
+      popularDisciplinas();
+    } else {
+      document.getElementById("lista-disciplinas").innerHTML = '<p style="color: #a0aec0; text-align: center;">Selecione a turma acima.</p>';
+    }
+
+    document.getElementById("lista-conteudos").innerHTML = '<p style="color: #a0aec0; text-align: center;">Selecione ao menos uma disciplina acima.</p>';
+    inicializarMetodologias();
+    gerarTrabalho();
+  }
+
+  function aoMudarAluno() {
+    limparTodasSelecoes();
+  }
+
   function aoMudarTurma() {
     const turma = document.getElementById("select-turma").value;
     const selectOrdem = document.getElementById("select-ordem");
-    const containerDisc = document.getElementById("lista-disciplinas");
 
-    containerDisc.innerHTML = '<p style="color: #a0aec0; text-align: center;">Selecione a turma acima.</p>';
-    document.getElementById("lista-conteudos").innerHTML = '<p style="color: #a0aec0; text-align: center;">Selecione ao menos uma disciplina acima.</p>';
-    
-    disciplinasSelecionadas.clear();
-    conteudosSelecionados.clear();
+    limparTodasSelecoes();
 
     if (turma && turmasAlunos[turma]) {
       selectOrdem.disabled = false;
